@@ -25,7 +25,7 @@ The recommended method of installation is [through composer](http://getcomposer.
 
 ## Usage
 
-To run from a project using this repository via Composer, which is the
+To run from a project using this repository via composer, which is the
 recommended approach for end-users and plugin developers:
 
 ```
@@ -55,7 +55,7 @@ The bot provides enough functionality to connect to an IRC server and listen
 for events, but what really makes it useful to end-users is functionality
 provided through plugins.
 
-Like the bot itself, plugins are installed via Composer. Add any plugins you
+Like the bot itself, plugins are installed via composer. Add any plugins you
 want to install to the `require` section of your `composer.json` file and run 
 `composer install` or `composer update` as appropriate.
 
