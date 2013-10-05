@@ -1,0 +1,4 @@
+composer.phar
+vendor*
+tests/composer.phar
+tests/vendor*
