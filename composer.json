@@ -1,0 +1,28 @@
+{
+    "minimum-stability": "dev",
+    "name": "phergie/phergie-irc-bot-react",
+    "description": "IRC bot built on React",
+    "keywords": [ "irc", "bot", "react" ],
+    "license": "BSD-2-Clause",
+    "support": {
+        "email": "team@phergie.org",
+        "irc": "irc://irc.freenode.net/phergie",
+        "issues": "https://github.com/phergie/phergie-irc-bot-react/issues",
+        "source": "https://github.com/phergie/phergie-irc-bot-react"
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "phergie/phergie-irc-client-react": "1.0.*",
+        "phergie/phergie-irc-connection": "1.1.*",
+        "evenement/evenement": "1.0.*",
+        "monolog/monolog": "1.6.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Phergie": "src"
+        }
+    },
+    "bin": [
+        "bin/phergie"
+    ]
+}
