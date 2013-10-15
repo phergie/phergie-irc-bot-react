@@ -45,7 +45,7 @@ directory will be assumed by default.
 
 ## Configuration
 
-Configuration is stored in PHP files that return associative arrays. This files
+Configuration is stored in PHP files that return associative arrays. These files
 contain settings for IRC server connections and plugins. See
 `config.sample.php` for an example.
 
