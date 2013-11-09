@@ -15,6 +15,17 @@ namespace Phergie\Event;
  */
 interface TargetedEventInterface
 {
+    /**
+     * Accessor method to retrieve targets
+     *
+     * @return array an array of targets
+     */
     public function getTargets();
+
+    /**
+     * Accessor method to set targets
+     * 
+     * @param array $targets an array of targets
+     */
     public function setTargets(array $targets);
 }

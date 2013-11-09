@@ -98,25 +98,4 @@ class Event implements EventInterface
     {
         $this->params = $params;
     }
-
-    /**
-     * Accessor method to retrieve targets
-     *
-     * @return array array of targets
-     */
-    public function getTargets()
-    {
-        return $this->targets;
-    }
-
-    /**
-     * Accessor method to set the targets
-     *
-     * @param array array of targets
-     */
-    public function setTargets(array $targets)
-    {
-        $this->targets = $targets;
-    }
-} 
-  
+}
