@@ -5,7 +5,7 @@
  * @link http://github.com/phergie/phergie-irc-bot-react for the canonical source repository
  * @copyright Copyright (c) 2008-2013 Phergie Development Team (http://phergie.org)
  * @license http://phergie.org/license New BSD License
- * @package Phergie\Irc\Bot\React\Plugin
+ * @package Phergie\Irc\Bot\React
  */
 
 namespace Phergie\Irc\Bot\React\Plugin;
