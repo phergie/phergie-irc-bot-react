@@ -21,6 +21,12 @@ interface PluginInterface
     /**
      * Returns a mapping of events to applicable callbacks.
      *
+     * This method name is taken from Symfony\Component\EventDispatcher\EventSubscriberInterface.
+     * The main difference is that this implementation uses an instance method
+     * rather than a static method. The reason for this is to allow different
+     * instances of the same plugin to listen for different events based on
+     * configuration and other environmental conditions.
+     *
      * @return array Associative array keyed by event name where each value i
      *         a valid callback or array of callback
      */
