@@ -10,32 +10,20 @@
 
 namespace Phergie\Irc\Bot\React\Plugin;
 
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerAwareInterface as BaseLoggerAwareInterface;
 
 /**
- * Trait for retrieving the optional logger dependency of plugins.
+ * Interface for retrieving the optional logger dependency of plugins.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-trait LoggableTrait implements LoggableInterface
+interface LoggerAwareInterface extends BaseLoggerAwareInterface
 {
-    /**
-     * Logger in use by the plugin
-     *
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
-
-    use LoggerAwareTrait;
-
     /**
      * Returns the logger in use by the plugin.
      *
      * @return \Psr\Log\LoggerInterface
      */
-    public function getLogger()
-    {
-        return $this->logger;
-    }
+    public function getLogger();
 }

@@ -10,27 +10,32 @@
 
 namespace Phergie\Irc\Bot\React\Plugin;
 
-use Evenement\EventEmitterInterface;
+use Psr\Log\LoggerAwareTrait as BaseLoggerAwareTrait;
 
 /**
- * Interface for handling the optional event emitter dependency of plugins.
+ * Trait for retrieving the optional logger dependency of plugins.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-interface EmittableInterface
+trait LoggerAwareTrait implements LoggerAwareInterface
 {
     /**
-     * Sets the event emitter for the plugin to use.
+     * Logger in use by the plugin
      *
-     * @param \Evenement\EventEmitterInterface $emitter
+     * @var \Psr\Log\LoggerInterface
      */
-    public function setEventEmitter(EventEmitterInterface $emitter);
+    protected $logger;
+
+    use BaseLoggerAwareTrait;
 
     /**
-     * Returns the event emitter in use by the plugin.
+     * Returns the logger in use by the plugin.
      *
-     * @return \Evenement\EventEmitterInterface
+     * @return \Psr\Log\LoggerInterface
      */
-    public function getEventEmitter();
+    public function getLogger()
+    {
+        return $this->logger;
+    }
 }

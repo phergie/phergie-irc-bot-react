@@ -10,44 +10,27 @@
 
 namespace Phergie\Irc\Bot\React\Plugin;
 
-use Evenement\EventEmitter;
 use Evenement\EventEmitterInterface;
 
 /**
- * Trait for handling the optional event emitter dependency of plugins.
+ * Interface for handling the optional event emitter dependency of plugins.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-trait EmittableTrait implements EmittableInterface
+interface EmitterAwareInterface
 {
-    /**
-     * Event emitter in use by the plugin
-     *
-     * @var \Evenement\EventEmitterInterface
-     */
-    protected $emitter;
-
     /**
      * Sets the event emitter for the plugin to use.
      *
      * @param \Evenement\EventEmitterInterface $emitter
      */
-    public function setEventEmitter(EventEmitterInterface $emitter)
-    {
-        $this->emitter = $emitter;
-    }
+    public function setEventEmitter(EventEmitterInterface $emitter);
 
     /**
      * Returns the event emitter in use by the plugin.
      *
      * @return \Evenement\EventEmitterInterface
      */
-    public function getEventEmitter()
-    {
-        if (!$this->emitter) {
-            $this->emitter = new EventEmitter;
-        }
-        return $this->emitter;
-    }
+    public function getEventEmitter();
 }
