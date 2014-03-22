@@ -11,7 +11,8 @@
 namespace Phergie\Irc\Bot\React\Plugin;
 
 /**
- * Trait for injecting configuration into plugins using the constructor.
+ * Trait for injecting required configuration into plugins using the
+ * constructor.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React
@@ -25,7 +26,7 @@ trait ConstructorConfigurableTrait
      *
      * @param array $config
      */
-    public function __construct(array $config = array())
+    public function __construct(array $config)
     {
         $this->config = $config;
     }

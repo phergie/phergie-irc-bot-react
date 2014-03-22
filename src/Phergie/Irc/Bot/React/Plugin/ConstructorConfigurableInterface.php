@@ -11,7 +11,8 @@
 namespace Phergie\Irc\Bot\React\Plugin;
 
 /**
- * Interface for injecting configuration into plugins using the constructor.
+ * Interface for injecting required configuration into plugins using the
+ * constructor.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React
@@ -23,5 +24,5 @@ interface ConstructorConfigurableInterface extends ConfigurableInterface
      *
      * @param array $config
      */
-    public function __construct(array $config = array());
+    public function __construct(array $config);
 }

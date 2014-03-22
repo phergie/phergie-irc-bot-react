@@ -11,7 +11,8 @@
 namespace Phergie\Irc\Bot\React\Plugin;
 
 /**
- * Interface for injecting configuration into plugins using an accessor method.
+ * Interface for injecting optiona configuration into plugins using an accessor
+ * method.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React

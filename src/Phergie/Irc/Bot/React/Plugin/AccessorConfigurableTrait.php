@@ -11,7 +11,8 @@
 namespace Phergie\Irc\Bot\React\Plugin;
 
 /**
- * Trait for injecting configuration into plugins using an accessor method.
+ * Trait for injecting optional configuration into plugins using an accessor
+ * method.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React
