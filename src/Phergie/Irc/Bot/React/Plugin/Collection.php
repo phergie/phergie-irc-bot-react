@@ -28,7 +28,7 @@ class Collection implements CollectionInterface
     /**
      * Initializes the container with a list of plugins.
      *
-     * @param array $plugin
+     * @param array $plugins
      */
     public function __construct(array $plugins)
     {

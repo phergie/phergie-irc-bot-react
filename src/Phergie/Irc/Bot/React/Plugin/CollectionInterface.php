@@ -16,7 +16,7 @@ namespace Phergie\Irc\Bot\React\Plugin;
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-interface CollectionInterface extends \IteratorAggregate, \Countable, \ArrayAcce
+interface CollectionInterface extends \IteratorAggregate, \Countable, \ArrayAccess
 {
     /**
      * Returns an iterator for a filtered subset of plugins in the container
