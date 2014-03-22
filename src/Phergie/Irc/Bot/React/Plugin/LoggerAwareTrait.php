@@ -20,14 +20,14 @@ use Psr\Log\LoggerAwareTrait as BaseLoggerAwareTrait;
  */
 trait LoggerAwareTrait implements LoggerAwareInterface
 {
+    use BaseLoggerAwareTrait;
+
     /**
      * Logger in use by the plugin
      *
      * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
-
-    use BaseLoggerAwareTrait;
 
     /**
      * Returns the logger in use by the plugin.

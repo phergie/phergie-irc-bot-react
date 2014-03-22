@@ -27,7 +27,7 @@ interface PluginInterface
      * instances of the same plugin to listen for different events based on
      * configuration and other environmental conditions.
      *
-     * @return array Associative array keyed by event name where each value i
+     * @return array Associative array keyed by event name where each value is
      *         a valid callback or array of callback
      */
     public function getSubscribedEvents();

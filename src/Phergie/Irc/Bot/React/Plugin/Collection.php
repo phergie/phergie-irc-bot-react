@@ -19,7 +19,7 @@ namespace Phergie\Irc\Bot\React\Plugin;
 class Collection implements CollectionInterface
 {
     /**
-     * List of plugin
+     * List of plugins
      *
      * @var array
      */

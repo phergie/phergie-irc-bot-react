@@ -31,7 +31,7 @@ interface BotInterface
 
     /**
      * Initiates an event loop for the bot in which it will connect to servers
-     * and monitor those connects for events to forward to plugins.
+     * and monitor those connections for events to forward to plugins.
      */
     public function run();
 }

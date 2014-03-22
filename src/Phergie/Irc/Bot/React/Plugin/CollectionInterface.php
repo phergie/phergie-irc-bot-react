@@ -26,5 +26,5 @@ interface CollectionInterface extends \IteratorAggregate, \Countable, \ArrayAcce
      * @param string $entity Fully qualified class, interface, or trait name
      * @return \Iterator
      */
-    public function getIteratorForClass($class);
+    public function getIteratorForEntity($entity);
 }
