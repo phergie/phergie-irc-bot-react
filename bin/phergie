@@ -20,5 +20,6 @@ set_include_path(implode(PATH_SEPARATOR, array(
 ));
 require 'autoload.php';
 
-$bot = new \Phergie\Irc\Bot\React\Bot(array_slice($argv, 1));
+$bot = new \Phergie\Irc\Bot\React\Bot;
+$bot->setConfigs(array_slice($argv, 1));
 $bot->run();
