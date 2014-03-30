@@ -1,5 +1,7 @@
 <?php
 
+use Phergie\Irc\Bot\React\Connection;
+
 return array(
 
     // Plugins to include for all connections, where any connection-specific
@@ -9,19 +11,15 @@ return array(
 
     'plugins' => array(
 
-        'plugin-key' => array(
-
-            // ...
-
-        ),
+        // 'plugin-key' => new \Vendor\Plugin\PluginName(array(
+        // /* configuration goes here */
+        // )),
 
     ),
 
     'connections' => array(
 
-        // One array for each connection here
-
-        array(
+        new Connection(array(
 
             // Required settings
 
@@ -51,7 +49,7 @@ return array(
                 // ...
 
             ),
-        ),
+        )),
 
     )
 
