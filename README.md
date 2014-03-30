@@ -39,14 +39,14 @@ developers:
 ./bin/phergie
 ```
 
-In both cases, an optional list of configuration file paths can be specified as
-command line arguments.  If none are, `config.php` in the current working
-directory will be assumed by default.
+In both cases, a configuration file path can be specified as a command line
+argument.  If none is, `config.php` in the current working directory will be
+assumed by default.
 
 ## Configuration
 
-Configuration is stored in PHP files that return associative arrays. These files
-contain settings for IRC server connections and plugins. See
+Configuration is stored in a PHP file that returns an associative array. This
+file contains settings for IRC server connections and plugins. See
 `config.sample.php` for an example.
 
 ## Installing Plugins
