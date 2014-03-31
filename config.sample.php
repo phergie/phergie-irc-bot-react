@@ -4,10 +4,7 @@ use Phergie\Irc\Bot\React\Connection;
 
 return array(
 
-    // Plugins to include for all connections, where any connection-specific
-    // plugin configuration using the same plugin key will take precedence over
-    // this configuration. The plugin key is an arbitrary value used only for
-    // uniquely identifying plugins for this purpose.
+    // Plugins to include for all connections
 
     'plugins' => array(
 
@@ -39,14 +36,13 @@ return array(
             //     'force-ipv4' => true,
             // )
 
-            // Optional connection-specific plugin configuration, which uses
-            // the same array structure as the global plugin configuration
-            // above and will override that configuration on a per-plugin basis
-            // where the same plugin keys are used.
+            // Optional list of plugins to use specifically for this connection
 
             'plugins' => array(
 
-                // ...
+                // 'plugin-key' => new \Vendor\Plugin\PluginName(array(
+                // /* configuration goes here */
+                // )),
 
             ),
         )),
