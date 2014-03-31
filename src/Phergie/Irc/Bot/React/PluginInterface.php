@@ -8,7 +8,7 @@
  * @package Phergie\Irc\Bot\React
  */
 
-namespace Phergie\Irc\Bot\React\Plugin;
+namespace Phergie\Irc\Bot\React;
 
 /**
  * Minimum interface for a plugin implementation.
