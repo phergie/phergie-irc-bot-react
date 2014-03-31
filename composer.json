@@ -10,6 +10,7 @@
         "issues": "https://github.com/phergie/phergie-irc-bot-react/issues",
         "source": "https://github.com/phergie/phergie-irc-bot-react"
     },
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
         "phergie/phergie-irc-client-react": "1.0.*",
