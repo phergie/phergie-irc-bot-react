@@ -21,13 +21,6 @@ namespace Phergie\Irc\Bot\React;
 interface ConnectionInterface extends \Phergie\Irc\ConnectionInterface
 {
     /**
-     * Constructor to accept property values.
-     *
-     * @param array $config Associative array keyed by property name
-     */
-    public function __construct(array $config);
-
-    /**
      * Sets a list of plugins to associate with the connection.
      *
      * @param \Phergie\Irc\Bot\React\Plugin\PluginInterface[] $plugins

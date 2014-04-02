@@ -10,10 +10,10 @@
 
 namespace Phergie\Irc\Bot\React;
 
-use Phergie\Irc\ConnectionInterface;
-use Phergie\Irc\Bot\React\ConnectionInterface as BotConnectionInterface;
+use Phergie\Irc\ConnectionInterface as BaseConnectionInterface;
 use Phergie\Irc\Client\React\Client;
 use Phergie\Irc\Event\CtcpEvent;
+use Phergie\Irc\Event\EventInterface;
 use Phergie\Irc\Event\ParserConverter;
 use Phergie\Irc\Event\ParserConverterInterface;
 use Phergie\Irc\Event\UserEvent;
@@ -154,7 +154,7 @@ class Bot
      * Initiates an event loop for the bot in which it will connect to servers
      * and monitor those connections for events to forward to plugins.
      *
-     * @throws \InvalidArgumentException if configuration is inconsistent with
+     * @throws \RuntimeException if configuration is inconsistent with
      *         expected structure
      */
     public function run()
@@ -168,7 +168,7 @@ class Bot
         // Register connection-specific plugins
         $connections = $this->getConnections($this->config);
         foreach ($connections as $connection) {
-            if ($connection instanceof BotConnectionInterface) {
+            if ($connection instanceof ConnectionInterface) {
                 $this->registerConnectionPluginSubscribers($client, $connection);
             }
         }
@@ -185,29 +185,29 @@ class Bot
     protected function getConnections(array $config)
     {
         if (!isset($config['connections'])) {
-            throw new \InvalidArgumentException('Configuration must contain a "connections" key');
+            throw new \RuntimeException('Configuration must contain a "connections" key');
         }
 
         if (!is_array($config['connections']) || !$config['connections']) {
-            throw new \InvalidArgumentException('Configuration "connections" key must reference a non-empty array');
+            throw new \RuntimeException('Configuration "connections" key must reference a non-empty array');
         }
 
         $connections = array_filter(
             $config['connections'],
             function($connection) {
-                return $connection instanceof ConnectionInterface;
+                return $connection instanceof BaseConnectionInterface;
             }
         );
         if (count($connections) != count($config['connections'])) {
-            throw new \InvalidArgumentException(
-                'Configuration "connections" array must contain at least one value that implements \Phergie\Irc\ConnectionInterface'
+            throw new \RuntimeException(
+                'All configuration "connections" array values must implement \Phergie\Irc\ConnectionInterface'
             );
         }
 
         $filtered = array_filter(
             $connections,
             function($connection) {
-                return $connection instanceof BotConnectionInterface;
+                return $connection instanceof ConnectionInterface;
             }
         );
         foreach ($filtered as $connection) {
@@ -224,17 +224,16 @@ class Bot
      *
      * @param array $config Associative array keyed by setting name
      * @return \Phergie\Irc\Bot\React\Plugin\PluginInterface[]
-     * @throws \InvalidArgumentException if any plugin event callback is invalid
+     * @throws \RuntimeException if any plugin event callback is invalid
      */
     protected function getPlugins(array $config)
     {
         if (!isset($config['plugins'])) {
-            $this->getLogger()->notice('Configuration does not contain a "plugins" key');
-            return;
+            throw new \RuntimeException('Configuration must contain a "plugins" key');
         }
 
         if (!is_array($config['plugins']) || !$config['plugins']) {
-            throw new \InvalidArgumentException('Configuration "plugins" key must reference a non-empty array');
+            throw new \RuntimeException('Configuration "plugins" key must reference a non-empty array');
         }
 
         $plugins = array_filter(
@@ -244,7 +243,7 @@ class Bot
             }
         );
         if (count($plugins) != count($config['plugins'])) {
-            throw new \InvalidArgumentException(
+            throw new \RuntimeException(
                 'All configuration "plugins" array values must implement \Phergie\Irc\Bot\React\PluginInterface'
             );
         }
@@ -253,8 +252,10 @@ class Bot
         $logger = $this->getLogger();
         foreach ($plugins as $plugin) {
             $this->validatePluginEvents($plugin);
-            $plugin->setEventEmitter($client);
-            $plugin->setLogger($logger);
+            if ($plugin instanceof AbstractPlugin) {
+                $plugin->setEventEmitter($client);
+                $plugin->setLogger($logger);
+            }
         }
 
         return $plugins;
@@ -264,17 +265,24 @@ class Bot
      * Validates a plugin's event callbacks.
      *
      * @param \Phergie\Irc\Bot\React\Plugin\PluginInterface $plugin
-     * @throws \InvalidArgumentException if any event callback is invalid
+     * @throws \RuntimeException if any event callback is invalid
      */
     protected function validatePluginEvents(PluginInterface $plugin)
     {
         $events = $plugin->getSubscribedEvents();
+        if (!is_array($events)) {
+            throw new \RuntimeException(
+                'Plugin of class ' . get_class($plugin) .
+                    ' has getSubscribedEvents() implementation' .
+                    ' that does not return an array'
+            );
+        }
         foreach ($events as $event => $callback) {
-            if (!is_callable($callback)) {
-                throw new \InvalidArgumentException(
-                    'Plugin with key "' . $key .
-                        '" of class ' . get_class($plugin) .
-                        ' returns invalid callback for event "' . $event . '"'
+            if (!is_string($event) || !is_callable($callback)) {
+                throw new \RuntimeException(
+                    'Plugin of class ' . get_class($plugin) .
+                        ' returns non-string event name or invalid callback' .
+                        ' for event "' . $event . '"'
                 );
             }
         }
@@ -289,8 +297,12 @@ class Bot
     protected function registerClientSubscribers(Client $client)
     {
         $converter = $this->getConverter();
-        $callback = function($type, $message, $connection) use ($client, $converter) {
+        $callback = function() use ($client, $converter) {
+            $args = func_get_args();
+            $type = array_shift($args);
+            $message = array_shift($args);
             $converted = $converter->convert($message);
+            array_unshift($args, $converted);
             if ($converted instanceof CtcpEvent) {
                 $event = 'ctcp.' . strtolower($converted->getCtcpCommand());
             } elseif ($converted instanceof UserEvent) {
@@ -298,15 +310,26 @@ class Bot
             } elseif ($converted instanceof ServerEvent) {
                 $event = strtolower($converted->getCode());
             }
-            $converted->setConnection($connection);
-            $client->emit('irc.' . $type, $converted);
-            $client->emit('irc.' . $type . '.' . $event, $converted);
+            $connections = array_filter(
+                    $args,
+                    function($arg) {
+                        return $arg instanceof BaseConnectionInterface;
+                    }
+                );
+            if ($connections) {
+                $converted->setConnection(reset($connections));
+            }
+            $params = array($converted);
+            $client->emit('irc.' . $type . '.all', $params);
+            $client->emit('irc.' . $type . '.' . $event, $params);
         };
-        $client->on('irc.received', function($message, $write, $connection, $logger) use ($callback) {
-            $callback('received', $message, $connection);
+        $client->on('irc.received', function() use ($callback) {
+            $args = array_merge(array('received'), func_get_args());
+            call_user_func_array($callback, $args);
         });
-        $client->on('irc.sent', function($message, $connection, $logger) use ($callback) {
-            $callback('sent', $message, $connection);
+        $client->on('irc.sent', function() use ($callback) {
+            $args = array_merge(array('sent'), func_get_args());
+            call_user_func_array($callback, $args);
         });
     }
 
@@ -337,7 +360,7 @@ class Bot
      *        plugin callbacks will only receive events pertaining to that
      *        connection for events that are connection-specific
      */
-    protected function registerConnectionPluginSubscribers(Client $client, BotConnectionInterface $connection)
+    protected function registerConnectionPluginSubscribers(Client $client, ConnectionInterface $connection)
     {
         // Define a callback wrapper used to limit callback invocations to
         // the specific connection
@@ -347,7 +370,7 @@ class Bot
                 $connections = array_filter(
                         $args,
                         function($arg) {
-                            return $arg instanceof ConnectionInterface;
+                            return $arg instanceof BaseConnectionInterface;
                         }
                     );
                 if ($connections && reset($connections) === $connection) {

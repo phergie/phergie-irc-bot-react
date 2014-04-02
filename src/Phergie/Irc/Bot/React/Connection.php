@@ -31,12 +31,12 @@ class Connection extends \Phergie\Irc\Connection implements ConnectionInterface
      *
      * @param array $config Associative array keyed by property name
      */
-    public function __construct(array $config = array())
+    public function __construct(array $config)
     {
         foreach ($config as $key => $value) {
             $method = 'set' . $key;
             if (method_exists($this, $method)) {
-                $this->$method($config[$key]);
+                $this->$method($value);
             }
         }
     }
