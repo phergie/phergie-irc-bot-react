@@ -20,7 +20,8 @@
         "monolog/monolog": "1.6.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.0.*"
+        "phpunit/phpunit": "4.0.*",
+        "phake/phake": "1.0.*"
     },
     "autoload": {
         "psr-0": {
