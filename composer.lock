@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "94f8b2fa56722fdc3d3800539cee28c8",
+    "hash": "1f62cee5f74b374a74748f4c762bd96a",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -114,16 +114,16 @@
         },
         {
             "name": "phergie/phergie-irc-client-react",
-            "version": "1.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-client-react.git",
-                "reference": "2c54bf980e9c597e2954037ca4990d5da9ea1155"
+                "reference": "f828731decec16be64e31cb01cb1174a0451d5cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/2c54bf980e9c597e2954037ca4990d5da9ea1155",
-                "reference": "2c54bf980e9c597e2954037ca4990d5da9ea1155",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/f828731decec16be64e31cb01cb1174a0451d5cc",
+                "reference": "f828731decec16be64e31cb01cb1174a0451d5cc",
                 "shasum": ""
             },
             "require": {
@@ -132,8 +132,13 @@
                 "phergie/phergie-irc-generator": "1.2.*",
                 "phergie/phergie-irc-parser": "1.3.*",
                 "php": ">=5.3.3",
+                "psr/log": "~1.0",
                 "react/event-loop": "0.3.*",
                 "react/stream": "0.3.*"
+            },
+            "require-dev": {
+                "phake/phake": "2.0.0-alpha4",
+                "phpunit/phpunit": "3.7.*"
             },
             "type": "library",
             "autoload": {
@@ -151,7 +156,7 @@
                 "irc",
                 "react"
             ],
-            "time": "2013-10-05 13:25:24"
+            "time": "2014-03-22 04:44:32"
         },
         {
             "name": "phergie/phergie-irc-connection",
@@ -481,12 +486,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "3dcca2120451b98a98fe60221ca279a184ee64db"
+                "reference": "aef655b2481c7ef8c8b73288c383261b2bb7e2a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/3dcca2120451b98a98fe60221ca279a184ee64db",
-                "reference": "3dcca2120451b98a98fe60221ca279a184ee64db",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/aef655b2481c7ef8c8b73288c383261b2bb7e2a2",
+                "reference": "aef655b2481c7ef8c8b73288c383261b2bb7e2a2",
                 "shasum": ""
             },
             "require": {
@@ -537,7 +542,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-03-28 10:54:55"
+            "time": "2014-04-03 03:26:47"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1111,6 +1116,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "phergie/phergie-irc-client-react": 20,
         "phergie/phergie-irc-event": 20
     },
     "platform": {

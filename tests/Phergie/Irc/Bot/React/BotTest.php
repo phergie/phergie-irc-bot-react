@@ -188,7 +188,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         // No "connections" key
         $plugin = $this->getMockPlugin();
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => function(){}));
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'getSubscribedEvents'));
         $data[] = array(
             array('plugins' => array($plugin)),
             'Configuration must contain a "connections" key',
@@ -277,7 +277,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
     public function testRunWithAbstractPlugin()
     {
         $plugin = Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin');
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => function(){}));
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
 
         $connection = $this->getMockConnection();
         Phake::when($connection)->getPlugins()->thenReturn(array());
@@ -335,43 +335,112 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function testEventCallbacks(EventInterface $eventObject, $eventType, $eventSubtype)
     {
-        $message = array('foo' => 'bar');
+        $params = array();
+        $message = $params[] = array('foo' => 'bar');
         $converter = $this->getMockConverter();
         Phake::when($converter)->convert($message)->thenReturn($eventObject);
         $this->bot->setConverter($converter);
 
-        $client = Phake::partialMock('\Phergie\Irc\Client\React\Client');
-        Phake::when($client)->run()->thenReturn(null);
+        $client = new \Phergie\Irc\Client\React\Client;
         $this->bot->setClient($client);
 
-        $connection = $this->getMockConnection();
-        $logger = $this->getMockLogger();
-        $write = Phake::mock('\Phergie\Irc\Client\React\WriteStream');
+        $write = $this->getMockWriteStream();
+        if ($eventType == 'received') {
+            $params[] = $write;
+        }
+        $connection = $params[] = $this->getMockConnection();
+        $logger = $params[] = $this->getMockLogger();
 
         $test = $this;
         $allCalled = false;
         $typeCalled = false;
-        $client->on('irc.' . $eventType . '.all', function($param) use (&$allCalled, $test, $eventObject) {
+        $client->on('irc.' . $eventType . '.all', function($param, $otherWrite = null) use (&$allCalled, $test, $eventObject, $write) {
             $allCalled = true;
             $test->assertSame($eventObject, $param);
+            if ($otherWrite) {
+                $test->assertSame($otherWrite, $write);
+            }
         });
-        $client->on('irc.' . $eventType . '.' . $eventSubtype, function($param) use (&$typeCalled, $test, $eventObject) {
+        $client->on('irc.' . $eventType . '.' . $eventSubtype, function($param, $otherWrite = null) use (&$typeCalled, $test, $eventObject, $write) {
             $typeCalled = true;
             $test->assertSame($eventObject, $param);
+            if ($otherWrite) {
+                $test->assertSame($otherWrite, $write);
+            }
         });
 
-        $client->emit(
-            'irc.' . $eventType,
-            array(
-                $message,
-                $write,
-                $connection,
-                $logger
-            )
-        );
+        $client->emit('irc.' . $eventType, $params);
 
         $this->assertTrue($allCalled);
         $this->assertTrue($typeCalled);
+        Phake::verify($eventObject)->setConnection($connection);
+    }
+
+    /**
+     * Tests that listeners for connection-specific plugins are only called for
+     * those connections.
+     */
+    public function testConnectionSpecificPlugins()
+    {
+        $event = 'irc.received.privmsg';
+        $write = $this->getMockWriteStream();
+        $logger = $this->getMockLogger();
+        $message = array('foo' => 'bar');
+
+        $eventObject = Phake::mock('\Phergie\Irc\Event\UserEvent');
+        Phake::when($eventObject)->getCommand()->thenReturn('PRIVMSG');
+
+        $converter = $this->getMockConverter();
+        Phake::when($converter)->convert($message)->thenReturn($eventObject);
+
+        $globalCalled = null;
+        $globalCallback = function() use (&$globalCalled) { $globalCalled = true; };
+        $globalPlugin = $this->getMockTestPlugin();
+        Phake::when($globalPlugin)->handleEvent($eventObject, $write)->thenGetReturnByLambda($globalCallback);
+        Phake::when($globalPlugin)->getSubscribedEvents()->thenReturn(array($event => 'handleEvent'));
+
+        $connectionCalled = array();
+        $connectionCallback = array();
+        $connectionPlugin = array();
+        $connections = array();
+        foreach (range(1, 2) as $index) {
+            $connectionCalled[$index] = null;
+            $connections[$index] = $this->getMockConnection();
+            $connectionCallback[$index] = function() use (&$connectionCalled, $index) { $connectionCalled[$index] = true; };
+            $connectionPlugin[$index] = $this->getMockTestPlugin();
+            Phake::when($connectionPlugin[$index])
+                ->handleEvent($eventObject, $write)
+                ->thenGetReturnByLambda($connectionCallback[$index]);
+            Phake::when($connectionPlugin[$index])->getSubscribedEvents()->thenReturn(array($event => 'handleEvent'));
+            Phake::when($connections[$index])->getPlugins()->thenReturn(array($connectionPlugin[$index]));
+        }
+
+        $config = array(
+            'plugins' => array($globalPlugin),
+            'connections' => $connections,
+        );
+
+        $client = Phake::partialMock('\Phergie\Irc\Client\React\Client');
+        Phake::when($client)->run($connections)->thenReturn(null);
+
+        $this->bot->setConverter($converter);
+        $this->bot->setClient($client);
+        $this->bot->setConfig($config);
+        $this->bot->run($connections);
+
+        $globalCalled = $connectionCalled[1] = $connectionCalled[2] = false;
+        Phake::when($eventObject)->getConnection()->thenReturn($connections[1]);
+        $client->emit('irc.received', array($message, $write, $connections[1], $logger));
+        $this->assertTrue($globalCalled, 'Global callback was not called');
+        $this->assertTrue($connectionCalled[1], 'Connection #1 callback was not called');
+        $this->assertFalse($connectionCalled[2], 'Connection #2 callback was called');
+
+        $globalCalled = $connectionCalled[1] = $connectionCalled[2] = false;
+        Phake::when($eventObject)->getConnection()->thenReturn($connections[2]);
+        $client->emit('irc.received', array($message, $write, $connections[2], $logger));
+        $this->assertTrue($globalCalled, 'Global callback was not called');
+        $this->assertFalse($connectionCalled[1], 'Connection #1 callback was called');
+        $this->assertTrue($connectionCalled[2], 'Connection #2 callback was not called');
     }
 
     /*** SUPPORTING METHODS ***/
@@ -417,6 +486,16 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Returns a mock plugin with a valid callback for stubbing.
+     *
+     * @return \Phergie\Irc\Bot\React\TestPlugin
+     */
+    protected function getMockTestPlugin()
+    {
+        return Phake::mock('\Phergie\Irc\Bot\React\TestPlugin');
+    }
+
+    /**
      * Returns a specialized mock connection.
      *
      * @return \Phergie\Irc\Bot\React\Connection
@@ -424,5 +503,39 @@ class BotTest extends \PHPUnit_Framework_TestCase
     protected function getMockConnection()
     {
         return Phake::mock('\Phergie\Irc\Bot\React\Connection');
+    }
+
+    /**
+     * Returns a mock stream for sending events to the server.
+     *
+     * @return \Phergie\Irc\Client\React\WriteStream
+     */
+    protected function getMockWriteStream()
+    {
+        return Phake::mock('\Phergie\Irc\Client\React\WriteStream');
+    }
+}
+
+/**
+ * Plugin class with a valid event callback used for testing
+ * connection-specific plugins.
+ */
+class TestPlugin extends AbstractPlugin
+{
+    protected $event;
+
+    public function __construct($event)
+    {
+        $this->event = $event;
+    }
+
+    public function getSubscribedEvents()
+    {
+        return array($this->event => 'handleEvent');
+    }
+
+    public function handleEvent($eventObject, $write)
+    {
+        // left empty for stubbing
     }
 }

@@ -12,6 +12,7 @@ namespace Phergie\Irc\Bot\React;
 
 use Evenement\EventEmitterInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * Base class for plugins.
@@ -19,7 +20,7 @@ use Psr\Log\LoggerInterface;
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-abstract class AbstractPlugin implements PluginInterface
+abstract class AbstractPlugin implements PluginInterface, LoggerAwareInterface, EventEmitterAwareInterface
 {
     /**
      * Event emitter used to register callbacks for IRC events of interest to

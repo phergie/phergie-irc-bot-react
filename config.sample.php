@@ -8,7 +8,7 @@ return array(
 
     'plugins' => array(
 
-        // 'plugin-key' => new \Vendor\Plugin\PluginName(array(
+        // new \Vendor\Plugin\PluginName(array(
         // /* configuration goes here */
         // )),
 
@@ -40,7 +40,7 @@ return array(
 
             'plugins' => array(
 
-                // 'plugin-key' => new \Vendor\Plugin\PluginName(array(
+                // new \Vendor\Plugin\PluginName(array(
                 // /* configuration goes here */
                 // )),
 

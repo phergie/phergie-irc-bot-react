@@ -10,19 +10,15 @@
 
 namespace Phergie\Irc\Bot\React;
 
+use Evenement\EventEmitterInterface;
+
 /**
- * Minimum interface for a plugin implementation.
+ * Interface for injection of an event emitter.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-interface PluginInterface
+interface EventEmitterAwareInterface
 {
-    /**
-     * Returns a mapping of events to applicable callbacks.
-     *
-     * @return array Associative array keyed by event name referencing names of
-     *         instance methods in the class implementing this interface
-     */
-    public function getSubscribedEvents();
+    public function setEventEmitter(EventEmitterInterface $emitter);
 }

@@ -13,7 +13,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "phergie/phergie-irc-client-react": "1.0.*",
+        "phergie/phergie-irc-client-react": "dev-master",
         "phergie/phergie-irc-connection": "1.1.*",
         "phergie/phergie-irc-event": "dev-master",
         "evenement/evenement": "1.0.*",
