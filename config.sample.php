@@ -20,10 +20,10 @@ return array(
 
             // Required settings
 
-            'host' => 'irc.freenode.net',
+            'hostname' => 'irc.freenode.net',
             'username' => 'Elazar',
             'realname' => 'Matthew Turland',
-            'nick' => 'Phergie3',
+            'nickname' => 'Phergie3',
 
             // Optional settings
 
