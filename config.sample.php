@@ -20,16 +20,15 @@ return array(
 
             // Required settings
 
-            'hostname' => 'irc.freenode.net',
+            'serverHostname' => 'irc.freenode.net',
             'username' => 'Elazar',
             'realname' => 'Matthew Turland',
             'nickname' => 'Phergie3',
 
             // Optional settings
 
-            // 'servername' => 'user server name goes here if needed',
-            // 'serverhost' => 'server host name goes here if needed',
-            // 'port' => 6667,
+            // 'hostname' => 'user server name goes here if needed',
+            // 'serverport' => 6667,
             // 'password' => 'password goes here if needed',
             // 'options' => array(
             //     'transport' => 'ssl',
