@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-client-react.git",
-                "reference": "f828731decec16be64e31cb01cb1174a0451d5cc"
+                "reference": "da8cbb8d77b1a16cad44f5c38c982265dfe9e725"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/f828731decec16be64e31cb01cb1174a0451d5cc",
-                "reference": "f828731decec16be64e31cb01cb1174a0451d5cc",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/da8cbb8d77b1a16cad44f5c38c982265dfe9e725",
+                "reference": "da8cbb8d77b1a16cad44f5c38c982265dfe9e725",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "irc",
                 "react"
             ],
-            "time": "2014-03-22 04:44:32"
+            "time": "2014-04-09 02:06:30"
         },
         {
             "name": "phergie/phergie-irc-connection",
@@ -438,20 +438,26 @@
     "packages-dev": [
         {
             "name": "phake/phake",
-            "version": "v1.0.3",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlively/Phake.git",
-                "reference": "4d822246b401f4dc609500d47e42dac8df645f4f"
+                "reference": "40dbd06f196ac2c8f3bd9cdfb1fb632bd9065bad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlively/Phake/zipball/4d822246b401f4dc609500d47e42dac8df645f4f",
-                "reference": "4d822246b401f4dc609500d47e42dac8df645f4f",
+                "url": "https://api.github.com/repos/mlively/Phake/zipball/40dbd06f196ac2c8f3bd9cdfb1fb632bd9065bad",
+                "reference": "40dbd06f196ac2c8f3bd9cdfb1fb632bd9065bad",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "doctrine/common": "2.3.*",
+                "ext-soap": "*",
+                "hamcrest/hamcrest-php": "1.1.*",
+                "phpunit/phpunit": "3.7.*"
             },
             "type": "library",
             "autoload": {
@@ -478,7 +484,7 @@
                 "mock",
                 "testing"
             ],
-            "time": "2012-05-14 15:06:51"
+            "time": "2014-04-06 16:34:46"
         },
         {
             "name": "phpunit/php-code-coverage",
