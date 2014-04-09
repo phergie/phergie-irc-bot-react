@@ -2,6 +2,8 @@
 
 A PHP-based IRC bot built on React.
 
+[![Build Status](https://secure.travis-ci.org/phergie/phergie-irc-bot-react.png?branch=master)](http://travis-ci.org/phergie/phergie-irc-bot-react)
+
 ## Install
 
 The recommended method of installation is [through composer](http://getcomposer.org).
