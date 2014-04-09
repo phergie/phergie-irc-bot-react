@@ -159,13 +159,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         // Non-array "plugins" value
         $data[] = array(
             array('plugins' => 'foo'),
-            'Configuration "plugins" key must reference a non-empty array',
-        );
-
-        // Empty array "plugins" value
-        $data[] = array(
-            array('plugins' => array()),
-            'Configuration "plugins" key must reference a non-empty array',
+            'Configuration "plugins" key must reference an array',
         );
 
         // "plugins" value contains an object that doesn't implement PluginInterface

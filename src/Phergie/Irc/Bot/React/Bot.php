@@ -265,8 +265,8 @@ class Bot
             throw new \RuntimeException('Configuration must contain a "plugins" key');
         }
 
-        if (!is_array($config['plugins']) || !$config['plugins']) {
-            throw new \RuntimeException('Configuration "plugins" key must reference a non-empty array');
+        if (!is_array($config['plugins'])) {
+            throw new \RuntimeException('Configuration "plugins" key must reference an array');
         }
 
         $plugins = array_filter(
