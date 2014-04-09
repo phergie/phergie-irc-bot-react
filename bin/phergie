@@ -20,6 +20,9 @@ set_include_path(implode(PATH_SEPARATOR, array(
 )));
 require 'autoload.php';
 
+$configFile = isset($argv[1]) ? $argv[1] : 'config.php';
+$config = require $configFile;
+
 $bot = new \Phergie\Irc\Bot\React\Bot;
-$bot->setConfig(require $argv[1]);
+$bot->setConfig($config);
 $bot->run();
