@@ -200,12 +200,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-event.git",
-                "reference": "d3b121a0b88884ea0eb0666ec20455bfaa023687"
+                "reference": "3a19c750a7ce5cace5a3ab01f7f6bb2726e5ce0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/d3b121a0b88884ea0eb0666ec20455bfaa023687",
-                "reference": "d3b121a0b88884ea0eb0666ec20455bfaa023687",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/3a19c750a7ce5cace5a3ab01f7f6bb2726e5ce0a",
+                "reference": "3a19c750a7ce5cace5a3ab01f7f6bb2726e5ce0a",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
                 "event",
                 "irc"
             ],
-            "time": "2014-03-31 01:41:36"
+            "time": "2014-04-09 02:26:00"
         },
         {
             "name": "phergie/phergie-irc-generator",
