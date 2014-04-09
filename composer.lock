@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-client-react.git",
-                "reference": "da8cbb8d77b1a16cad44f5c38c982265dfe9e725"
+                "reference": "b24a02d234cc89916dd9a9c43fbce23596749c05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/da8cbb8d77b1a16cad44f5c38c982265dfe9e725",
-                "reference": "da8cbb8d77b1a16cad44f5c38c982265dfe9e725",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/b24a02d234cc89916dd9a9c43fbce23596749c05",
+                "reference": "b24a02d234cc89916dd9a9c43fbce23596749c05",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "irc",
                 "react"
             ],
-            "time": "2014-04-09 02:06:30"
+            "time": "2014-04-09 02:53:00"
         },
         {
             "name": "phergie/phergie-irc-connection",
