@@ -100,6 +100,27 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests setParser().
+     */
+    public function testSetParser()
+    {
+        $client = $this->getMockParser();
+        $this->bot->setParser($client);
+        $this->assertSame($client, $this->bot->getParser());
+    }
+
+    /**
+     * Tests getParser().
+     */
+    public function testGetParser()
+    {
+        $this->assertInstanceOf(
+            '\Phergie\Irc\ParserInterface',
+            $this->bot->getParser()
+        );
+    }
+
+    /**
      * Tests setConverter().
      */
     public function testSetConverter()
@@ -337,9 +358,14 @@ class BotTest extends \PHPUnit_Framework_TestCase
     {
         $params = array();
         $message = $params[] = array('foo' => 'bar');
+
         $converter = $this->getMockConverter();
         Phake::when($converter)->convert($message)->thenReturn($eventObject);
         $this->bot->setConverter($converter);
+
+        $parser = $this->getMockParser();
+        Phake::when($parser)->parse($message)->thenReturn($message);
+        $this->bot->setParser($parser);
 
         $client = new \Phergie\Irc\Client\React\Client;
         $this->bot->setClient($client);
@@ -463,6 +489,16 @@ class BotTest extends \PHPUnit_Framework_TestCase
     protected function getMockClient()
     {
         return Phake::mock('\Phergie\Irc\Client\React\Client');
+    }
+
+    /**
+     * Returns a mock parser for generated event data.
+     *
+     * @return \Phergie\Irc\ParserInterface
+     */
+    protected function getMockParser()
+    {
+        return Phake::mock('\Phergie\Irc\ParserInterface');
     }
 
     /**

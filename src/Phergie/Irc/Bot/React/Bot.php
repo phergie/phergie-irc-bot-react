@@ -20,6 +20,8 @@ use Phergie\Irc\Event\ParserConverter;
 use Phergie\Irc\Event\ParserConverterInterface;
 use Phergie\Irc\Event\UserEvent;
 use Phergie\Irc\Event\ServerEvent;
+use Phergie\Irc\Parser;
+use Phergie\Irc\ParserInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 
@@ -53,6 +55,13 @@ class Bot
      * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
+
+    /**
+     * Parser for converting generated IRC commands into event objects
+     *
+     * @var \Phergie\Irc\ParserInterface
+     */
+    protected $parser;
 
     /**
      * Converter for event data from the IRC client's underlying parser
@@ -128,6 +137,29 @@ class Bot
             $this->logger = $this->getClient()->getLogger();
         }
         return $this->logger;
+    }
+
+    /**
+     * Sets the parser for generated event data in use by the bot.
+     *
+     * @param \Phergie\Irc\ParserInterface $parser
+     */
+    public function setParser(ParserInterface $parser)
+    {
+        $this->parser = $parser;
+    }
+
+    /**
+     * Returns the parser for generated event data in use by the bot.
+     *
+     * @return \Phergie\Irc\ParserInterface
+     */
+    public function getParser()
+    {
+        if (!$this->parser) {
+            $this->parser = new Parser;
+        }
+        return $this->parser;
     }
 
     /**
@@ -330,8 +362,10 @@ class Bot
         $client->on('irc.received', function($message, $write, $connection, $logger) use ($callback) {
             $callback('irc.received', $message, $connection, $write);
         });
-        $client->on('irc.sent', function($message, $connection, $logger) use ($callback) {
-            $callback('irc.sent', $message, $connection);
+        $parser = $this->getParser();
+        $client->on('irc.sent', function($message, $connection, $logger) use ($callback, $parser) {
+            $parsed = $parser->parse($message);
+            $callback('irc.sent', $parsed, $connection);
         });
     }
 
