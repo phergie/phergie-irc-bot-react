@@ -197,52 +197,52 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * @param string $info
      */
     public function ircServer($servername, $hopcount, $info)
-	{
+    {
         $this->queueIrcRequest('SERVER', array($servername, $hopcount, $info));
-	}
+    }
 
     /**
      * @param string $user
      * @param string $password
      */
     public function ircOper($user, $password)
-	{
+    {
         $this->queueIrcRequest('OPER', array($user, $password));
-	}
+    }
 
     /**
      * @param string $message
      */
     public function ircQuit($message = null)
-	{
+    {
         $this->queueIrcRequest('QUIT', array($message));
-	}
+    }
 
     /**
      * @param string $server
      * @param string $comment
      */
     public function ircSquit($server, $comment)
-	{
+    {
         $this->queueIrcRequest('SQUIT', array($server, $comment));
-	}
+    }
 
     /**
      * @param string $channels
      * @param string $keys
      */
     public function ircJoin($channels, $keys = null)
-	{
+    {
         $this->queueIrcRequest('JOIN', array($channels, $keys));
-	}
+    }
 
     /**
      * @param string $channels
      */
     public function ircPart($channels)
-	{
+    {
         $this->queueIrcRequest('PART', array($channels));
-	}
+    }
 
     /**
      * @param string $target
@@ -250,44 +250,44 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * @param string $param
      */
     public function ircMode($target, $mode, $param = null)
-	{
+    {
         $this->queueIrcRequest('MODE', array($target, $mode, $param));
-	}
+    }
 
     /**
      * @param string $channel
      * @param string $topic
      */
     public function ircTopic($channel, $topic = null)
-	{
+    {
         $this->queueIrcRequest('TOPIC', array($channel, $topic));
-	}
+    }
 
     /**
      * @param string $channels
      */
     public function ircNames($channels)
-	{
+    {
         $this->queueIrcRequest('NAMES', array($channels));
-	}
+    }
 
     /**
      * @param string $channels
      * @param string $server
      */
     public function ircList($channels = null, $server = null)
-	{
+    {
         $this->queueIrcRequest('LIST', array($channels, $server));
-	}
+    }
 
     /**
      * @param string $nickname
      * @param string $channel
      */
     public function ircInvite($nickname, $channel)
-	{
+    {
         $this->queueIrcRequest('INVITE', array($nickname, $channel));
-	}
+    }
 
     /**
      * @param string $channel
@@ -295,43 +295,43 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * @param string $comment
      */
     public function ircKick($channel, $user, $comment = null)
-	{
+    {
         $this->queueIrcRequest('KICK', array($channel, $user, $comment));
-	}
+    }
 
     /**
      * @param string $server
      */
     public function ircVersion($server = null)
-	{
+    {
         $this->queueIrcRequest('VERSION', array($server));
-	}
+    }
 
     /**
      * @param string $query
      * @param string $server
      */
     public function ircStats($query, $server = null)
-	{
+    {
         $this->queueIrcRequest('STATS', array($query, $server));
-	}
+    }
 
     /**
      * @param string $servermask
      * @param string $remoteserver
      */
     public function ircLinks($servermask = null, $remoteserver = null)
-	{
+    {
         $this->queueIrcRequest('LINKS', array($servermask, $remoteserver));
-	}
+    }
 
     /**
      * @param string $server
      */
     public function ircTime($server = null)
-	{
+    {
         $this->queueIrcRequest('TIME', array($server));
-	}
+    }
 
     /**
      * @param string $targetserver
@@ -339,69 +339,69 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * @param string $remoteserver
      */
     public function ircConnect($targetserver, $port = null, $remoteserver = null)
-	{
+    {
         $this->queueIrcRequest('CONNECT', array($targetserver, $port, $remoteserver));
-	}
+    }
 
     /**
      * @param string $server
      */
     public function ircTrace($server = null)
-	{
+    {
         $this->queueIrcRequest('TRACE', array($server));
-	}
+    }
 
     /**
      * @param string $server
      */
     public function ircAdmin($server = null)
-	{
+    {
         $this->queueIrcRequest('ADMIN', array($server));
-	}
+    }
 
     /**
      * @param string $server
      */
     public function ircInfo($server = null)
-	{
+    {
         $this->queueIrcRequest('INFO', array($server));
-	}
+    }
 
     /**
      * @param string $receivers
      * @param string $text
      */
     public function ircPrivmsg($receivers, $text)
-	{
+    {
         $this->queueIrcRequest('PRIVMSG', array($receivers, $text));
-	}
+    }
 
     /**
      * @param string $nickname
      * @param string $text
      */
     public function ircNotice($nickname, $text)
-	{
+    {
         $this->queueIrcRequest('NOTICE', array($nickname, $text));
-	}
+    }
 
     /**
      * @param string $name
      * @param string $o
      */
     public function ircWho($name, $o = null)
-	{
+    {
         $this->queueIrcRequest('WHO', array($name, $o));
-	}
+    }
 
     /**
      * @param string $server
      * @param string $nickmasks
      */
     public function ircWhois($server, $nickmasks)
-	{
+    {
         $this->queueIrcRequest('WHOIS', array($server, $nickmasks));
-	}
+    }
 
     /**
      * @param string $nickname
@@ -409,87 +409,87 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * @param string $server
      */
     public function ircWhowas($nickname, $count = null, $server = null)
-	{
+    {
         $this->queueIrcRequest('WHOWAS', array($nickname, $count, $server));
-	}
+    }
 
     /**
      * @param string $nickname
      * @param string $comment
      */
     public function ircKill($nickname, $comment)
-	{
+    {
         $this->queueIrcRequest('KILL', array($nickname, $comment));
-	}
+    }
 
     /**
      * @param string $server1
      * @param string $server2
      */
     public function ircPing($server1, $server2 = null)
-	{
+    {
         $this->queueIrcRequest('PING', array($server1, $server2));
-	}
+    }
 
     /**
      * @param string $daemon
      * @param string $daemon2
      */
     public function ircPong($daemon, $daemon2 = null)
-	{
+    {
         $this->queueIrcRequest('PONG', array($daemon, $daemon2));
-	}
+    }
 
     /**
      * @param string $message
      */
     public function ircError($message)
-	{
+    {
         $this->queueIrcRequest('ERROR', array($message));
-	}
+    }
 
     /**
      * @param string $message
      */
     public function ircAway($message = null)
-	{
+    {
         $this->queueIrcRequest('AWAY', array($message));
-	}
+    }
 
     public function ircRehash()
-	{
+    {
         $this->queueIrcRequest('REHASH');
-	}
+    }
 
     public function ircRestart()
-	{
+    {
         $this->queueIrcRequest('RESTART');
-	}
+    }
 
     /**
      * @param string $user
      * @param string $server
      */
     public function ircSummon($user, $server = null)
-	{
+    {
         $this->queueIrcRequest('SUMMON', array($user, $server));
-	}
+    }
 
     /**
      * @param string $server
      */
     public function ircUsers($server = null)
-	{
+    {
         $this->queueIrcRequest('USERS', array($server));
-	}
+    }
 
     /**
      * @param string $text
      */
     public function ircWallops($text)
-	{
+    {
         $this->queueIrcRequest('WALLOPS', array($text));
-	}
+    }
 
     /**
      * @param string $nickname1
@@ -499,42 +499,42 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * @param string $nickname5
      */
     public function ircUserhost($nickname1, $nickname2 = null, $nickname3 = null, $nickname4 = null, $nickname5 = null)
-	{
+    {
         $this->queueIrcRequest('USERHOST', array($nickname1, $nickname2, $nickname3, $nickname4, $nickname5));
-	}
+    }
 
     /**
      * @param string $nicknames
      */
     public function ircIson($nicknames)
-	{
+    {
         $this->queueIrcRequest('ISON', array($nicknames));
-	}
+    }
 
     /**
      * @param string $receivers
      */
     public function ctcpFinger($receivers)
-	{
+    {
         $this->queueCtcpRequest('FINGER', array($receivers));
-	}
+    }
 
     /**
      * @param string $nickname
      * @param string $text
      */
     public function ctcpFingerResponse($nickname, $text)
-	{
+    {
         $this->queueCtcpResponse('FINGER', array($nickname, $text));
-	}
+    }
 
     /**
      * @param string $receivers
      */
     public function ctcpVersion($receivers)
-	{
+    {
         $this->queueCtcpRequest('VERSION', array($receivers));
-	}
+    }
 
     /**
      * @param string $nickname
@@ -543,17 +543,17 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * @param string $environment
      */
     public function ctcpVersionResponse($nickname, $name, $version, $environment)
-	{
+    {
         $this->queueCtcpResponse('VERSION', array($nickname, $name, $version, $environment));
-	}
+    }
 
     /**
      * @param string $receivers
      */
     public function ctcpSource($receivers)
-	{
+    {
         $this->queueCtcpRequest('SOURCE', array($receivers));
-	}
+    }
 
     /**
      * @param string $nickname
@@ -562,52 +562,52 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * @param string $files
      */
     public function ctcpSourceResponse($nickname, $host, $directories, $files)
-	{
+    {
         $this->queueCtcpResponse('SOURCE', array($nickname, $host, $directories, $files));
-	}
+    }
 
     /**
      * @param string $receivers
      */
     public function ctcpUserinfo($receivers)
-	{
+    {
         $this->queueCtcpRequest('USERINFO', array($receivers));
-	}
+    }
 
     /**
      * @param string $nickname
      * @param string $text
      */
     public function ctcpUserinfoResponse($nickname, $text)
-	{
+    {
         $this->queueCtcpResponse('USERINFO', array($nickname, $text));
-	}
+    }
 
     /**
      * @param string $receivers
      */
     public function ctcpClientinfo($receivers)
-	{
+    {
         $this->queueCtcpRequest('CLIENTINFO', array($receivers));
-	}
+    }
 
     /**
      * @param string $nickname
      * @param string $client
      */
     public function ctcpClientinfoResponse($nickname, $client)
-	{
+    {
         $this->queueCtcpResponse('CLIENTINFO', array($nickname, $client));
-	}
+    }
 
     /**
      * @param string $receivers
      * @param string $query
      */
     public function ctcpErrmsg($receivers, $query)
-	{
+    {
         $this->queueCtcpRequest('ERRMSG', array($receivers, $query));
-	}
+    }
 
     /**
      * @param string $nickname
@@ -615,60 +615,60 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * @param string $message
      */
     public function ctcpErrmsgResponse($nickname, $query, $message)
-	{
+    {
         $this->queueCtcpResponse('ERRMSG', array($nickname, $query, $message));
-	}
+    }
 
     /**
      * @param string $receivers
      * @param int $timestamp
      */
     public function ctcpPing($receivers, $timestamp)
-	{
+    {
         $this->queueCtcpRequest('PING', array($receivers, $timestamp));
-	}
+    }
 
     /**
      * @param string $nickname
      * @param int $timestamp
      */
     public function ctcpPingResponse($nickname, $timestamp)
-	{
+    {
         $this->queueCtcpResponse('PING', array($nickname, $timestamp));
-	}
+    }
 
     /**
      * @param string $receivers
      */
     public function ctcpTime($receivers)
-	{
+    {
         $this->queueCtcpRequest('TIME', array($receivers));
-	}
+    }
 
     /**
      * @param string $nickname
      * @param string $time
      */
     public function ctcpTimeResponse($nickname, $time)
-	{
+    {
         $this->queueCtcpResponse('TIME', array($nickname, $time));
-	}
+    }
 
     /**
      * @para string $receivers
      * @param string $action
      */
     public function ctcpAction($receivers, $action)
-	{
+    {
         $this->queueCtcpRequest('ACTION', array($receivers, $action));
-	}
+    }
 
     /**
      * @param string $nickname
      * @param string $action
      */
     public function ctcpActionResponse($nickname, $action)
-	{
+    {
         $this->queueCtcpResponse('ACTION', array($nickname, $action));
-	}
+    }
 }
