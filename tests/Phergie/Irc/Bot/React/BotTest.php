@@ -142,6 +142,27 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests setEventQueue().
+     */
+    public function testSetEventQueue()
+    {
+        $queue = $this->getMockEventQueue();
+        $this->bot->setEventQueue($queue);
+        $this->assertSame($queue, $this->bot->getEventQueue());
+    }
+
+    /**
+     * Tests getEventQueue().
+     */
+    public function testGetEventQueue()
+    {
+        $this->assertInstanceOf(
+            '\Phergie\Irc\Bot\React\EventQueueInterface',
+            $this->bot->getEventQueue()
+        );
+    }
+
+    /**
      * Data provider for testRunWithInvalidConfiguration().
      *
      * @return array
@@ -361,32 +382,28 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::when($parser)->parse($message)->thenReturn($message);
         $this->bot->setParser($parser);
 
+        $queue = $this->getMockEventQueue();
+        $this->bot->setEventQueue($queue);
+
         $client = new \Phergie\Irc\Client\React\Client;
         $this->bot->setClient($client);
 
-        $write = $this->getMockWriteStream();
-        if ($eventType == 'received') {
-            $params[] = $write;
-        }
+        $write = $params[] = $this->getMockWriteStream();
         $connection = $params[] = $this->getMockConnection();
         $logger = $params[] = $this->getMockLogger();
 
         $test = $this;
         $allCalled = false;
         $typeCalled = false;
-        $client->on('irc.' . $eventType . '.all', function($param, $otherWrite = null) use (&$allCalled, $test, $eventObject, $write) {
+        $client->on('irc.' . $eventType . '.all', function($param, $otherQueue) use (&$allCalled, $test, $eventObject, $queue) {
             $allCalled = true;
             $test->assertSame($eventObject, $param);
-            if ($otherWrite) {
-                $test->assertSame($otherWrite, $write);
-            }
+            $test->assertSame($otherQueue, $queue);
         });
-        $client->on('irc.' . $eventType . '.' . $eventSubtype, function($param, $otherWrite = null) use (&$typeCalled, $test, $eventObject, $write) {
+        $client->on('irc.' . $eventType . '.' . $eventSubtype, function($param, $otherQueue) use (&$typeCalled, $test, $eventObject, $queue) {
             $typeCalled = true;
             $test->assertSame($eventObject, $param);
-            if ($otherWrite) {
-                $test->assertSame($otherWrite, $write);
-            }
+            $test->assertSame($otherQueue, $queue);
         });
 
         $client->emit('irc.' . $eventType, $params);
@@ -407,16 +424,20 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $logger = $this->getMockLogger();
         $message = array('foo' => 'bar');
 
+        $queue = $this->getMockEventQueue();
+        $this->bot->setEventQueue($queue);
+
         $eventObject = Phake::mock('\Phergie\Irc\Event\UserEvent');
         Phake::when($eventObject)->getCommand()->thenReturn('PRIVMSG');
 
         $converter = $this->getMockConverter();
         Phake::when($converter)->convert($message)->thenReturn($eventObject);
+        $this->bot->setConverter($converter);
 
         $globalCalled = null;
         $globalCallback = function() use (&$globalCalled) { $globalCalled = true; };
         $globalPlugin = $this->getMockTestPlugin();
-        Phake::when($globalPlugin)->handleEvent($eventObject, $write)->thenGetReturnByLambda($globalCallback);
+        Phake::when($globalPlugin)->handleEvent($eventObject, $queue)->thenGetReturnByLambda($globalCallback);
         Phake::when($globalPlugin)->getSubscribedEvents()->thenReturn(array($event => 'handleEvent'));
 
         $connectionCalled = array();
@@ -429,7 +450,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
             $connectionCallback[$index] = function() use (&$connectionCalled, $index) { $connectionCalled[$index] = true; };
             $connectionPlugin[$index] = $this->getMockTestPlugin();
             Phake::when($connectionPlugin[$index])
-                ->handleEvent($eventObject, $write)
+                ->handleEvent($eventObject, $queue)
                 ->thenGetReturnByLambda($connectionCallback[$index]);
             Phake::when($connectionPlugin[$index])->getSubscribedEvents()->thenReturn(array($event => 'handleEvent'));
             Phake::when($connections[$index])->getPlugins()->thenReturn(array($connectionPlugin[$index]));
@@ -439,14 +460,13 @@ class BotTest extends \PHPUnit_Framework_TestCase
             'plugins' => array($globalPlugin),
             'connections' => $connections,
         );
+        $this->bot->setConfig($config);
 
         $client = Phake::partialMock('\Phergie\Irc\Client\React\Client');
         Phake::when($client)->run($connections)->thenReturn(null);
-
-        $this->bot->setConverter($converter);
         $this->bot->setClient($client);
-        $this->bot->setConfig($config);
-        $this->bot->run($connections);
+
+        $this->bot->run();
 
         $globalCalled = $connectionCalled[1] = $connectionCalled[2] = false;
         Phake::when($eventObject)->getConnection()->thenReturn($connections[1]);
@@ -461,6 +481,82 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($globalCalled, 'Global callback was not called');
         $this->assertFalse($connectionCalled[1], 'Connection #1 callback was called');
         $this->assertTrue($connectionCalled[2], 'Connection #2 callback was not called');
+    }
+
+    /**
+     * Data provider for testPluginEmittedEvents().
+     *
+     * @return array
+     */
+    public function dataProviderPluginEmittedEvents()
+    {
+        return array(
+            array('notice', '\Phergie\Irc\Event\UserEvent', 'ircNotice', array('#channel', 'Hello world!')),
+            array('ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpAction', array('#channel', 'Hello world!')),
+            array('ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpActionResponse', array('#channel', 'Hello world!')),
+        );
+    }
+
+    /**
+     * Tests that plugins can emit events.
+     *
+     * @param string $event Name of the plugin-emitted event
+     * @param string $class Class of the emitted event
+     * @param string $method Method invoked to queue the event
+     * @param array $params Parameters passed to the method invoked to queue
+     *        the event
+     * @dataProvider dataProviderPluginEmittedEvents
+     */
+    public function testPluginEmittedEvents($event, $class, $method, array $params)
+    {
+        $message = array('foo' => 'bar');
+        $write = $this->getMockWriteStream();
+        $logger = $this->getMockLogger();
+
+        $connection = $this->getMockConnection();
+        Phake::when($connection)->getPlugins()->thenReturn(array());
+        $connections = array($connection);
+
+        $queue = new EventQueue;
+        $this->bot->setEventQueue($queue);
+
+        $eventObject = Phake::mock('\Phergie\Irc\Event\UserEvent');
+        $eventParams = array('#channel', 'message');
+        Phake::when($eventObject)->getCommand()->thenReturn('PRIVMSG');
+        Phake::when($eventObject)->getParams()->thenReturn($eventParams);
+
+        $converter = $this->getMockConverter();
+        Phake::when($converter)->convert($message)->thenReturn($eventObject);
+        $this->bot->setConverter($converter);
+
+        $plugin = $this->getMockTestPlugin();
+        Phake::when($plugin)
+            ->getSubscribedEvents()
+            ->thenReturn(array('irc.received.privmsg' => 'handleEvent'));
+        $callback = function($eventObject, $queue) use ($method, $params) {
+            call_user_func_array(array($queue, $method), $params);
+        };
+        Phake::when($plugin)
+            ->handleEvent($eventObject, $queue)
+            ->thenGetReturnByLambda($callback);
+
+        $config = array(
+            'plugins' => array($plugin),
+            'connections' => $connections,
+        );
+        $this->bot->setConfig($config);
+
+        $client = Phake::partialMock('\Phergie\Irc\Client\React\Client');
+        Phake::when($client)->run($connections)->thenReturn(null);
+        $this->bot->setClient($client);
+
+        $this->bot->run();
+
+        $client->emit('irc.received', array($message, $write, $connection, $logger));
+
+        Phake::verify($client)->emit('irc.sending.all', $this->containsOnlyInstancesOf($class));
+        Phake::verify($client)->emit('irc.sending.' . $event, $this->containsOnlyInstancesOf($class));
+        call_user_func_array(array(Phake::verify($write), $method), $params);
     }
 
     /*** SUPPORTING METHODS ***/
@@ -503,6 +599,16 @@ class BotTest extends \PHPUnit_Framework_TestCase
     protected function getMockConverter()
     {
         return Phake::mock('\Phergie\Irc\Event\ParserConverter');
+    }
+
+    /**
+     * Returns a mock event queue.
+     *
+     * @return \Phergie\Irc\Bot\React\EventQueueInterface
+     */
+    protected function getMockEventQueue()
+    {
+        return Phake::mock('\Phergie\Irc\Bot\React\EventQueueInterface');
     }
 
     /**
@@ -564,7 +670,7 @@ class TestPlugin extends AbstractPlugin
         return array($this->event => 'handleEvent');
     }
 
-    public function handleEvent($eventObject, $write)
+    public function handleEvent($eventObject, $queue)
     {
         // left empty for stubbing
     }
