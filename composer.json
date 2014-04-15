@@ -24,8 +24,8 @@
         "phake/phake": "1.0.*"
     },
     "autoload": {
-        "psr-0": {
-            "Phergie\\Irc\\Bot\\React": "src"
+        "psr-4": {
+            "Phergie\\Irc\\Bot\\React\\": "src"
         }
     },
     "bin": [

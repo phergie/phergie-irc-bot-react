@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "918adbaac84c491cd49e3599870e648b",
+    "hash": "56c13b606c0cc2243c735fc630c60ae5",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-client-react.git",
-                "reference": "2366301bd74ae9f15fb933eb513ef21c528b8879"
+                "reference": "4146374862d582dbd2b056c4af4e0cf3afe556db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/2366301bd74ae9f15fb933eb513ef21c528b8879",
-                "reference": "2366301bd74ae9f15fb933eb513ef21c528b8879",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/4146374862d582dbd2b056c4af4e0cf3afe556db",
+                "reference": "4146374862d582dbd2b056c4af4e0cf3afe556db",
                 "shasum": ""
             },
             "require": {
@@ -142,7 +142,7 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
+                "psr-4": {
                     "Phergie\\Irc\\Client\\React\\": "src"
                 }
             },
@@ -156,7 +156,7 @@
                 "irc",
                 "react"
             ],
-            "time": "2014-04-15 03:04:13"
+            "time": "2014-04-15 12:54:50"
         },
         {
             "name": "phergie/phergie-irc-connection",
@@ -200,12 +200,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-event.git",
-                "reference": "8ad5fec4381caf3e7362a6ee1bc866719a89160b"
+                "reference": "2b4ed6077cd89a054131b389a8a7753478071b53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/8ad5fec4381caf3e7362a6ee1bc866719a89160b",
-                "reference": "8ad5fec4381caf3e7362a6ee1bc866719a89160b",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/2b4ed6077cd89a054131b389a8a7753478071b53",
+                "reference": "2b4ed6077cd89a054131b389a8a7753478071b53",
                 "shasum": ""
             },
             "require": {
@@ -217,11 +217,8 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Phergie\\Irc\\Event\\": [
-                        "src",
-                        "tests"
-                    ]
+                "psr-4": {
+                    "Phergie\\Irc\\Event\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -233,7 +230,7 @@
                 "event",
                 "irc"
             ],
-            "time": "2014-04-15 03:06:25"
+            "time": "2014-04-15 13:07:23"
         },
         {
             "name": "phergie/phergie-irc-generator",
