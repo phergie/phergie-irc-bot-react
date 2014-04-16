@@ -16,7 +16,7 @@ if (!isset($argv)) {
 set_include_path(implode(PATH_SEPARATOR, array(
     get_include_path(),
     __DIR__ . '/../vendor', // for bin/ when invoked from git repo clone
-    __DIR__ . '/../..',     // for vendor/bin when installed via Composer
+    __DIR__ . '/../../..',  // for vendor/bin when installed via Composer
 )));
 require 'autoload.php';
 
