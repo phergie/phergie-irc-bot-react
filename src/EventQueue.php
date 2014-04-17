@@ -31,49 +31,57 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      *
      * @var array
      */
-    protected static $priorities = array(
-        'SERVER' => 0,
-        'OPER' => 0,
-        'CONNECT' => 0,
-        'AWAY' => 0,
-        'REHASH' => 0,
-        'SUMMON' => 0,
-        'USERS' => 0,
-        'WALLOPS' => 0,
-        'USERHOST' => 0,
-        'ISON' => 0,
-        'PASS' => 0,
-        'USER' => 1,
-        'PING' => 2,
-        'PONG' => 3,
-        'NOTICE' => 4,
-        'JOIN' => 5,
-        'LIST' => 6,
-        'NAMES' => 7,
-        'VERSION' => 8,
-        'STATS' => 9,
-        'LINKS' => 10,
-        'TIME' => 11,
-        'TRACE' => 12,
-        'ADMIN' => 13,
-        'INFO' => 14,
-        'WHO' => 15,
-        'WHOIS' => 16,
-        'WHOWAS' => 17,
-        'MODE' => 18,
-        'PRIVMSG' => 19,
-        'ACTION' => 20,
-        'NICK' => 21,
-        'TOPIC' => 22,
-        'INVITE' => 23,
-        'KILL' => 24,
-        'PART' => 25,
-        'KICK' => 26,
-        'ERROR' => 27,
-        'QUIT' => 28,
-        'SQUIT' => 29,
-        'RESTART' => 30,
-    );
+    protected $priorities;
+    
+    /**
+     * Initializes the list of event priorities.
+     */
+    public function __construct()
+    {
+        $this->priorities = array_flip(array(
+            'RESTART',
+            'SQUIT',
+            'QUIT',
+            'ERROR',
+            'KICK',
+            'PART',
+            'KILL',
+            'INVITE',
+            'TOPIC',
+            'NICK',
+            'ACTION',
+            'PRIVMSG',
+            'MODE',
+            'WHOWAS',
+            'WHOIS',
+            'WHO',
+            'INFO',
+            'ADMIN',
+            'TRACE',
+            'TIME',
+            'LINKS',
+            'STATS',
+            'VERSION',
+            'NAMES',
+            'LIST',
+            'JOIN',
+            'NOTICE',
+            'PONG',
+            'PING',
+            'USER',
+            'PASS',
+            'ISON',
+            'USERHOST',
+            'WALLOPS',
+            'USERS',
+            'SUMMON',
+            'REHASH',
+            'AWAY',
+            'CONNECT',
+            'OPER',
+            'SERVER',
+        ));
+    }
 
     /**
      * Removes and returns an event from the front of the queue.
@@ -106,7 +114,7 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      */
     protected function getPriority($command, array $params)
     {
-        return self::$priorities[$command];
+        return $this->priorities[$command];
     }
 
     /**
