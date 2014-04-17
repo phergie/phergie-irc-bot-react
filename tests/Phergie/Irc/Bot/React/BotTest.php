@@ -490,9 +490,9 @@ class BotTest extends \PHPUnit_Framework_TestCase
     public function dataProviderPluginEmittedEvents()
     {
         return array(
-            array('notice', '\Phergie\Irc\Event\UserEvent', 'ircNotice', array('#channel', 'Hello world!')),
-            array('ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpAction', array('#channel', 'Hello world!')),
-            array('ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpActionResponse', array('#channel', 'Hello world!')),
+            array('notice', '\Phergie\Irc\Event\UserEvent', 'ircNotice'),
+            array('ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpAction'),
+            array('ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpActionResponse'),
         );
     }
 
@@ -506,7 +506,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
      *        the event
      * @dataProvider dataProviderPluginEmittedEvents
      */
-    public function testPluginEmittedEvents($event, $class, $method, array $params)
+    public function testPluginEmittedEvents($event, $class, $method)
     {
         $message = array('foo' => 'bar');
         $write = $this->getMockWriteStream();
@@ -531,8 +531,8 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::when($plugin)
             ->getSubscribedEvents()
             ->thenReturn(array('irc.received.privmsg' => 'handleEvent'));
-        $callback = function($eventObject, $queue) use ($method, $params) {
-            call_user_func_array(array($queue, $method), $params);
+        $callback = function($eventObject, $queue) use ($method, $eventParams) {
+            call_user_func_array(array($queue, $method), $eventParams);
         };
         Phake::when($plugin)
             ->handleEvent($eventObject, $queue)
@@ -552,17 +552,17 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $client->emit('irc.received', array($message, $write, $connection, $logger));
 
-        Phake::verify($client)->emit('irc.sending.all', array($queue));
+        Phake::verify($client)->emit('irc.sending.all', Phake::capture($allParams));
+        $this->assertSame($eventObject, $allParams[0]);
+        $this->assertSame($queue, $allParams[1]);
 
         Phake::verify($client)->emit('irc.sending.each', Phake::capture($eachParams));
         $this->assertInstanceOf($class, $eachParams[0]);
         $this->assertSame($queue, $eachParams[1]);
 
-        Phake::verify($client)->emit('irc.sending.' . $event, Phake::capture($eventParams));
-        $this->assertInstanceOf($class, $eventParams[0]);
-        $this->assertSame($queue, $eventParams[1]);
+        Phake::verify($client)->emit('irc.sending.' . $event, $eachParams);
 
-        call_user_func_array(array(Phake::verify($write), $method), $params);
+        call_user_func_array(array(Phake::verify($write), $method), $eventParams);
     }
 
     /**

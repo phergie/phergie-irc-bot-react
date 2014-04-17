@@ -439,7 +439,7 @@ class Bot
         $client->emit($event . '.each', $params);
         $client->emit($event . '.' . $subtype, $params);
 
-        $client->emit('irc.sending.all', array($queue));
+        $client->emit('irc.sending.all', $params);
         while ($extracted = $queue->extract()) {
             $extracted->setConnection($connection);
             $params = array($extracted, $queue);
