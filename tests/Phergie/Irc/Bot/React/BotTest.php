@@ -395,7 +395,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $test = $this;
         $allCalled = false;
         $typeCalled = false;
-        $client->on('irc.' . $eventType . '.all', function($param, $otherQueue) use (&$allCalled, $test, $eventObject, $queue) {
+        $client->on('irc.' . $eventType . '.each', function($param, $otherQueue) use (&$allCalled, $test, $eventObject, $queue) {
             $allCalled = true;
             $test->assertSame($eventObject, $param);
             $test->assertSame($otherQueue, $queue);
@@ -554,8 +554,16 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $client->emit('irc.received', array($message, $write, $connection, $logger));
 
-        Phake::verify($client)->emit('irc.sending.all', $this->containsOnlyInstancesOf($class));
-        Phake::verify($client)->emit('irc.sending.' . $event, $this->containsOnlyInstancesOf($class));
+        Phake::verify($client)->emit('irc.sending.all', array($queue));
+
+        Phake::verify($client)->emit('irc.sending.each', Phake::capture($eachParams));
+        $this->assertInstanceOf($class, $eachParams[0]);
+        $this->assertSame($queue, $eachParams[1]);
+
+        Phake::verify($client)->emit('irc.sending.' . $event, Phake::capture($eventParams));
+        $this->assertInstanceOf($class, $eventParams[0]);
+        $this->assertSame($queue, $eventParams[1]);
+
         call_user_func_array(array(Phake::verify($write), $method), $params);
     }
 

@@ -405,27 +405,30 @@ class Bot
         $client = $this->getClient();
         $queue = $this->getEventQueue();
         $params = array($converted, $queue);
-        $subevent = $this->getEventSubtype($converted);
-        $client->emit($event . '.all', $params);
-        $client->emit($event . '.' . $subevent, $params);
+        $subtype = $this->getEventSubtype($converted);
+        $client->emit($event . '.each', $params);
+        $client->emit($event . '.' . $subtype, $params);
 
-        while ($event = $queue->extract()) {
-            $event->setConnection($connection);
-            $params = array($event);
-            $subtype = $this->getEventSubtype($event);
-            $client->emit('irc.sending.all', $params);
+        $client->emit('irc.sending.all', array($queue));
+        while ($extracted = $queue->extract()) {
+            $extracted->setConnection($connection);
+            $params = array($extracted, $queue);
+            $subtype = $this->getEventSubtype($extracted);
+            $client->emit('irc.sending.each', $params);
             $client->emit('irc.sending.' . $subtype, $params);
 
-            if ($event instanceof CtcpEvent) {
-                $method = 'ctcp' . $event->getCtcpCommand();
-                if ($event->getCommand() === 'NOTICE') {
+            if ($extracted instanceof CtcpEvent) {
+                $method = 'ctcp' . $extracted->getCtcpCommand();
+                if ($extracted->getCommand() === 'NOTICE') {
                     $method .= 'Response';
                 }
             } else {
-                $method = 'irc' . $event->getCommand();
+                $method = 'irc' . $extracted->getCommand();
             }
-            $params = $event->getParams();
-            call_user_func_array(array($write, $method), $params);
+            call_user_func_array(
+                array($write, $method),
+                $extracted->getParams()
+            );
         }
     }
 
