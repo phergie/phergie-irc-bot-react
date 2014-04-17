@@ -316,7 +316,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
 
         $connection = $this->getMockConnection();
-        Phake::when($connection)->getPlugins()->thenReturn(array());
 
         $logger = $this->getMockLogger();
         $client = $this->getMockClient();
@@ -514,7 +513,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $logger = $this->getMockLogger();
 
         $connection = $this->getMockConnection();
-        Phake::when($connection)->getPlugins()->thenReturn(array());
         $connections = array($connection);
 
         $queue = new EventQueue;
@@ -565,6 +563,37 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($queue, $eventParams[1]);
 
         call_user_func_array(array(Phake::verify($write), $method), $params);
+    }
+
+    /**
+     * Tests that dependencies can be overridden via configuration.
+     */
+    public function testOverrideDependencies()
+    {
+        $client = $this->getMockClient();
+        $logger = $this->getMockLogger();
+        $parser = $this->getMockParser();
+        $converter = $this->getMockConverter();
+        $eventQueue = $this->getMockEventQueue();
+
+        $config = array(
+            'client' => $client,
+            'logger' => $logger,
+            'parser' => $parser,
+            'converter' => $converter,
+            'eventQueue' => $eventQueue,
+            'plugins' => array(),
+            'connections' => array($this->getMockConnection()),
+        );
+
+        $this->bot->setConfig($config);
+        $this->bot->run();
+
+        $this->assertSame($client, $this->bot->getClient());
+        $this->assertSame($logger, $this->bot->getLogger());
+        $this->assertSame($parser, $this->bot->getParser());
+        $this->assertSame($converter, $this->bot->getConverter());
+        $this->assertSame($eventQueue, $this->bot->getEventQueue());
     }
 
     /*** SUPPORTING METHODS ***/
@@ -646,7 +675,9 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockConnection()
     {
-        return Phake::mock('\Phergie\Irc\Bot\React\Connection');
+        $connection = Phake::mock('\Phergie\Irc\Bot\React\Connection');
+        Phake::when($connection)->getPlugins()->thenReturn(array());
+        return $connection;
     }
 
     /**

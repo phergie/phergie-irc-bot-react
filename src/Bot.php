@@ -225,6 +225,8 @@ class Bot
      */
     public function run()
     {
+        $this->setDependencyOverrides($this->config);
+
         $client = $this->getClient();
 
         // Register global plugins
@@ -240,6 +242,34 @@ class Bot
         }
 
         $client->run($connections);
+    }
+
+    /**
+     * Sets dependencies from configuration.
+     *
+     * @param array $config
+     */
+    protected function setDependencyOverrides(array $config)
+    {
+        if (isset($config['client'])) {
+            $this->setClient($config['client']);
+        }
+
+        if (isset($config['logger'])) {
+            $this->setLogger($config['logger']);
+        }
+
+        if (isset($config['parser'])) {
+            $this->setParser($config['parser']);
+        }
+
+        if (isset($config['converter'])) {
+            $this->setConverter($config['converter']);
+        }
+
+        if (isset($config['eventQueue'])) {
+            $this->setEventQueue($config['eventQueue']);
+        }
     }
 
     /**
