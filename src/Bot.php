@@ -81,9 +81,9 @@ class Bot
     /**
      * Sets the IRC client for the bot to use.
      *
-     * @param \Phergie\Irc\Client\React\Client $client
+     * @param \Phergie\Irc\Client\React\ClientInterface $client
      */
-    public function setClient(Client $client)
+    public function setClient(ClientInterface $client)
     {
         $this->registerClientSubscribers($client);
         $this->client = $client;
@@ -92,7 +92,7 @@ class Bot
     /**
      * Returns the IRC client in use by the bot.
      *
-     * @return \Phergie\Irc\Client\React\Client
+     * @return \Phergie\Irc\Client\React\ClientInterface
      */
     public function getClient()
     {
