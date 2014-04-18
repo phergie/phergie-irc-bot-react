@@ -115,7 +115,7 @@ Event handler methods typically accept two parameters:
 interface or subinterfaces of it such as
 [`UserEventInterface`](https://github.com/phergie/phergie-irc-event/blob/master/src/UserEventInterface.php),
 [`ServerEventInterface`](https://github.com/phergie/phergie-irc-event/blob/master/src/ServerEventInterface.php),
-and [`CtcpEventInterface`](https://github.com/phergie/phergie-irc-event/blob/master/src/CtcpEventInterface.php));
+and [`CtcpEventInterface`](https://github.com/phergie/phergie-irc-event/blob/master/src/CtcpEventInterface.php);
 and
 * `$queue`, an object used to send events back to the server that sent the
 original event and implements
