@@ -71,7 +71,87 @@ repository's wiki.
 
 ## Developing Plugins
 
-More to come...
+### Event Subscriptions
+
+Plugins are classes that implement the
+[`PluginInterface`](https://github.com/phergie/phergie-irc-bot-react/blob/master/src/PluginInterface.php)
+interface. This interface contains a single method, `getSubscribedEvents()`,
+which returns an associative array in which the keys are event names and the
+values are names of instance methods in the plugin class to handle those
+events.
+
+```php
+<?php
+
+use Phergie\Irc\Event\EventInterface;
+use Phergie\Irc\Bot\React\EventQueueInterface;
+use Phergie\Irc\Bot\React\PluginInterface;
+
+class ExamplePlugin implements PluginInterface
+{
+    public function getSubscribedEvents()
+    {
+        return array(
+            'irc.received.privmsg' => 'onPrivmsg'
+        );
+    }
+
+    public function onPrivmsg(EventInterface $event, EventQueueInterface $queue)
+    {
+        // ...
+    }
+}
+```
+
+In the above example, `'irc.received.privmsg'` is an event name and
+`'onPrivmsg'` is the name of a method in the `ExamplePlugin` class to handle
+that event.
+
+### Supported Events
+
+Event handler methods typically accept two parameters:
+* `$event`, an object that contains data about the event and implements the
+[`EventInterface`](Even://github.com/phergie/phergie-irc-event/blob/master/src/EventInterface.php)
+interface or subinterfaces of it such as
+[`UserEventInterface`](https://github.com/phergie/phergie-irc-event/blob/master/src/UserEventInterface.php),
+[`ServerEventInterface`](https://github.com/phergie/phergie-irc-event/blob/master/src/ServerEventInterface.php),
+and [`CtcpEventInterface`](https://github.com/phergie/phergie-irc-event/blob/master/src/CtcpEventInterface.php));
+and
+* `$queue`, an object used to send events back to the server that sent the
+original event and implements
+[`EventQueueInterface`](https://github.com/phergie/phergie-irc-bot-react/blob/master/src/EventQueueInterface.php),
+a subinterface of
+[`GeneratorInterface`](https://github.com/phergie/phergie-irc-generator/blob/master/src/GeneratorInterface.php).
+
+#### irc.received.each
+
+Occurs when any type of event is received from a server.
+
+#### irc.received.TYPE
+
+Occurs when an event of type `TYPE` (e.g. `privmsg`) is received from a server.
+
+#### irc.sending.all
+
+Occurs after an event (referenced by the `$event` parameter) has been processed
+by all plugins, at which point any events to be sent in response are contained
+by the `$queue` parameter.
+
+#### irc.sending.each
+
+Occurs before any type of event is sent to a server.
+
+#### irc.sending.TYPE
+
+Occurs before an event of type `TYPE` (e.g. `privmsg`) is sent to a server.
+
+#### irc.sent.each
+
+Occurs after any type of event is sent to a server.
+
+#### irc.sent.TYPE
+
+Occurs when an event of type `TYPE` (e.g. `privmsg`) is sent to a server.
 
 ## Tests
 
