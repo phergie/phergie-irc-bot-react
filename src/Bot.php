@@ -514,9 +514,17 @@ class Bot
         // Define a callback wrapper used to limit callback invocations to
         // the specific connection
         $wrapper = function($callback) use ($connection) {
-            return function(EventInterface $event) use ($callback, $connection) {
-                if ($event->getConnection() === $connection) {
-                    return call_user_func_array($callback, func_get_args());
+            return function() use ($callback, $connection) {
+                $args = func_get_args();
+                $events = array_filter($args, function($arg) {
+                        return $arg instanceof EventInterface;
+                    });
+                $connections = array_filter($args, function($arg) {
+                        return $arg instanceof ConnectionInterface;
+                    });
+                if (($connections && reset($connections) === $connection)
+                    || ($events && reset($events)->getConnection() === $connection)) {
+                    return call_user_func_array($callback, $args);
                 }
             };
         };

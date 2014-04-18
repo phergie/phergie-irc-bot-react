@@ -433,12 +433,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::when($converter)->convert($message)->thenReturn($eventObject);
         $this->bot->setConverter($converter);
 
-        $globalCalled = null;
-        $globalCallback = function() use (&$globalCalled) { $globalCalled = true; };
-        $globalPlugin = $this->getMockTestPlugin();
-        Phake::when($globalPlugin)->handleEvent($eventObject, $queue)->thenGetReturnByLambda($globalCallback);
-        Phake::when($globalPlugin)->getSubscribedEvents()->thenReturn(array($event => 'handleEvent'));
-
         $connectionCalled = array();
         $connectionCallback = array();
         $connectionPlugin = array();
@@ -451,9 +445,27 @@ class BotTest extends \PHPUnit_Framework_TestCase
             Phake::when($connectionPlugin[$index])
                 ->handleEvent($eventObject, $queue)
                 ->thenGetReturnByLambda($connectionCallback[$index]);
-            Phake::when($connectionPlugin[$index])->getSubscribedEvents()->thenReturn(array($event => 'handleEvent'));
+            Phake::when($connectionPlugin[$index])
+                ->getSubscribedEvents()
+                ->thenReturn(array($event => 'handleEvent', 'custom' => 'handleEvent'));
             Phake::when($connections[$index])->getPlugins()->thenReturn(array($connectionPlugin[$index]));
         }
+        Phake::when($connectionPlugin[2])
+            ->handleEvent($connections[2])
+            ->thenGetReturnByLambda($connectionCallback[2]);
+
+        $globalCalled = null;
+        $globalCallback = function() use (&$globalCalled) { $globalCalled = true; };
+        $globalPlugin = $this->getMockTestPlugin();
+        Phake::when($globalPlugin)
+            ->handleEvent($eventObject, $queue)
+            ->thenGetReturnByLambda($globalCallback);
+        Phake::when($globalPlugin)
+            ->handleEvent($connections[2])
+            ->thenGetReturnByLambda($globalCallback);
+        Phake::when($globalPlugin)
+            ->getSubscribedEvents()
+            ->thenReturn(array($event => 'handleEvent', 'custom' => 'handleEvent'));
 
         $config = array(
             'plugins' => array($globalPlugin),
@@ -477,6 +489,12 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $globalCalled = $connectionCalled[1] = $connectionCalled[2] = false;
         Phake::when($eventObject)->getConnection()->thenReturn($connections[2]);
         $client->emit('irc.received', array($message, $write, $connections[2], $logger));
+        $this->assertTrue($globalCalled, 'Global callback was not called');
+        $this->assertFalse($connectionCalled[1], 'Connection #1 callback was called');
+        $this->assertTrue($connectionCalled[2], 'Connection #2 callback was not called');
+
+        $globalCalled = $connectionCalled[1] = $connectionCalled[2] = false;
+        $client->emit('custom', array($connections[2]));
         $this->assertTrue($globalCalled, 'Global callback was not called');
         $this->assertFalse($connectionCalled[1], 'Connection #1 callback was called');
         $this->assertTrue($connectionCalled[2], 'Connection #2 callback was not called');
@@ -706,10 +724,13 @@ class TestPlugin extends AbstractPlugin
 
     public function getSubscribedEvents()
     {
-        return array($this->event => 'handleEvent');
+        return array(
+            $this->event => 'handleEvent',
+            'custom' => 'handleEvent',
+        );
     }
 
-    public function handleEvent($eventObject, $queue)
+    public function handleEvent()
     {
         // left empty for stubbing
     }
