@@ -497,6 +497,8 @@ class Bot
             foreach ($callbacks as $event => $method) {
                 $client->on($event, array($plugin, $method));
             }
+            $client->emit('plugin.all', array($plugin));
+            $client->emit('plugin.global', array($plugin));
         }
     }
 
@@ -535,6 +537,8 @@ class Bot
             foreach ($callbacks as $event => $method) {
                 $client->on($event, $wrapper(array($plugin, $method)));
             }
+            $client->emit('plugin.all', array($plugin));
+            $client->emit('plugin.connection', array($plugin, $connection));
         }
     }
 }
