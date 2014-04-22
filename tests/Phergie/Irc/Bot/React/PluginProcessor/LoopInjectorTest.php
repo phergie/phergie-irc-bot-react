@@ -21,23 +21,55 @@ use Phake;
 class LoopInjectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Tests process() with a plugin that does not implement
-     * LoopAwareInterface.
+     * Data provider for testProcessWhenPluginDoesNotReceiveLoop().
+     *
+     * @return array
      */
-    public function testProcessWithNonLoopAwarePlugin()
+    public function dataProviderProcessWhenPluginDoesNotReceiveLoop()
+    {
+        $data = array();
+
+        // Neither plugin nor client implements interface
+        $data[] = array(
+            Phake::mock('\Phergie\Irc\Bot\React\PluginInterface'),
+            Phake::mock('\Phergie\Irc\Client\React\ClientInterface'),
+        );
+
+        // Plugin implements interface, client does not
+        $data[] = array(
+            Phake::mock('\Phergie\Irc\Bot\React\PluginInterface'),
+            Phake::mock('\Phergie\Irc\Client\React\LoopAccessorInterface'),
+        );
+
+        // Client implements interface, plugin does not
+        $data[] = array(
+            Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin'),
+            Phake::mock('\Phergie\Irc\Client\React\ClientInterface'),
+        );
+
+        return $data;
+    }
+
+    /**
+     * Tests process() under circumstances in which the plugin will receive the
+     * loop.
+     *
+     * @dataProvider dataProviderProcessWhenPluginDoesNotReceiveLoop
+     */
+    public function testProcessWhenPluginDoesNotReceiveLoop($plugin, $client)
     {
         $bot = Phake::mock('\Phergie\Irc\Bot\React\Bot');
-        $plugin = Phake::mock('\Phergie\Irc\Bot\React\PluginInterface');
+        Phake::when($bot)->getClient()->thenReturn($client);
         Phake::verifyNoFurtherInteraction($plugin);
         $processor = new LoopInjector;
         $processor->process($plugin, $bot);
     }
 
     /**
-     * Tests process() with a plugin that implements
-     * LoopAwareInterface.
+     * Tests process() under circumstances in which the plugin will receive the
+     * loop.
      */
-    public function testProcessWithLoopAwarePlugin()
+    public function testProcessWhenPluginReceivesLoop()
     {
         $loop = Phake::mock('\React\EventLoop\LoopInterface');
         $client = Phake::mock('\Phergie\Irc\Client\React\Client');
