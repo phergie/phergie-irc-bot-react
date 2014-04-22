@@ -291,13 +291,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
         $data[] = array(
             array('plugins' => array($plugin), 'connections' => array($connection), 'pluginProcessors' => 'foo'),
-            'Configuration "pluginProcessors" key must reference a non-empty array'
-        );
-
-        // Empty "pluginProcessors" value
-        $data[] = array(
-            array('plugins' => array($plugin), 'connections' => array($connection), 'pluginProcessors' => array()),
-            'Configuration "pluginProcessors" key must reference a non-empty array'
+            'Configuration "pluginProcessors" key must reference an array'
         );
 
         // "pluginProcessors" value contains an object that doesn't implement PluginProcessorInterface

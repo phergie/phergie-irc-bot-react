@@ -379,21 +379,23 @@ class Bot
             ? $config['pluginProcessors']
             : $this->getDefaultPluginProcessors();
 
-        if (!is_array($processors) || empty($processors)) {
-            throw new \RuntimeException('Configuration "pluginProcessors" key must reference a non-empty array');
+        if (!is_array($processors)) {
+            throw new \RuntimeException('Configuration "pluginProcessors" key must reference an array');
         }
 
-        $invalid = array_filter(
-            $processors,
-            function($processor) {
-                return !$processor instanceof PluginProcessorInterface;
-            }
-        );
-        if ($invalid) {
-            throw new \RuntimeException(
-                'All configuration "pluginProcessors" array values must implement'
-                    . ' \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface'
+        if (!empty($processors)) {
+            $invalid = array_filter(
+                $processors,
+                function($processor) {
+                    return !$processor instanceof PluginProcessorInterface;
+                }
             );
+            if ($invalid) {
+                throw new \RuntimeException(
+                    'All configuration "pluginProcessors" array values must implement'
+                        . ' \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface'
+                );
+            }
         }
 
         return $processors;
