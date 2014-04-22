@@ -12,6 +12,7 @@ namespace Phergie\Irc\Bot\React;
 
 use Phake;
 use Phergie\Irc\Event\EventInterface;
+use React\EventLoop\LoopInterface;
 
 /**
  * Tests for Bot class.
@@ -283,6 +284,29 @@ class BotTest extends \PHPUnit_Framework_TestCase
                 ' for event "foo"'
         );
 
+        // Non-array "pluginProcessors" value
+        $connection = $this->getMockConnection();
+        Phake::when($connection)->getPlugins()->thenReturn(array());
+        $plugin = $this->getMockPlugin();
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
+        $data[] = array(
+            array('plugins' => array($plugin), 'connections' => array($connection), 'pluginProcessors' => 'foo'),
+            'Configuration "pluginProcessors" key must reference a non-empty array'
+        );
+
+        // Empty "pluginProcessors" value
+        $data[] = array(
+            array('plugins' => array($plugin), 'connections' => array($connection), 'pluginProcessors' => array()),
+            'Configuration "pluginProcessors" key must reference a non-empty array'
+        );
+
+        // "pluginProcessors" value contains an object that doesn't implement PluginProcessorInterface
+        $data[] = array(
+            array('plugins' => array($plugin), 'connections' => array($connection), 'pluginProcessors' => array(new \stdClass)),
+            'All configuration "pluginProcessors" array values must implement'
+                . ' \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface'
+        );
+
         return $data;
     }
 
@@ -319,9 +343,14 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $logger = $this->getMockLogger();
         $client = $this->getMockClient();
+        $loop = $this->getMockLoop();
         Phake::when($client)->getLogger()->thenReturn($logger);
+        Phake::when($client)->getLoop()->thenReturn($loop);
 
-        $config = array('plugins' => array($plugin), 'connections' => array($connection));
+        $config = array(
+            'plugins' => array($plugin),
+            'connections' => array($connection),
+        );
 
         $this->bot->setClient($client);
         $this->bot->setConfig($config);
@@ -329,6 +358,33 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         Phake::verify($plugin)->setEventEmitter($client);
         Phake::verify($plugin)->setLogger($logger);
+        Phake::verify($plugin)->setLoop($loop);
+    }
+
+    /**
+     * Tests overriding plugin processors via configuration.
+     */
+    public function testOverridePluginProcessors()
+    {
+        $plugin = $this->getMockPlugin();
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array());
+        $connection = $this->getMockConnection();
+        $connections = array($connection);
+        $client = $this->getMockClient();
+        Phake::when($client)->run($connections)->thenReturn(null);
+        $processor = Phake::mock('\Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface');
+
+        $config = array(
+            'plugins' => array($plugin),
+            'connections' => $connections,
+            'pluginProcessors' => array($processor),
+        );
+
+        $this->bot->setClient($client);
+        $this->bot->setConfig($config);
+        $this->bot->run();
+
+        Phake::verify($processor)->process($plugin, $this->bot);
     }
 
     /*** INTEGRATION TESTS ***/
@@ -715,6 +771,16 @@ class BotTest extends \PHPUnit_Framework_TestCase
     protected function getMockWriteStream()
     {
         return Phake::mock('\Phergie\Irc\Client\React\WriteStream');
+    }
+
+    /**
+     * Returns a mock event loop.
+     *
+     * @return \React\EventLoop\LoopInterface
+     */
+    protected function getMockLoop()
+    {
+        return Phake::mock('\React\EventLoop\LoopInterface');
     }
 }
 

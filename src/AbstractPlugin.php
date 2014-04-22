@@ -11,8 +11,10 @@
 namespace Phergie\Irc\Bot\React;
 
 use Evenement\EventEmitterInterface;
+use Phergie\Irc\Client\React\LoopAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
+use React\EventLoop\LoopInterface;
 
 /**
  * Base class for plugins.
@@ -20,7 +22,11 @@ use Psr\Log\LoggerAwareInterface;
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-abstract class AbstractPlugin implements PluginInterface, LoggerAwareInterface, EventEmitterAwareInterface
+abstract class AbstractPlugin implements
+    PluginInterface,
+    LoggerAwareInterface,
+    EventEmitterAwareInterface,
+    LoopAwareInterface
 {
     /**
      * Event emitter used to register callbacks for IRC events of interest to
@@ -36,6 +42,13 @@ abstract class AbstractPlugin implements PluginInterface, LoggerAwareInterface, 
      * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
+
+    /**
+     * Event loop for performing stream and timed operations
+     *
+     * @var \React\EventLoop\LoopInterface
+     */
+    protected $loop;
 
     /**
      * Sets the event emitter for the plugin to use.
@@ -75,5 +88,25 @@ abstract class AbstractPlugin implements PluginInterface, LoggerAwareInterface, 
     public function getLogger()
     {
         return $this->logger;
+    }
+
+    /**
+     * Sets the event loop in use by the plugin.
+     *
+     * @param \React\EventLoop\LoopInterface $loop
+     */
+    public function setLoop(LoopInterface $loop)
+    {
+        $this->loop = $loop;
+    }
+
+    /**
+     * Returns the event loop in use by the plugin.
+     *
+     * @return \React\EventLoop\LoopInterface
+     */
+    public function getLoop()
+    {
+        return $this->loop;
     }
 }

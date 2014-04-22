@@ -13,6 +13,7 @@ namespace Phergie\Irc\Bot\React;
 use Evenement\EventEmitterInterface;
 use Psr\Log\LoggerInterface;
 use Phake;
+use React\EventLoop\LoopInterface;
 
 /**
  * Tests for AbstractPlugin.
@@ -72,6 +73,25 @@ class AbstractPluginTest extends \PHPUnit_Framework_TestCase
     public function testGetLogger()
     {
         $logger = $this->plugin->getLogger();
+        $this->assertNull($logger);
+    }
+
+    /**
+     * Tests setLoop().
+     */
+    public function testSetLoop()
+    {
+        $logger = Phake::mock('\React\EventLoop\LoopInterface');
+        $this->plugin->setLoop($logger);
+        $this->assertSame($logger, $this->plugin->getLoop());
+    }
+
+    /**
+     * Tests getLoop().
+     */
+    public function testGetLoop()
+    {
+        $logger = $this->plugin->getLoop();
         $this->assertNull($logger);
     }
 

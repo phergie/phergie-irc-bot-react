@@ -11,6 +11,10 @@
 namespace Phergie\Irc\Bot\React;
 
 use Monolog\Logger;
+use Phergie\Irc\Bot\React\PluginProcessor\EventEmitterInjector;
+use Phergie\Irc\Bot\React\PluginProcessor\LoggerInjector;
+use Phergie\Irc\Bot\React\PluginProcessor\LoopInjector;
+use Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface;
 use Phergie\Irc\ConnectionInterface as BaseConnectionInterface;
 use Phergie\Irc\Client\React\Client;
 use Phergie\Irc\Client\React\ClientInterface;
@@ -24,7 +28,6 @@ use Phergie\Irc\Event\ServerEvent;
 use Phergie\Irc\Parser;
 use Phergie\Irc\ParserInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
 
 /**
  * Class for an IRC bot that reads in configuration files, connects to IRC
@@ -307,7 +310,8 @@ class Bot
             }
         );
         foreach ($filtered as $connection) {
-            $this->processPlugins($connection->getPlugins());
+            $processors = $this->getPluginProcessors($config);
+            $this->processPlugins($connection->getPlugins(), $processors);
         }
 
         return $connections;
@@ -317,7 +321,7 @@ class Bot
      * Extracts plugins from configuration.
      *
      * @param array $config Associative array keyed by setting name
-     * @return \Phergie\Irc\Bot\React\Plugin\PluginInterface[]
+     * @return \Phergie\Irc\Bot\React\PluginInterface[]
      * @throws \RuntimeException if any plugin event callback is invalid
      */
     protected function getPlugins(array $config)
@@ -342,7 +346,8 @@ class Bot
             );
         }
 
-        $this->processPlugins($plugins);
+        $processors = $this->getPluginProcessors($config);
+        $this->processPlugins($plugins, $processors);
 
         return $plugins;
     }
@@ -350,27 +355,69 @@ class Bot
     /**
      * Processes a list of plugins for use.
      *
-     * @param \Phergie\Irc\Bot\React\Plugin\PluginInterface[]
+     * @param \Phergie\Irc\Bot\React\PluginInterface[]
+     * @param \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface[]
      */
-    protected function processPlugins(array $plugins)
+    protected function processPlugins(array $plugins, array $processors)
     {
-        $client = $this->getClient();
-        $logger = $this->getLogger();
         foreach ($plugins as $plugin) {
             $this->validatePluginEvents($plugin);
-            if ($plugin instanceof LoggerAwareInterface) {
-                $plugin->setLogger($logger);
-            }
-            if ($plugin instanceof EventEmitterAwareInterface) {
-                $plugin->setEventEmitter($client);
+            foreach ($processors as $processor) {
+                $processor->process($plugin, $this);
             }
         }
     }
 
     /**
+     * Returns a list of processors for plugins.
+     *
+     * @param array $config Associative array keyed by setting name
+     */
+    protected function getPluginProcessors(array $config)
+    {
+        $processors = isset($config['pluginProcessors'])
+            ? $config['pluginProcessors']
+            : $this->getDefaultPluginProcessors();
+
+        if (!is_array($processors) || empty($processors)) {
+            throw new \RuntimeException('Configuration "pluginProcessors" key must reference a non-empty array');
+        }
+
+        $invalid = array_filter(
+            $processors,
+            function($processor) {
+                return !$processor instanceof PluginProcessorInterface;
+            }
+        );
+        if ($invalid) {
+            throw new \RuntimeException(
+                'All configuration "pluginProcessors" array values must implement'
+                    . ' \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface'
+            );
+        }
+
+        return $processors;
+    }
+
+    /**
+     * Returns a list of default plugin processors used when none are set via
+     * configuration.
+     *
+     * @param \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface[]
+     */
+    protected function getDefaultPluginProcessors()
+    {
+        return array(
+            new EventEmitterInjector,
+            new LoggerInjector,
+            new LoopInjector,
+        );
+    }
+
+    /**
      * Validates a plugin's event callbacks.
      *
-     * @param \Phergie\Irc\Bot\React\Plugin\PluginInterface $plugin
+     * @param \Phergie\Irc\Bot\React\PluginInterface $plugin
      * @throws \RuntimeException if any event callback is invalid
      */
     protected function validatePluginEvents(PluginInterface $plugin)
