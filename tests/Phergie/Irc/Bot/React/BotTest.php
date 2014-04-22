@@ -324,38 +324,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests run() with a subclass of AbstractPlugin included in the plugins
-     * list to verify that its event emitter and logger dependencies are
-     * properly set.
-     */
-    public function testRunWithAbstractPlugin()
-    {
-        $plugin = Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin');
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
-
-        $connection = $this->getMockConnection();
-
-        $logger = $this->getMockLogger();
-        $client = $this->getMockClient();
-        $loop = $this->getMockLoop();
-        Phake::when($client)->getLogger()->thenReturn($logger);
-        Phake::when($client)->getLoop()->thenReturn($loop);
-
-        $config = array(
-            'plugins' => array($plugin),
-            'connections' => array($connection),
-        );
-
-        $this->bot->setClient($client);
-        $this->bot->setConfig($config);
-        $this->bot->run();
-
-        Phake::verify($plugin)->setEventEmitter($client);
-        Phake::verify($plugin)->setLogger($logger);
-        Phake::verify($plugin)->setLoop($loop);
-    }
-
-    /**
      * Tests overriding plugin processors via configuration.
      */
     public function testOverridePluginProcessors()
@@ -381,7 +349,69 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::verify($processor)->process($plugin, $this->bot);
     }
 
+    /**
+     * Tests disabling plugin processors via configuration.
+     */
+    public function testDisablePluginProcessors()
+    {
+        $plugin = Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin');
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
+
+        $connection = $this->getMockConnection();
+
+        $logger = $this->getMockLogger();
+        $client = $this->getMockClient();
+        $loop = $this->getMockLoop();
+        Phake::when($client)->getLogger()->thenReturn($logger);
+        Phake::when($client)->getLoop()->thenReturn($loop);
+
+        $config = array(
+            'plugins' => array($plugin),
+            'connections' => array($connection),
+            'pluginProcessors' => array(),
+        );
+
+        $this->bot->setClient($client);
+        $this->bot->setConfig($config);
+        $this->bot->run();
+
+        Phake::verify($plugin, Phake::never())->setEventEmitter($client);
+        Phake::verify($plugin, Phake::never())->setLogger($logger);
+        Phake::verify($plugin, Phake::never())->setLoop($loop);
+    }
+
     /*** INTEGRATION TESTS ***/
+
+    /**
+     * Tests run() with a subclass of AbstractPlugin included in the plugins
+     * list to verify that default plugin processors work.
+     */
+    public function testRunWithDefaultPluginProcessors()
+    {
+        $plugin = Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin');
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
+
+        $connection = $this->getMockConnection();
+
+        $logger = $this->getMockLogger();
+        $client = $this->getMockClient();
+        $loop = $this->getMockLoop();
+        Phake::when($client)->getLogger()->thenReturn($logger);
+        Phake::when($client)->getLoop()->thenReturn($loop);
+
+        $config = array(
+            'plugins' => array($plugin),
+            'connections' => array($connection),
+        );
+
+        $this->bot->setClient($client);
+        $this->bot->setConfig($config);
+        $this->bot->run();
+
+        Phake::verify($plugin)->setEventEmitter($client);
+        Phake::verify($plugin)->setLogger($logger);
+        Phake::verify($plugin)->setLoop($loop);
+    }
 
     /**
      * Data provider for testEventCallbacks().
