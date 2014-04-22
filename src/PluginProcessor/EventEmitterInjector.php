@@ -13,10 +13,10 @@ namespace Phergie\Irc\Bot\React\PluginProcessor;
 use Phergie\Irc\Bot\React\Bot;
 use Phergie\Irc\Bot\React\EventEmitterAwareInterface;
 use Phergie\Irc\Bot\React\PluginInterface;
+use Evenement\EventEmitterInterface;
 
 /**
- * Plugin processor that injects the plugin with the bot's event emitter if
- * possible.
+ * Plugin processor that injects the plugin with the bot's client if possible.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React
@@ -24,7 +24,8 @@ use Phergie\Irc\Bot\React\PluginInterface;
 class EventEmitterInjector implements PluginProcessorInterface
 {
     /**
-     * Injects the bot's event emitter into the plugin if it implements
+     * Injects the bot's client into the plugin if the client implements
+     * \Evenement\EventEmitterInterface and the plugin implements
      * \Phergie\Irc\Bot\React\EventEmitterAwareInterface.
      *
      * @param \Phergie\Irc\Bot\React\PluginInterface $plugin Loaded plugin
@@ -32,8 +33,10 @@ class EventEmitterInjector implements PluginProcessorInterface
      */
     public function process(PluginInterface $plugin, Bot $bot)
     {
-        if ($plugin instanceof EventEmitterAwareInterface) {
-            $plugin->setEventEmitter($bot->getClient());
+        $client = $bot->getClient();
+        if ($plugin instanceof EventEmitterAwareInterface
+            && $client instanceof EventEmitterInterface) {
+            $plugin->setEventEmitter($client);
         }
     }
 }
