@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-client-react.git",
-                "reference": "4146374862d582dbd2b056c4af4e0cf3afe556db"
+                "reference": "bfaddd988948865a00517326b02f5d60887074e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/4146374862d582dbd2b056c4af4e0cf3afe556db",
-                "reference": "4146374862d582dbd2b056c4af4e0cf3afe556db",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/bfaddd988948865a00517326b02f5d60887074e2",
+                "reference": "bfaddd988948865a00517326b02f5d60887074e2",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "irc",
                 "react"
             ],
-            "time": "2014-04-15 12:54:50"
+            "time": "2014-04-22 02:14:58"
         },
         {
             "name": "phergie/phergie-irc-connection",
@@ -439,12 +439,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlively/Phake.git",
-                "reference": "40dbd06f196ac2c8f3bd9cdfb1fb632bd9065bad"
+                "reference": "76fc7fd9d81d3b43cb65a099dfd2972270070e47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlively/Phake/zipball/40dbd06f196ac2c8f3bd9cdfb1fb632bd9065bad",
-                "reference": "40dbd06f196ac2c8f3bd9cdfb1fb632bd9065bad",
+                "url": "https://api.github.com/repos/mlively/Phake/zipball/76fc7fd9d81d3b43cb65a099dfd2972270070e47",
+                "reference": "76fc7fd9d81d3b43cb65a099dfd2972270070e47",
                 "shasum": ""
             },
             "require": {
@@ -481,7 +481,7 @@
                 "mock",
                 "testing"
             ],
-            "time": "2014-04-06 16:34:46"
+            "time": "2014-04-19 22:17:47"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -736,12 +736,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a80b77d92a6c7723d77c6728b4ae37e92a65ac1d"
+                "reference": "5797b06d1797dc1061b34545404723af61242ffb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a80b77d92a6c7723d77c6728b4ae37e92a65ac1d",
-                "reference": "a80b77d92a6c7723d77c6728b4ae37e92a65ac1d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/5797b06d1797dc1061b34545404723af61242ffb",
+                "reference": "5797b06d1797dc1061b34545404723af61242ffb",
                 "shasum": ""
             },
             "require": {
@@ -803,7 +803,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-03-28 11:10:03"
+            "time": "2014-04-21 08:25:54"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -811,12 +811,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "c5e6274b8f2bf983cf883bb375cf44f99aff200e"
+                "reference": "3697daa12ab57b2bfc27b734ab963142f27b9159"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/c5e6274b8f2bf983cf883bb375cf44f99aff200e",
-                "reference": "c5e6274b8f2bf983cf883bb375cf44f99aff200e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/3697daa12ab57b2bfc27b734ab963142f27b9159",
+                "reference": "3697daa12ab57b2bfc27b734ab963142f27b9159",
                 "shasum": ""
             },
             "require": {
@@ -860,7 +860,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2014-03-18 08:56:48"
+            "time": "2014-04-16 14:50:10"
         },
         {
             "name": "sebastian/diff",
@@ -969,19 +969,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "180da8080bb15ca0c6de8ec94585bdba018a58d0"
+                "reference": "13e2857ac9208f9ded1f3e524de2c9b5a4a4db6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/180da8080bb15ca0c6de8ec94585bdba018a58d0",
-                "reference": "180da8080bb15ca0c6de8ec94585bdba018a58d0",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/13e2857ac9208f9ded1f3e524de2c9b5a4a4db6f",
+                "reference": "13e2857ac9208f9ded1f3e524de2c9b5a4a4db6f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.0.*@dev"
+                "phpunit/phpunit": "~4.0"
             },
             "type": "library",
             "extra": {
@@ -1027,7 +1027,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2014-04-09 10:35:13"
+            "time": "2014-04-18 09:45:21"
         },
         {
             "name": "sebastian/version",
@@ -1071,12 +1071,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "cee3067d680232674c6505d91db9d3d635a9a8f4"
+                "reference": "e9525fc511a51e7bfa214c6c420515c580fda35a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/cee3067d680232674c6505d91db9d3d635a9a8f4",
-                "reference": "cee3067d680232674c6505d91db9d3d635a9a8f4",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/e9525fc511a51e7bfa214c6c420515c580fda35a",
+                "reference": "e9525fc511a51e7bfa214c6c420515c580fda35a",
                 "shasum": ""
             },
             "require": {
@@ -1111,7 +1111,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-03-26 11:51:10"
+            "time": "2014-04-18 20:40:13"
         }
     ],
     "aliases": [
