@@ -493,6 +493,64 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests the irc.tick event.
+     */
+    public function testTickEvent()
+    {
+        $eventObject = Phake::mock('\Phergie\Irc\Event\UserEvent');
+        $eventParams = array('receivers' => '#channel', 'text' => 'message');
+        Phake::when($eventObject)->getCommand()->thenReturn('PRIVMSG');
+        Phake::when($eventObject)->getParams()->thenReturn($eventParams);
+
+        $queue = $this->getMockEventQueue();
+        Phake::when($queue)->extract()->thenReturn($eventObject)->thenReturn(false);
+        $this->bot->setEventQueue($queue);
+
+        $client = new \Phergie\Irc\Client\React\Client;
+        $this->bot->setClient($client);
+
+        $test = $this;
+
+        $allCalled = false;
+        $client->on('irc.sending.all', function($otherQueue) use (&$allCalled, $test, $queue) {
+            $allCalled = true;
+            $test->assertSame($otherQueue, $queue);
+        });
+
+        $eachCalled = false;
+        $client->on(
+            'irc.sending.each',
+            function($otherEvent, $otherQueue)
+                use (&$eachCalled, $test, $eventObject, $queue) {
+                $eachCalled = true;
+                $test->assertSame($otherEvent, $eventObject);
+                $test->assertSame($otherQueue, $queue);
+            }
+        );
+
+        $typeCalled = false;
+        $client->on(
+            'irc.sending.privmsg',
+            function($otherEvent, $otherQueue)
+                use (&$typeCalled, $test, $eventObject, $queue) {
+                $typeCalled = true;
+                $test->assertSame($otherEvent, $eventObject);
+                $test->assertSame($otherQueue, $queue);
+            }
+        );
+
+        $write = $params[] = $this->getMockWriteStream();
+        $connection = $params[] = $this->getMockConnection();
+        $client->emit('irc.tick', $params);
+
+        Phake::verify($eventObject)->setConnection($connection);
+        call_user_func_array(array(Phake::verify($write), 'ircPrivmsg'), $eventParams);
+        $this->assertTrue($allCalled);
+        $this->assertTrue($eachCalled);
+        $this->assertTrue($typeCalled);
+    }
+
+    /**
      * Tests that listeners for connection-specific plugins are only called for
      * those connections.
      */
@@ -660,8 +718,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $client->emit('irc.received', array($message, $write, $connection, $logger));
 
         Phake::verify($client)->emit('irc.sending.all', Phake::capture($allParams));
-        $this->assertSame($eventObject, $allParams[0]);
-        $this->assertSame($queue, $allParams[1]);
+        $this->assertSame($queue, $allParams[0]);
 
         Phake::verify($client)->emit('irc.sending.each', Phake::capture($eachParams));
         $this->assertInstanceOf($class, $eachParams[0]);

@@ -462,6 +462,10 @@ class Bot
             $parsed = $parser->parse($message);
             $bot->processClientEvent('irc.sent', $parsed, $connection, $write);
         });
+
+        $client->on('irc.tick', function($write, $connection) use ($bot) {
+            $bot->processOutgoingEvents($connection, $write);
+        });
     }
 
     /**
@@ -487,8 +491,25 @@ class Bot
         $subtype = $this->getEventSubtype($converted);
         $client->emit($event . '.each', $params);
         $client->emit($event . '.' . $subtype, $params);
+        
+        $this->processOutgoingEvents($connection, $write);
+    }
 
-        $client->emit('irc.sending.all', $params);
+    /**
+     * Callback to process any queued outgoing events. Not intended to be
+     * called from outside thie class.
+     *
+     * @param \Phergie\Irc\ConnectionInterface $connection Connection on which
+     *        the event occurred
+     * @param \Phergie\Irc\Client\React\WriteStream $write Stream used to send
+     *        commands to the server
+     */
+    public function processOutgoingEvents(BaseConnectionInterface $connection, WriteStream $write)
+    {
+        $client = $this->getClient();
+        $queue = $this->getEventQueue();
+
+        $client->emit('irc.sending.all', array($queue));
         while ($extracted = $queue->extract()) {
             $extracted->setConnection($connection);
             $params = array($extracted, $queue);
