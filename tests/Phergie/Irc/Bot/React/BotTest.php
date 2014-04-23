@@ -623,7 +623,8 @@ class BotTest extends \PHPUnit_Framework_TestCase
             Phake::verify($client)->emit('plugin.each', array($connectionPlugin[1])),
             Phake::verify($client)->emit('plugin.connection', array($connectionPlugin[1], $connections[1])),
             Phake::verify($client)->emit('plugin.each', array($connectionPlugin[2])),
-            Phake::verify($client)->emit('plugin.connection', array($connectionPlugin[2], $connections[2]))
+            Phake::verify($client)->emit('plugin.connection', array($connectionPlugin[2], $connections[2])),
+            Phake::verify($client)->emit('plugin.all', array(array($globalPlugin), $connections))
         );
 
         $globalCalled = $connectionCalled[1] = $connectionCalled[2] = false;

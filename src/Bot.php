@@ -244,6 +244,7 @@ class Bot
             }
         }
 
+        $client->emit('plugin.all', array($plugins, $connections));
         $client->run($connections);
     }
 
