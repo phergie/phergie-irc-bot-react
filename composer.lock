@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-client-react.git",
-                "reference": "bfaddd988948865a00517326b02f5d60887074e2"
+                "reference": "ce705d402e172a649ed6dab0bb082b0fa2795f6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/bfaddd988948865a00517326b02f5d60887074e2",
-                "reference": "bfaddd988948865a00517326b02f5d60887074e2",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/ce705d402e172a649ed6dab0bb082b0fa2795f6d",
+                "reference": "ce705d402e172a649ed6dab0bb082b0fa2795f6d",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "irc",
                 "react"
             ],
-            "time": "2014-04-22 02:14:58"
+            "time": "2014-04-25 02:16:19"
         },
         {
             "name": "phergie/phergie-irc-connection",
@@ -736,12 +736,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "5797b06d1797dc1061b34545404723af61242ffb"
+                "reference": "a8d628ee246265b8dbcd839304c41b8839783581"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/5797b06d1797dc1061b34545404723af61242ffb",
-                "reference": "5797b06d1797dc1061b34545404723af61242ffb",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a8d628ee246265b8dbcd839304c41b8839783581",
+                "reference": "a8d628ee246265b8dbcd839304c41b8839783581",
                 "shasum": ""
             },
             "require": {
@@ -803,7 +803,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-04-21 08:25:54"
+            "time": "2014-04-24 07:55:55"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -811,12 +811,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "3697daa12ab57b2bfc27b734ab963142f27b9159"
+                "reference": "ade8e1b47b3252e29bf7721675fc71eac586d088"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/3697daa12ab57b2bfc27b734ab963142f27b9159",
-                "reference": "3697daa12ab57b2bfc27b734ab963142f27b9159",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/ade8e1b47b3252e29bf7721675fc71eac586d088",
+                "reference": "ade8e1b47b3252e29bf7721675fc71eac586d088",
                 "shasum": ""
             },
             "require": {
@@ -860,7 +860,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2014-04-16 14:50:10"
+            "time": "2014-04-22 09:49:58"
         },
         {
             "name": "sebastian/diff",
