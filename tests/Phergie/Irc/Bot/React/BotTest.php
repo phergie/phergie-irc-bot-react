@@ -340,6 +340,27 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::verify($plugin, Phake::never())->setLogger($logger);
     }
 
+    /**
+     * Tests that plugins can subscribe to events with callables.
+     */
+    public function testPluginsSubscribeWithCallables()
+    {
+        $connection = $this->getMockConnection();
+        $plugin = $this->getMockPlugin();
+        $called = false;
+        $callback = function() use (&$called) { $called = true; };
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => $callback));
+
+        $config = array(
+            'plugins' => array($plugin),
+            'connections' => array($connection),
+        );
+
+        $this->bot->setClient($this->getMockClient());
+        $this->bot->setConfig($config);
+        $this->bot->run();
+    }
+
     /*** INTEGRATION TESTS ***/
 
     /**
@@ -730,7 +751,6 @@ class TestPlugin extends AbstractPlugin
     {
         return array(
             $this->event => 'handleEvent',
-            'custom' => 'handleEvent',
         );
     }
 

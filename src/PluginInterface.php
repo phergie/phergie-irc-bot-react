@@ -21,8 +21,9 @@ interface PluginInterface
     /**
      * Returns a mapping of events to applicable callbacks.
      *
-     * @return array Associative array keyed by event name referencing names of
-     *         instance methods in the class implementing this interface
+     * @return array Associative array keyed by event name referencing strings
+     *         containing names of instance methods in the class implementing
+     *         this interface or valid callables
      */
     public function getSubscribedEvents();
 }

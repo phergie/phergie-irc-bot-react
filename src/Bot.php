@@ -413,8 +413,10 @@ class Bot
                     ' that does not return an array'
             );
         }
-        foreach ($events as $event => $method) {
-            if (!is_string($event) || !is_callable(array($plugin, $method))) {
+        foreach ($events as $event => $callback) {
+            if (!is_string($event)
+                || !is_callable(array($plugin, $callback))
+                && !is_callable($callback)) {
                 throw new \RuntimeException(
                     'Plugin of class ' . get_class($plugin) .
                         ' returns non-string event name or invalid callback' .
@@ -545,8 +547,12 @@ class Bot
     {
         foreach ($plugins as $plugin) {
             $callbacks = $plugin->getSubscribedEvents();
-            foreach ($callbacks as $event => $method) {
-                $client->on($event, array($plugin, $method));
+            foreach ($callbacks as $event => $callback) {
+                $pluginCallback = array($plugin, $callback);
+                if (is_callable($pluginCallback)) {
+                    $callback = $pluginCallback;
+                }
+                $client->on($event, $callback);
             }
         }
     }
