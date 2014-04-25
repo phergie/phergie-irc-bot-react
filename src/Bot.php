@@ -15,7 +15,7 @@ use Phergie\Irc\Bot\React\PluginProcessor\EventEmitterInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\LoggerInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\LoopInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface;
-use Phergie\Irc\ConnectionInterface as BaseConnectionInterface;
+use Phergie\Irc\ConnectionInterface;
 use Phergie\Irc\Client\React\Client;
 use Phergie\Irc\Client\React\ClientInterface;
 use Phergie\Irc\Client\React\WriteStream;
@@ -232,19 +232,10 @@ class Bot
 
         $client = $this->getClient();
 
-        // Register global plugins
         $plugins = $this->getPlugins($this->config);
-        $this->registerGlobalPluginSubscribers($client, $plugins);
+        $this->registerPluginSubscribers($client, $plugins);
 
-        // Register connection-specific plugins
         $connections = $this->getConnections($this->config);
-        foreach ($connections as $connection) {
-            if ($connection instanceof ConnectionInterface) {
-                $this->registerConnectionPluginSubscribers($client, $connection);
-            }
-        }
-
-        $client->emit('plugin.all', array($plugins, $connections));
         $client->run($connections);
     }
 
@@ -295,24 +286,13 @@ class Bot
         $connections = array_filter(
             $config['connections'],
             function($connection) {
-                return $connection instanceof BaseConnectionInterface;
+                return $connection instanceof ConnectionInterface;
             }
         );
         if (count($connections) != count($config['connections'])) {
             throw new \RuntimeException(
                 'All configuration "connections" array values must implement \Phergie\Irc\ConnectionInterface'
             );
-        }
-
-        $filtered = array_filter(
-            $connections,
-            function($connection) {
-                return $connection instanceof ConnectionInterface;
-            }
-        );
-        foreach ($filtered as $connection) {
-            $processors = $this->getPluginProcessors($config);
-            $this->processPlugins($connection->getPlugins(), $processors);
         }
 
         return $connections;
@@ -480,7 +460,7 @@ class Bot
      * @param \Phergie\Irc\Client\React\WriteStream $write Stream used to send
      *        commands to the server
      */
-    public function processClientEvent($event, array $message, BaseConnectionInterface $connection, WriteStream $write)
+    public function processClientEvent($event, array $message, ConnectionInterface $connection, WriteStream $write)
     {
         $converter = $this->getConverter();
         $converted = $converter->convert($message);
@@ -505,7 +485,7 @@ class Bot
      * @param \Phergie\Irc\Client\React\WriteStream $write Stream used to send
      *        commands to the server
      */
-    public function processOutgoingEvents(BaseConnectionInterface $connection, WriteStream $write)
+    public function processOutgoingEvents(ConnectionInterface $connection, WriteStream $write)
     {
         $client = $this->getClient();
         $queue = $this->getEventQueue();
@@ -554,62 +534,20 @@ class Bot
     }
 
     /**
-     * Registers event callbacks from connection-specific plugins.
+     * Registers event callbacks from plugins.
      *
-     * @param \Phergie\Irc\Client\React\Client $client Client with which to
-     *        register callbacks
+     * @param \Phergie\Irc\Client\React\ClientInterface $client Client with
+     *        which to register callbacks
      * @param \Phergie\Irc\Bot\React\PluginInterface[] $plugins Plugins from
      *        which to get callbacks
      */
-    protected function registerGlobalPluginSubscribers(Client $client, array $plugins)
+    protected function registerPluginSubscribers(ClientInterface $client, array $plugins)
     {
         foreach ($plugins as $plugin) {
             $callbacks = $plugin->getSubscribedEvents();
             foreach ($callbacks as $event => $method) {
                 $client->on($event, array($plugin, $method));
             }
-            $client->emit('plugin.each', array($plugin));
-            $client->emit('plugin.global', array($plugin));
-        }
-    }
-
-    /**
-     * Registers event callbacks from connection-specific plugins.
-     *
-     * @param \Phergie\Irc\Client\React\Client $client Client with which to
-     *        register callbacks
-     * @param \Phergie\Irc\Bot\React\ConnectionInterface $connection Connection where
-     *        plugin callbacks will only receive events pertaining to that
-     *        connection for events that are connection-specific
-     */
-    protected function registerConnectionPluginSubscribers(Client $client, ConnectionInterface $connection)
-    {
-        // Define a callback wrapper used to limit callback invocations to
-        // the specific connection
-        $wrapper = function($callback) use ($connection) {
-            return function() use ($callback, $connection) {
-                $args = func_get_args();
-                $events = array_filter($args, function($arg) {
-                        return $arg instanceof EventInterface;
-                    });
-                $connections = array_filter($args, function($arg) {
-                        return $arg instanceof ConnectionInterface;
-                    });
-                if (($connections && reset($connections) === $connection)
-                    || ($events && reset($events)->getConnection() === $connection)) {
-                    return call_user_func_array($callback, $args);
-                }
-            };
-        };
-
-        // Register plugin callbacks with the client
-        foreach ($connection->getPlugins() as $plugin) {
-            $callbacks = $plugin->getSubscribedEvents();
-            foreach ($callbacks as $event => $method) {
-                $client->on($event, $wrapper(array($plugin, $method)));
-            }
-            $client->emit('plugin.each', array($plugin));
-            $client->emit('plugin.connection', array($plugin, $connection));
         }
     }
 }

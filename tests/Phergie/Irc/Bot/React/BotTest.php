@@ -249,44 +249,8 @@ class BotTest extends \PHPUnit_Framework_TestCase
             'All configuration "connections" array values must implement \Phergie\Irc\ConnectionInterface',
         );
 
-        // "connections" value contains a connection with a plugin with a
-        // getSubscribedEvents() implementation that does not return an array
-        $connection = $this->getMockConnection();
-        Phake::when($connection)->getPlugins()->thenReturn(array($nonArrayPlugin));
-        $data[] = array(
-            array('plugins' => array($plugin), 'connections' => array($connection)),
-            'Plugin of class ' . get_class($nonArrayPlugin) .
-                ' has getSubscribedEvents() implementation' .
-                ' that does not return an array'
-        );
-
-        // "connections" value contains a connection with a plugin with a
-        // getSubscribedEvents() implementation that returns an array with a
-        // non-string key
-        $connection = $this->getMockConnection();
-        Phake::when($connection)->getPlugins()->thenReturn(array($badKeyPlugin));
-        $data[] = array(
-            array('plugins' => array($plugin), 'connections' => array($connection)),
-            'Plugin of class ' . get_class($badKeyPlugin) .
-                ' returns non-string event name or invalid callback' .
-                ' for event "0"'
-        );
-
-        // "connections" value contains a connection with a plugin with a
-        // getSubscribedEvents() implementation that returns an array with a
-        // non-callable value
-        $connection = $this->getMockConnection();
-        Phake::when($connection)->getPlugins()->thenReturn(array($badValuePlugin));
-        $data[] = array(
-            array('plugins' => array($plugin), 'connections' => array($connection)),
-            'Plugin of class ' . get_class($badValuePlugin) .
-                ' returns non-string event name or invalid callback' .
-                ' for event "foo"'
-        );
-
         // Non-array "pluginProcessors" value
         $connection = $this->getMockConnection();
-        Phake::when($connection)->getPlugins()->thenReturn(array());
         $plugin = $this->getMockPlugin();
         Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
         $data[] = array(
@@ -551,104 +515,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests that listeners for connection-specific plugins are only called for
-     * those connections.
-     */
-    public function testConnectionSpecificPlugins()
-    {
-        $event = 'irc.received.privmsg';
-        $write = $this->getMockWriteStream();
-        $logger = $this->getMockLogger();
-        $message = array('foo' => 'bar');
-
-        $queue = $this->getMockEventQueue();
-        $this->bot->setEventQueue($queue);
-
-        $eventObject = Phake::mock('\Phergie\Irc\Event\UserEvent');
-        Phake::when($eventObject)->getCommand()->thenReturn('PRIVMSG');
-
-        $converter = $this->getMockConverter();
-        Phake::when($converter)->convert($message)->thenReturn($eventObject);
-        $this->bot->setConverter($converter);
-
-        $connectionCalled = array();
-        $connectionCallback = array();
-        $connectionPlugin = array();
-        $connections = array();
-        foreach (range(1, 2) as $index) {
-            $connectionCalled[$index] = null;
-            $connections[$index] = $this->getMockConnection();
-            $connectionCallback[$index] = function() use (&$connectionCalled, $index) { $connectionCalled[$index] = true; };
-            $connectionPlugin[$index] = $this->getMockTestPlugin();
-            Phake::when($connectionPlugin[$index])
-                ->handleEvent($eventObject, $queue)
-                ->thenGetReturnByLambda($connectionCallback[$index]);
-            Phake::when($connectionPlugin[$index])
-                ->getSubscribedEvents()
-                ->thenReturn(array($event => 'handleEvent', 'custom' => 'handleEvent'));
-            Phake::when($connections[$index])->getPlugins()->thenReturn(array($connectionPlugin[$index]));
-        }
-        Phake::when($connectionPlugin[2])
-            ->handleEvent($connections[2])
-            ->thenGetReturnByLambda($connectionCallback[2]);
-
-        $globalCalled = null;
-        $globalCallback = function() use (&$globalCalled) { $globalCalled = true; };
-        $globalPlugin = $this->getMockTestPlugin();
-        Phake::when($globalPlugin)
-            ->handleEvent($eventObject, $queue)
-            ->thenGetReturnByLambda($globalCallback);
-        Phake::when($globalPlugin)
-            ->handleEvent($connections[2])
-            ->thenGetReturnByLambda($globalCallback);
-        Phake::when($globalPlugin)
-            ->getSubscribedEvents()
-            ->thenReturn(array($event => 'handleEvent', 'custom' => 'handleEvent'));
-
-        $config = array(
-            'plugins' => array($globalPlugin),
-            'connections' => $connections,
-        );
-        $this->bot->setConfig($config);
-
-        $client = Phake::partialMock('\Phergie\Irc\Client\React\Client');
-        Phake::when($client)->run($connections)->thenReturn(null);
-        $this->bot->setClient($client);
-
-        $this->bot->run();
-
-        Phake::inOrder(
-            Phake::verify($client)->emit('plugin.each', array($globalPlugin)),
-            Phake::verify($client)->emit('plugin.global', array($globalPlugin)),
-            Phake::verify($client)->emit('plugin.each', array($connectionPlugin[1])),
-            Phake::verify($client)->emit('plugin.connection', array($connectionPlugin[1], $connections[1])),
-            Phake::verify($client)->emit('plugin.each', array($connectionPlugin[2])),
-            Phake::verify($client)->emit('plugin.connection', array($connectionPlugin[2], $connections[2])),
-            Phake::verify($client)->emit('plugin.all', array(array($globalPlugin), $connections))
-        );
-
-        $globalCalled = $connectionCalled[1] = $connectionCalled[2] = false;
-        Phake::when($eventObject)->getConnection()->thenReturn($connections[1]);
-        $client->emit('irc.received', array($message, $write, $connections[1], $logger));
-        $this->assertTrue($globalCalled, 'Global callback was not called');
-        $this->assertTrue($connectionCalled[1], 'Connection #1 callback was not called');
-        $this->assertFalse($connectionCalled[2], 'Connection #2 callback was called');
-
-        $globalCalled = $connectionCalled[1] = $connectionCalled[2] = false;
-        Phake::when($eventObject)->getConnection()->thenReturn($connections[2]);
-        $client->emit('irc.received', array($message, $write, $connections[2], $logger));
-        $this->assertTrue($globalCalled, 'Global callback was not called');
-        $this->assertFalse($connectionCalled[1], 'Connection #1 callback was called');
-        $this->assertTrue($connectionCalled[2], 'Connection #2 callback was not called');
-
-        $globalCalled = $connectionCalled[1] = $connectionCalled[2] = false;
-        $client->emit('custom', array($connections[2]));
-        $this->assertTrue($globalCalled, 'Global callback was not called');
-        $this->assertFalse($connectionCalled[1], 'Connection #1 callback was called');
-        $this->assertTrue($connectionCalled[2], 'Connection #2 callback was not called');
-    }
-
-    /**
      * Data provider for testPluginEmittedEvents().
      *
      * @return array
@@ -836,13 +702,11 @@ class BotTest extends \PHPUnit_Framework_TestCase
     /**
      * Returns a specialized mock connection.
      *
-     * @return \Phergie\Irc\Bot\React\Connection
+     * @return \Phergie\Irc\ConnectionInterface
      */
     protected function getMockConnection()
     {
-        $connection = Phake::mock('\Phergie\Irc\Bot\React\Connection');
-        Phake::when($connection)->getPlugins()->thenReturn(array());
-        return $connection;
+        return Phake::mock('\Phergie\Irc\ConnectionInterface');
     }
 
     /**
