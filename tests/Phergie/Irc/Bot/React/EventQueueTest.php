@@ -169,4 +169,15 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
 
         return $data;
     }
+
+    /**
+     * Tests extract().
+     */
+    public function testExtract()
+    {
+        $this->assertNull($this->queue->extract());
+        $this->queue->ircPrivmsg('#channel', 'text');
+        $this->assertInstanceOf('\Phergie\Irc\Event\EventInterface', $this->queue->extract());
+        $this->assertNull($this->queue->extract());
+    }
 }
