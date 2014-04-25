@@ -11,6 +11,9 @@
 namespace Phergie\Irc\Bot\React\PluginProcessor;
 
 use Phake;
+use Phergie\Irc\Client\React\LoopAwareInterface;
+use Phergie\Irc\Bot\React\PluginInterface;
+use React\EventLoop\LoopInterface;
 
 /**
  * Tests for LoopInjector.
@@ -76,9 +79,18 @@ class LoopInjectorTest extends \PHPUnit_Framework_TestCase
         Phake::when($client)->getLoop()->thenReturn($loop);
         $bot = Phake::mock('\Phergie\Irc\Bot\React\Bot');
         Phake::when($bot)->getClient()->thenReturn($client);
-        $plugin = Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin');
+        $plugin = Phake::mock('\Phergie\Irc\Bot\React\PluginProcessor\LoopAwarePlugin');
         $processor = new LoopInjector;
         $processor->process($plugin, $bot);
         Phake::verify($plugin)->setLoop($loop);
     }
+}
+
+/**
+ * Loop-aware plugin implementation.
+ */
+class LoopAwarePlugin implements PluginInterface, LoopAwareInterface
+{
+    public function getSubscribedEvents() { }
+    public function setLoop(LoopInterface $loop) { }
 }

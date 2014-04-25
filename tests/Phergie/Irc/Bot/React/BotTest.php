@@ -12,7 +12,6 @@ namespace Phergie\Irc\Bot\React;
 
 use Phake;
 use Phergie\Irc\Event\EventInterface;
-use React\EventLoop\LoopInterface;
 
 /**
  * Tests for Bot class.
@@ -325,9 +324,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $logger = $this->getMockLogger();
         $client = $this->getMockClient();
-        $loop = $this->getMockLoop();
         Phake::when($client)->getLogger()->thenReturn($logger);
-        Phake::when($client)->getLoop()->thenReturn($loop);
 
         $config = array(
             'plugins' => array($plugin),
@@ -341,7 +338,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         Phake::verify($plugin, Phake::never())->setEventEmitter($client);
         Phake::verify($plugin, Phake::never())->setLogger($logger);
-        Phake::verify($plugin, Phake::never())->setLoop($loop);
     }
 
     /*** INTEGRATION TESTS ***/
@@ -359,9 +355,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $logger = $this->getMockLogger();
         $client = $this->getMockClient();
-        $loop = $this->getMockLoop();
         Phake::when($client)->getLogger()->thenReturn($logger);
-        Phake::when($client)->getLoop()->thenReturn($loop);
 
         $config = array(
             'plugins' => array($plugin),
@@ -374,7 +368,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         Phake::verify($plugin)->setEventEmitter($client);
         Phake::verify($plugin)->setLogger($logger);
-        Phake::verify($plugin)->setLoop($loop);
     }
 
     /**
@@ -717,16 +710,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
     protected function getMockWriteStream()
     {
         return Phake::mock('\Phergie\Irc\Client\React\WriteStream');
-    }
-
-    /**
-     * Returns a mock event loop.
-     *
-     * @return \React\EventLoop\LoopInterface
-     */
-    protected function getMockLoop()
-    {
-        return Phake::mock('\React\EventLoop\LoopInterface');
     }
 }
 
