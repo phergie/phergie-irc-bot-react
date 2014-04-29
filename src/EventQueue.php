@@ -38,7 +38,12 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      */
     public function __construct()
     {
-        parent::__construct();
+        // For HHVM compatibility
+        // @see https://github.com/facebook/hhvm/issues/1695
+        // @see http://stackoverflow.com/a/4650617/906821
+        if (method_exists('\SplPriorityQueue', '__construct')) {
+            parent::__construct();
+        }
 
         $this->priorities = array_flip(array(
             'RESTART',
