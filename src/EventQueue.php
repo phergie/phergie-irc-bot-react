@@ -38,6 +38,8 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->priorities = array_flip(array(
             'RESTART',
             'SQUIT',
