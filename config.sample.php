@@ -1,6 +1,6 @@
 <?php
 
-use Phergie\Irc\Bot\React\Connection;
+use Phergie\Irc\Connection;
 
 return array(
 
