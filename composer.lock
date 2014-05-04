@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "a1936f8d610e6f8e5a9ff25462432000",
+    "hash": "f95ff868d7790eb81fe68dc929d8045a",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -439,20 +439,20 @@
     "packages-dev": [
         {
             "name": "phake/phake",
-            "version": "1.0.x-dev",
+            "version": "v2.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlively/Phake.git",
-                "reference": "76fc7fd9d81d3b43cb65a099dfd2972270070e47"
+                "reference": "d9732d7d1ffc65e86856e00eca5f3025b3f29442"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlively/Phake/zipball/76fc7fd9d81d3b43cb65a099dfd2972270070e47",
-                "reference": "76fc7fd9d81d3b43cb65a099dfd2972270070e47",
+                "url": "https://api.github.com/repos/mlively/Phake/zipball/d9732d7d1ffc65e86856e00eca5f3025b3f29442",
+                "reference": "d9732d7d1ffc65e86856e00eca5f3025b3f29442",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.0"
+                "php": ">=5.3.3"
             },
             "require-dev": {
                 "doctrine/common": "2.3.*",
@@ -460,18 +460,24 @@
                 "hamcrest/hamcrest-php": "1.1.*",
                 "phpunit/phpunit": "3.7.*"
             },
+            "suggest": {
+                "doctrine/common": "Allows mock annotations to use import statements for classes.",
+                "hamcrest/hamcrest-php": "Use Hamcrest matchers."
+            },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
             "autoload": {
-                "classmap": [
-                    "src"
-                ]
+                "psr-0": {
+                    "Phake": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "src"
-            ],
             "license": [
-                "BSD"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -485,7 +491,7 @@
                 "mock",
                 "testing"
             ],
-            "time": "2014-04-19 22:17:47"
+            "time": "2014-04-19 19:26:56"
         },
         {
             "name": "phpunit/php-code-coverage",
