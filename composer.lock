@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "a1936f8d610e6f8e5a9ff25462432000",
+    "hash": "54231bca111ce7397991324d04b3a921",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-client-react.git",
-                "reference": "ba54b0c42bbda565cbf8179a68382d500aa3fa19"
+                "reference": "1a15b3618db5140a25a51a1d30a433eb19cf6850"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/ba54b0c42bbda565cbf8179a68382d500aa3fa19",
-                "reference": "ba54b0c42bbda565cbf8179a68382d500aa3fa19",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/1a15b3618db5140a25a51a1d30a433eb19cf6850",
+                "reference": "1a15b3618db5140a25a51a1d30a433eb19cf6850",
                 "shasum": ""
             },
             "require": {
@@ -137,8 +137,8 @@
                 "react/stream": "0.3.*"
             },
             "require-dev": {
-                "phake/phake": "2.0.0-alpha4",
-                "phpunit/phpunit": "3.7.*"
+                "phake/phake": "2.0.0-beta1",
+                "phpunit/phpunit": "4.1.*"
             },
             "type": "library",
             "autoload": {
@@ -156,7 +156,7 @@
                 "irc",
                 "react"
             ],
-            "time": "2014-05-04 13:36:10"
+            "time": "2014-05-04 19:40:36"
         },
         {
             "name": "phergie/phergie-irc-connection",
@@ -203,12 +203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-event.git",
-                "reference": "c3f3c31e9f9d638a6356caa0690529116b550b8c"
+                "reference": "8390edc64d470922a3dba8c2d70ba8941c5b87ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/c3f3c31e9f9d638a6356caa0690529116b550b8c",
-                "reference": "c3f3c31e9f9d638a6356caa0690529116b550b8c",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/8390edc64d470922a3dba8c2d70ba8941c5b87ec",
+                "reference": "8390edc64d470922a3dba8c2d70ba8941c5b87ec",
                 "shasum": ""
             },
             "require": {
@@ -216,8 +216,8 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "phake/phake": "1.0.*",
-                "phpunit/phpunit": "4.0.*"
+                "phake/phake": "2.0.0-beta1",
+                "phpunit/phpunit": "4.1.*"
             },
             "type": "library",
             "autoload": {
@@ -234,7 +234,7 @@
                 "event",
                 "irc"
             ],
-            "time": "2014-05-03 23:06:16"
+            "time": "2014-05-04 19:44:23"
         },
         {
             "name": "phergie/phergie-irc-generator",
@@ -439,39 +439,45 @@
     "packages-dev": [
         {
             "name": "phake/phake",
-            "version": "1.0.x-dev",
+            "version": "v2.0.0-alpha3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlively/Phake.git",
-                "reference": "76fc7fd9d81d3b43cb65a099dfd2972270070e47"
+                "reference": "fdf72b05349efdaa751582d7aa548fcfaa2cd42a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlively/Phake/zipball/76fc7fd9d81d3b43cb65a099dfd2972270070e47",
-                "reference": "76fc7fd9d81d3b43cb65a099dfd2972270070e47",
+                "url": "https://api.github.com/repos/mlively/Phake/zipball/fdf72b05349efdaa751582d7aa548fcfaa2cd42a",
+                "reference": "fdf72b05349efdaa751582d7aa548fcfaa2cd42a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.0"
+                "php": ">=5.3.3"
             },
             "require-dev": {
+                "davedevelopment/hamcrest-php": "dev-master",
                 "doctrine/common": "2.3.*",
                 "ext-soap": "*",
-                "hamcrest/hamcrest-php": "1.1.*",
                 "phpunit/phpunit": "3.7.*"
             },
+            "suggest": {
+                "davedevelopment/hamcrest-php": "Use Hamcrest matchers.",
+                "doctrine/common": "Allows mock annotations to use import statements for classes."
+            },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
             "autoload": {
-                "classmap": [
-                    "src"
-                ]
+                "psr-0": {
+                    "Phake": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "src"
-            ],
             "license": [
-                "BSD"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -485,7 +491,7 @@
                 "mock",
                 "testing"
             ],
-            "time": "2014-04-19 22:17:47"
+            "time": "2013-08-06 15:30:05"
         },
         {
             "name": "phpunit/php-code-coverage",
