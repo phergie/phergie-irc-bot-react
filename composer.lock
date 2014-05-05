@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "54231bca111ce7397991324d04b3a921",
+    "hash": "4e30289a4ace741d265244fc1e7e3279",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -164,12 +164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-connection.git",
-                "reference": "43babe11f0d2649bf34a93a2d4bc48d37f07b5d7"
+                "reference": "de3ee132fb22e184cd2f237865218b56a92a56cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-connection/zipball/43babe11f0d2649bf34a93a2d4bc48d37f07b5d7",
-                "reference": "43babe11f0d2649bf34a93a2d4bc48d37f07b5d7",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-connection/zipball/de3ee132fb22e184cd2f237865218b56a92a56cd",
+                "reference": "de3ee132fb22e184cd2f237865218b56a92a56cd",
                 "shasum": ""
             },
             "require": {
@@ -195,7 +195,7 @@
                 "irc",
                 "server"
             ],
-            "time": "2014-05-04 19:37:24"
+            "time": "2014-05-04 23:04:11"
         },
         {
             "name": "phergie/phergie-irc-event",
@@ -203,12 +203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-event.git",
-                "reference": "8390edc64d470922a3dba8c2d70ba8941c5b87ec"
+                "reference": "1a64a748a6bd64aa2929154ed73d35e292cbbcf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/8390edc64d470922a3dba8c2d70ba8941c5b87ec",
-                "reference": "8390edc64d470922a3dba8c2d70ba8941c5b87ec",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/1a64a748a6bd64aa2929154ed73d35e292cbbcf9",
+                "reference": "1a64a748a6bd64aa2929154ed73d35e292cbbcf9",
                 "shasum": ""
             },
             "require": {
@@ -234,7 +234,7 @@
                 "event",
                 "irc"
             ],
-            "time": "2014-05-04 19:44:23"
+            "time": "2014-05-04 23:02:55"
         },
         {
             "name": "phergie/phergie-irc-generator",
@@ -439,30 +439,30 @@
     "packages-dev": [
         {
             "name": "phake/phake",
-            "version": "v2.0.0-alpha3",
+            "version": "v2.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlively/Phake.git",
-                "reference": "fdf72b05349efdaa751582d7aa548fcfaa2cd42a"
+                "reference": "917a5d1e426548ead7910a8cb89336cd8641eba7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlively/Phake/zipball/fdf72b05349efdaa751582d7aa548fcfaa2cd42a",
-                "reference": "fdf72b05349efdaa751582d7aa548fcfaa2cd42a",
+                "url": "https://api.github.com/repos/mlively/Phake/zipball/917a5d1e426548ead7910a8cb89336cd8641eba7",
+                "reference": "917a5d1e426548ead7910a8cb89336cd8641eba7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "davedevelopment/hamcrest-php": "dev-master",
                 "doctrine/common": "2.3.*",
                 "ext-soap": "*",
+                "hamcrest/hamcrest-php": "1.1.*",
                 "phpunit/phpunit": "3.7.*"
             },
             "suggest": {
-                "davedevelopment/hamcrest-php": "Use Hamcrest matchers.",
-                "doctrine/common": "Allows mock annotations to use import statements for classes."
+                "doctrine/common": "Allows mock annotations to use import statements for classes.",
+                "hamcrest/hamcrest-php": "Use Hamcrest matchers."
             },
             "type": "library",
             "extra": {
@@ -491,7 +491,7 @@
                 "mock",
                 "testing"
             ],
-            "time": "2013-08-06 15:30:05"
+            "time": "2014-05-05 14:08:12"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -747,12 +747,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6143b5e6957e0e26df9aaca8946bbdca5e83b4b2"
+                "reference": "ac806838558a0e9b721bc50cac46f9baa4a4e1db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6143b5e6957e0e26df9aaca8946bbdca5e83b4b2",
-                "reference": "6143b5e6957e0e26df9aaca8946bbdca5e83b4b2",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ac806838558a0e9b721bc50cac46f9baa4a4e1db",
+                "reference": "ac806838558a0e9b721bc50cac46f9baa4a4e1db",
                 "shasum": ""
             },
             "require": {
@@ -813,7 +813,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-05-04 09:20:34"
+            "time": "2014-05-05 06:17:33"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -943,12 +943,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "ecc923996545d4e4395c0759b6c538f085233f62"
+                "reference": "f5bfa131c5bc1b1c90f4936367678ff471ca1bf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/ecc923996545d4e4395c0759b6c538f085233f62",
-                "reference": "ecc923996545d4e4395c0759b6c538f085233f62",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/f5bfa131c5bc1b1c90f4936367678ff471ca1bf3",
+                "reference": "f5bfa131c5bc1b1c90f4936367678ff471ca1bf3",
                 "shasum": ""
             },
             "require": {
@@ -985,7 +985,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2014-02-16 12:08:10"
+            "time": "2014-05-05 08:34:35"
         },
         {
             "name": "sebastian/environment",
@@ -1044,12 +1044,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "7a263d87de6584fd5f129308b96e46ceba12c9dc"
+                "reference": "eb54a69388e5b7ea48561a65588f067fdda0c886"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/7a263d87de6584fd5f129308b96e46ceba12c9dc",
-                "reference": "7a263d87de6584fd5f129308b96e46ceba12c9dc",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/eb54a69388e5b7ea48561a65588f067fdda0c886",
+                "reference": "eb54a69388e5b7ea48561a65588f067fdda0c886",
                 "shasum": ""
             },
             "require": {
@@ -1102,7 +1102,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2014-05-04 09:43:29"
+            "time": "2014-05-05 08:31:02"
         },
         {
             "name": "sebastian/version",
