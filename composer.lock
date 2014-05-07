@@ -118,12 +118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-client-react.git",
-                "reference": "1a15b3618db5140a25a51a1d30a433eb19cf6850"
+                "reference": "3f8bb929573b23d56bb4aa5a1689c224d029287e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/1a15b3618db5140a25a51a1d30a433eb19cf6850",
-                "reference": "1a15b3618db5140a25a51a1d30a433eb19cf6850",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/3f8bb929573b23d56bb4aa5a1689c224d029287e",
+                "reference": "3f8bb929573b23d56bb4aa5a1689c224d029287e",
                 "shasum": ""
             },
             "require": {
@@ -137,7 +137,7 @@
                 "react/stream": "0.3.*"
             },
             "require-dev": {
-                "phake/phake": "2.0.0-beta1",
+                "phake/phake": "2.0.0-beta2",
                 "phpunit/phpunit": "4.1.*"
             },
             "type": "library",
@@ -156,7 +156,7 @@
                 "irc",
                 "react"
             ],
-            "time": "2014-05-04 19:40:36"
+            "time": "2014-05-07 00:04:54"
         },
         {
             "name": "phergie/phergie-irc-connection",
@@ -203,12 +203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-event.git",
-                "reference": "1a64a748a6bd64aa2929154ed73d35e292cbbcf9"
+                "reference": "12b5660d0ba1a9e6c45898d5dde5591854f5718e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/1a64a748a6bd64aa2929154ed73d35e292cbbcf9",
-                "reference": "1a64a748a6bd64aa2929154ed73d35e292cbbcf9",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/12b5660d0ba1a9e6c45898d5dde5591854f5718e",
+                "reference": "12b5660d0ba1a9e6c45898d5dde5591854f5718e",
                 "shasum": ""
             },
             "require": {
@@ -216,7 +216,7 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "phake/phake": "2.0.0-beta1",
+                "phake/phake": "2.0.0-beta2",
                 "phpunit/phpunit": "4.1.*"
             },
             "type": "library",
@@ -234,7 +234,7 @@
                 "event",
                 "irc"
             ],
-            "time": "2014-05-04 23:02:55"
+            "time": "2014-05-05 23:16:42"
         },
         {
             "name": "phergie/phergie-irc-generator",
