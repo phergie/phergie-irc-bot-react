@@ -275,10 +275,11 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      * Implements \Phergie\Irc\GeneratorInterface->ircPart().
      *
      * @param string $channels
+     * @param string|null $message
      */
-    public function ircPart($channels)
+    public function ircPart($channels, $message = null)
     {
-        $this->queueIrcRequest('PART', array($channels));
+        $this->queueIrcRequest('PART', array($channels, $message));
     }
 
     /**

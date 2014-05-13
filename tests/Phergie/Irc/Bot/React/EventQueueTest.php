@@ -68,7 +68,7 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
             array('ircQuit', 'QUIT', array('message')),
             array('ircSquit', 'SQUIT', array('server', 'comment')),
             array('ircJoin', 'JOIN', array('channels', 'keys')),
-            array('ircPart', 'PART', array('channels')),
+            array('ircPart', 'PART', array('channels', 'message')),
             array('ircMode', 'MODE', array('target', 'mode', 'param')),
             array('ircTopic', 'TOPIC', array('channel', 'topic')),
             array('ircNames', 'NAMES', array('channels')),
