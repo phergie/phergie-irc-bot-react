@@ -20,5 +20,10 @@ use Evenement\EventEmitterInterface;
  */
 interface EventEmitterAwareInterface
 {
+    /**
+     * Sets the event emitter for the implementing class to use.
+     *
+     * @param \Evenement\EventEmitterInterface $emitter
+     */
     public function setEventEmitter(EventEmitterInterface $emitter);
 }
