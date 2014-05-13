@@ -22,6 +22,8 @@ use Phergie\Irc\Event\UserEvent;
 class EventQueue extends \SplPriorityQueue implements EventQueueInterface
 {
     /**
+     * Prefix for queued messages
+     *
      * @var string
      */
     protected $prefix;
