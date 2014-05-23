@@ -251,7 +251,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         // Non-array "pluginProcessors" value
         $connection = $this->getMockConnection();
         $plugin = $this->getMockPlugin();
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => function(){}));
         $data[] = array(
             array('plugins' => array($plugin), 'connections' => array($connection), 'pluginProcessors' => 'foo'),
             'Configuration "pluginProcessors" key must reference an array'

@@ -229,14 +229,9 @@ class Bot
     public function run()
     {
         $this->setDependencyOverrides($this->config);
-
-        $client = $this->getClient();
-
         $plugins = $this->getPlugins($this->config);
-        $this->registerPluginSubscribers($client, $plugins);
-
         $connections = $this->getConnections($this->config);
-        $client->run($connections);
+        $this->getClient()->run($connections);
     }
 
     /**
@@ -327,6 +322,8 @@ class Bot
             );
         }
 
+        $this->registerPluginSubscribers($plugins);
+
         $processors = $this->getPluginProcessors($config);
         $this->processPlugins($plugins, $processors);
 
@@ -342,7 +339,6 @@ class Bot
     protected function processPlugins(array $plugins, array $processors)
     {
         foreach ($plugins as $plugin) {
-            $this->validatePluginEvents($plugin);
             foreach ($processors as $processor) {
                 $processor->process($plugin, $this);
             }
@@ -538,14 +534,14 @@ class Bot
     /**
      * Registers event callbacks from plugins.
      *
-     * @param \Phergie\Irc\Client\React\ClientInterface $client Client with
-     *        which to register callbacks
      * @param \Phergie\Irc\Bot\React\PluginInterface[] $plugins Plugins from
      *        which to get callbacks
      */
-    protected function registerPluginSubscribers(ClientInterface $client, array $plugins)
+    protected function registerPluginSubscribers(array $plugins)
     {
+        $client = $this->getClient();
         foreach ($plugins as $plugin) {
+            $this->validatePluginEvents($plugin);
             $callbacks = $plugin->getSubscribedEvents();
             foreach ($callbacks as $event => $callback) {
                 $pluginCallback = array($plugin, $callback);
