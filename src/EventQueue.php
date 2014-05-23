@@ -43,9 +43,11 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
         // For HHVM compatibility
         // @see https://github.com/facebook/hhvm/issues/1695
         // @see http://stackoverflow.com/a/4650617/906821
+        // @codeCoverageIgnoreStart
         if (method_exists('\SplPriorityQueue', '__construct')) {
             parent::__construct();
         }
+        // @codeCoverageIgnoreEnd
 
         $this->priorities = array_flip(array(
             'RESTART',
