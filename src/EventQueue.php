@@ -123,11 +123,14 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      *
      * @param string $command
      * @param array $params Unused, intended for use by subclasses
-     * @return int
+     * @return \Phergie\Irc\Bot\React\EventQueuePriority
      */
     protected function getPriority($command, array $params)
     {
-        return $this->priorities[$command];
+        $priority = new EventQueuePriority;
+        $priority->value = $this->priorities[$command];
+        $priority->timestamp = microtime(true);
+        return $priority;
     }
 
     /**
@@ -143,6 +146,23 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
         $event->setCommand($command);
         $event->setParams(array_filter($params));
         $this->insert($event, $this->getPriority($command, $params));
+    }
+
+    /**
+     * Overrides native default comparison logic to assign higher priority to
+     * events inserted earlier.
+     *
+     * @param \Phergie\Irc\Bot\React\EventQueuePriority $priority1
+     * @param \Phergie\Irc\Bot\React\EventQueuePriority $priority2
+     * @return int
+     */
+    public function compare($priority1, $priority2)
+    {
+        $priority = $priority1->value - $priority2->value;
+        if (!$priority) {
+            $priority = $priority1->timestamp - $priority2->timestamp;
+        }
+        return $priority;
     }
 
     /**
