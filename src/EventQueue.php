@@ -129,7 +129,7 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
     {
         $priority = new EventQueuePriority;
         $priority->value = $this->priorities[$command];
-        $priority->timestamp = microtime(true);
+        $priority->timestamp = microtime(true) * 10000;
         return $priority;
     }
 
