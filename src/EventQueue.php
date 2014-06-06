@@ -158,9 +158,9 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      */
     public function compare($priority1, $priority2)
     {
-        $priority = $priority1->value - $priority2->value;
+        $priority = $priority2->value - $priority1->value;
         if (!$priority) {
-            $priority = $priority1->timestamp - $priority2->timestamp;
+            $priority = $priority2->timestamp - $priority1->timestamp;
         }
         return $priority;
     }
