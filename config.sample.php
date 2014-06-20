@@ -35,15 +35,6 @@ return array(
             //     'force-ipv4' => true,
             // )
 
-            // Optional list of plugins to use specifically for this connection
-
-            'plugins' => array(
-
-                // new \Vendor\Plugin\PluginName(array(
-                // /* configuration goes here */
-                // )),
-
-            ),
         )),
 
     )
