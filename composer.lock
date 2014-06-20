@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4e30289a4ace741d265244fc1e7e3279",
+    "hash": "e3099d6947e7c4421deb7aa462ad75ab",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -210,12 +210,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-event.git",
-                "reference": "af1464f120bf5634f849c13786819d43745a71bb"
+                "reference": "2a8f55ba02b078144106e59259acfcd279ef80bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/af1464f120bf5634f849c13786819d43745a71bb",
-                "reference": "af1464f120bf5634f849c13786819d43745a71bb",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-event/zipball/2a8f55ba02b078144106e59259acfcd279ef80bd",
+                "reference": "2a8f55ba02b078144106e59259acfcd279ef80bd",
                 "shasum": ""
             },
             "require": {
@@ -232,7 +232,11 @@
                     "Phergie\\Irc\\Event\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Phergie\\": "tests/Phergie"
+                }
+            },
             "license": [
                 "BSD-2-Clause"
             ],
@@ -241,7 +245,13 @@
                 "event",
                 "irc"
             ],
-            "time": "2014-05-12 23:21:36"
+            "support": {
+                "email": "team@phergie.org",
+                "irc": "irc://irc.freenode.net/phergie",
+                "issues": "https://github.com/phergie/phergie-irc-event/issues",
+                "source": "https://github.com/phergie/phergie-irc-event"
+            },
+            "time": "2014-06-20 02:33:20"
         },
         {
             "name": "phergie/phergie-irc-generator",
