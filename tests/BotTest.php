@@ -8,10 +8,13 @@
  * @package Phergie\Irc\Bot\React
  */
 
-namespace Phergie\Irc\Bot\React;
+namespace Phergie\Irc\Tests\Bot\React;
 
 use Phake;
 use Phergie\Irc\Event\EventInterface;
+use Phergie\Irc\Bot\React\AbstractPlugin;
+use Phergie\Irc\Bot\React\Bot;
+use Phergie\Irc\Bot\React\EventQueue;
 
 /**
  * Tests for Bot class.
@@ -710,7 +713,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockTestPlugin()
     {
-        return Phake::mock('\Phergie\Irc\Bot\React\TestPlugin');
+        return Phake::mock('\Phergie\Irc\Tests\Bot\React\TestPlugin');
     }
 
     /**

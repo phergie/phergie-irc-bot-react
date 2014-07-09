@@ -9,13 +9,13 @@
 >
     <testsuites>
         <testsuite name="phergie/phergie-irc-bot-react test suite">
-            <directory>./Phergie/</directory>
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>../src/</directory>
+            <directory>src/</directory>
         </whitelist>
     </filter>
 </phpunit>

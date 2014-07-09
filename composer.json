@@ -41,6 +41,11 @@
             "Phergie\\Irc\\Bot\\React\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Phergie\\Irc\\Tests\\Bot\\React\\": "tests"
+        }
+    },
     "bin": [
         "bin/phergie"
     ]

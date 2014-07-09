@@ -8,43 +8,44 @@
  * @package Phergie\Irc\Bot\React
  */
 
-namespace Phergie\Irc\Bot\React\PluginProcessor;
+namespace Phergie\Irc\Tests\Bot\React\PluginProcessor;
 
 use Phake;
+use Phergie\Irc\Bot\React\PluginProcessor\LoggerInjector;
 
 /**
- * Tests for EventEmitterInjector.
+ * Tests for LoggerInjector.
  *
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-class EventEmitterInjectorTest extends \PHPUnit_Framework_TestCase
+class LoggerInjectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Tests process() with a plugin that does not implement
-     * EventEmitterAwareInterface.
+     * LoggerAwareInterface.
      */
-    public function testProcessWithNonEventEmitterAwarePlugin()
+    public function testProcessWithNonLoggerAwarePlugin()
     {
         $bot = Phake::mock('\Phergie\Irc\Bot\React\Bot');
         $plugin = Phake::mock('\Phergie\Irc\Bot\React\PluginInterface');
         Phake::verifyNoFurtherInteraction($plugin);
-        $processor = new EventEmitterInjector;
+        $processor = new LoggerInjector;
         $processor->process($plugin, $bot);
     }
 
     /**
      * Tests process() with a plugin that implements
-     * EventEmitterAwareInterface.
+     * LoggerAwareInterface.
      */
-    public function testProcessWithEventEmitterAwarePlugin()
+    public function testProcessWithLoggerAwarePlugin()
     {
-        $client = Phake::mock('\Phergie\Irc\Client\React\ClientInterface');
+        $logger = Phake::mock('\Psr\Log\LoggerInterface');
         $bot = Phake::mock('\Phergie\Irc\Bot\React\Bot');
-        Phake::when($bot)->getClient()->thenReturn($client);
+        Phake::when($bot)->getLogger()->thenReturn($logger);
         $plugin = Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin');
-        $processor = new EventEmitterInjector;
+        $processor = new LoggerInjector;
         $processor->process($plugin, $bot);
-        Phake::verify($plugin)->setEventEmitter($client);
+        Phake::verify($plugin)->setLogger($logger);
     }
 }

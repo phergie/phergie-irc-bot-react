@@ -8,7 +8,7 @@
  * @package Phergie\Irc\Bot\React
  */
 
-namespace Phergie\Irc\Bot\React;
+namespace Phergie\Irc\Tests\Bot\React;
 
 use Evenement\EventEmitterInterface;
 use Psr\Log\LoggerInterface;

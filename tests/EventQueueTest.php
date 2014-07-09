@@ -8,7 +8,9 @@
  * @package Phergie\Irc\Bot\React
  */
 
-namespace Phergie\Irc\Bot\React;
+namespace Phergie\Irc\Tests\Bot\React;
+
+use Phergie\Irc\Bot\React\EventQueue;
 
 /**
  * Tests for EventQueue.
@@ -20,6 +22,7 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Instance of the class under test
+     *
      * @var \Phergie\Irc\Bot\React\EventQueue
      */
     protected $queue;

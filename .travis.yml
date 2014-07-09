@@ -14,4 +14,4 @@ before_script:
   - cd tests
 
 script:
-  - ../vendor/bin/phpunit --coverage-text
+  - ./vendor/bin/phpunit --coverage-text
