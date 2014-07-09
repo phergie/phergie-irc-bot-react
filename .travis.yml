@@ -11,7 +11,6 @@ php:
 before_script:
   - composer self-update
   - composer install
-  - cd tests
 
 script:
   - ./vendor/bin/phpunit --coverage-text
