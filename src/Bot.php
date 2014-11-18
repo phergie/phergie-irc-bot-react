@@ -338,8 +338,8 @@ class Bot
      */
     protected function processPlugins(array $plugins, array $processors)
     {
-        foreach ($plugins as $plugin) {
-            foreach ($processors as $processor) {
+        foreach ($processors as $processor) {
+            foreach ($plugins as $plugin) {
                 $processor->process($plugin, $this);
             }
         }
