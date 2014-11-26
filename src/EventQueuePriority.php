@@ -28,7 +28,7 @@ class EventQueuePriority
      * same command in order to assign higher priority to events inserted
      * earlier
      *
-     * @var float
+     * @var int
      */
     public $timestamp;
 }
