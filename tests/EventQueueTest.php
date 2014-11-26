@@ -183,4 +183,42 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Phergie\Irc\Event\EventInterface', $this->queue->extract());
         $this->assertNull($this->queue->extract());
     }
+
+    /**
+     * Tests ordering by command priority then FIFO.
+     */
+    public function testPriorities()
+    {
+        // start with empty queue
+        $this->assertNull($this->queue->extract());
+
+        // queue a bunch of stuff
+        $this->queue->ircQuit('Bye!');
+        $this->queue->ircPrivmsg('#channel', 'text1');
+        $this->queue->ircPrivmsg('#channel', 'text2');
+        $this->queue->ircPrivmsg('#channel', 'text3');
+
+        // verify order of output
+        $event = $this->queue->extract();
+        $this->assertInstanceOf('\Phergie\Irc\Event\EventInterface', $event);
+        $this->assertEquals('PRIVMSG', $event->getCommand());
+        $this->assertEquals(['#channel', 'text1'], $event->getParams());
+
+        $event = $this->queue->extract();
+        $this->assertInstanceOf('\Phergie\Irc\Event\EventInterface', $event);
+        $this->assertEquals('PRIVMSG', $event->getCommand());
+        $this->assertEquals(['#channel', 'text2'], $event->getParams());
+
+        $event = $this->queue->extract();
+        $this->assertInstanceOf('\Phergie\Irc\Event\EventInterface', $event);
+        $this->assertEquals('PRIVMSG', $event->getCommand());
+        $this->assertEquals(['#channel', 'text3'], $event->getParams());
+
+        $event = $this->queue->extract();
+        $this->assertInstanceOf('\Phergie\Irc\Event\EventInterface', $event);
+        $this->assertEquals('QUIT', $event->getCommand());
+        $this->assertEquals(['Bye!'], $event->getParams());
+
+        $this->assertNull($this->queue->extract());
+    }
 }

@@ -36,6 +36,13 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
     protected $priorities;
 
     /**
+     * Track the last timestamp used for priority so we can avoid duplicate values
+     *
+     * @var int
+     */
+    protected $lastTimestamp = 0;
+
+    /**
      * Initializes the list of event priorities.
      */
     public function __construct()
@@ -129,7 +136,11 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
     {
         $priority = new EventQueuePriority;
         $priority->value = $this->priorities[$command];
-        $priority->timestamp = microtime(true) * 10000;
+        $priority->timestamp = (int) (microtime(true) * 10000);
+        if ($priority->timestamp <= $this->lastTimestamp) {
+            $priority->timestamp = $this->lastTimestamp + 1;
+        }
+        $this->lastTimestamp = $priority->timestamp;
         return $priority;
     }
 
@@ -158,7 +169,7 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      */
     public function compare($priority1, $priority2)
     {
-        $priority = $priority2->value - $priority1->value;
+        $priority = $priority1->value - $priority2->value;
         if (!$priority) {
             $priority = $priority2->timestamp - $priority1->timestamp;
         }
