@@ -11,10 +11,10 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.3",
-        "phergie/phergie-irc-client-react": "dev-master",
-        "phergie/phergie-irc-connection": "dev-master",
-        "phergie/phergie-irc-event": "dev-master",
+        "php": ">=5.4.2",
+        "phergie/phergie-irc-client-react": "2.*",
+        "phergie/phergie-irc-connection": "1.*",
+        "phergie/phergie-irc-event": "1.*",
         "evenement/evenement": "2.0.*",
         "monolog/monolog": "1.6.*"
     },
