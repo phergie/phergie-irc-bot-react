@@ -15,8 +15,8 @@
         "phergie/phergie-irc-client-react": "2.*",
         "phergie/phergie-irc-connection": "1.*",
         "phergie/phergie-irc-event": "1.*",
-        "evenement/evenement": "2.0.*",
-        "monolog/monolog": "1.6.*"
+        "evenement/evenement": "~2.0",
+        "monolog/monolog": "~1.6"
     },
     "repositories": [
         {
