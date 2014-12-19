@@ -9,6 +9,7 @@
 namespace Phergie\Irc\Bot\React;
 
 use Phergie\Irc\Event\CtcpEvent;
+use Phergie\Irc\Event\EventInterface;
 use Phergie\Irc\Event\UserEvent;
 
 /**
@@ -103,6 +104,21 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
     }
 
     /**
+     * Enqueues a new event.
+     *
+     * @param \Phergie\Irc\Event\EventInterface
+     * @param string $command
+     * @param array $params
+     */
+    protected function queueRequest(EventInterface $event, $command, array $params)
+    {
+        $event->setPrefix($this->prefix);
+        $event->setCommand($command);
+        $event->setParams(array_filter($params));
+        $this->insert($event, $this->getPriority($command, $params));
+    }
+
+    /**
      * Enqueues a new IRC event.
      *
      * @param string $command
@@ -110,11 +126,7 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      */
     protected function queueIrcRequest($command, array $params = array())
     {
-        $event = new UserEvent;
-        $event->setPrefix($this->prefix);
-        $event->setCommand($command);
-        $event->setParams(array_filter($params));
-        $this->insert($event, $this->getPriority($command, $params));
+        $this->queueRequest(new UserEvent, $command, $params);
     }
 
     /**
@@ -144,11 +156,8 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
     protected function queueCtcpEvent($command, $ctcpCommand, array $params = array())
     {
         $event = new CtcpEvent;
-        $event->setPrefix($this->prefix);
-        $event->setCommand($command);
-        $event->setParams(array_filter($params));
         $event->setCtcpCommand($ctcpCommand);
-        $this->insert($event, $this->getPriority($command, $params));
+        $this->queueRequest($event, $command, $params);
     }
 
     /**
