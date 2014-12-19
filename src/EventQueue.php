@@ -9,8 +9,8 @@
 namespace Phergie\Irc\Bot\React;
 
 use Phergie\Irc\Event\CtcpEvent;
-use Phergie\Irc\Event\EventInterface;
 use Phergie\Irc\Event\UserEvent;
+use Phergie\Irc\Event\UserEventInterface;
 
 /**
  * Queue to contain commands issued by plugins to be sent to servers so as to
@@ -106,11 +106,11 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
     /**
      * Enqueues a new event.
      *
-     * @param \Phergie\Irc\Event\EventInterface
+     * @param \Phergie\Irc\Event\UserEventInterface
      * @param string $command
      * @param array $params
      */
-    protected function queueRequest(EventInterface $event, $command, array $params)
+    protected function queueRequest(UserEventInterface $event, $command, array $params)
     {
         $event->setPrefix($this->prefix);
         $event->setCommand($command);
