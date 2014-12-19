@@ -34,7 +34,8 @@
     ],
     "require-dev": {
         "phpunit/phpunit": "4.1.*",
-        "phake/phake": "2.0.0-beta2"
+        "phake/phake": "2.0.0-beta2",
+        "codeclimate/php-test-reporter": "~0.1"
     },
     "autoload": {
         "psr-4": {
