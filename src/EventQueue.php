@@ -56,49 +56,7 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
         }
         // @codeCoverageIgnoreEnd
 
-        $this->priorities = array_flip(array(
-            'RESTART',
-            'SQUIT',
-            'QUIT',
-            'ERROR',
-            'KICK',
-            'PART',
-            'KILL',
-            'INVITE',
-            'TOPIC',
-            'ACTION',
-            'PRIVMSG',
-            'NICK',
-            'MODE',
-            'WHOWAS',
-            'WHOIS',
-            'WHO',
-            'INFO',
-            'ADMIN',
-            'TRACE',
-            'TIME',
-            'LINKS',
-            'STATS',
-            'VERSION',
-            'NAMES',
-            'LIST',
-            'JOIN',
-            'NOTICE',
-            'PONG',
-            'PING',
-            'USER',
-            'PASS',
-            'ISON',
-            'USERHOST',
-            'WALLOPS',
-            'USERS',
-            'SUMMON',
-            'REHASH',
-            'AWAY',
-            'CONNECT',
-            'OPER',
-            'SERVER',
-        ));
+        $this->priorities = $this->getPriorities();
     }
 
     /**
@@ -841,5 +799,57 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
     public function ctcpActionResponse($nickname, $action)
     {
         $this->queueCtcpResponse('ACTION', array($nickname, $action));
+    }
+
+    /**
+     * Returns a list of IRC events in order from most to least destructive.
+     *
+     * @return array Associative array keyed by event name
+     */
+    protected function getPriorities()
+    {
+        return array_flip(array(
+            'RESTART',
+            'SQUIT',
+            'QUIT',
+            'ERROR',
+            'KICK',
+            'PART',
+            'KILL',
+            'INVITE',
+            'TOPIC',
+            'ACTION',
+            'PRIVMSG',
+            'NICK',
+            'MODE',
+            'WHOWAS',
+            'WHOIS',
+            'WHO',
+            'INFO',
+            'ADMIN',
+            'TRACE',
+            'TIME',
+            'LINKS',
+            'STATS',
+            'VERSION',
+            'NAMES',
+            'LIST',
+            'JOIN',
+            'NOTICE',
+            'PONG',
+            'PING',
+            'USER',
+            'PASS',
+            'ISON',
+            'USERHOST',
+            'WALLOPS',
+            'USERS',
+            'SUMMON',
+            'REHASH',
+            'AWAY',
+            'CONNECT',
+            'OPER',
+            'SERVER',
+        ));
     }
 }
