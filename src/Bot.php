@@ -425,10 +425,10 @@ class Bot
     /**
      * Configures the client to emit events for specific types of messages.
      *
-     * @param \Phergie\Irc\Client\React\Client $client Client for which to
-     *        configure events
+     * @param \Phergie\Irc\Client\React\ClientInterface $client Client for
+     *        which to configure events
      */
-    protected function registerClientSubscribers(Client $client)
+    protected function registerClientSubscribers(ClientInterface $client)
     {
         $bot = $this;
 
