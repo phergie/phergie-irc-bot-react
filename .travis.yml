@@ -9,8 +9,12 @@ php:
 before_script:
   - composer self-update
   - composer install --dev
+  - mkdir -p build/cov
   - mkdir -p build/logs
 
 script:
-  - ./vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
-  # - CODECLIMATE_REPO_TOKEN=8c4056b715faa506631045ecbc23b1d92f8a04ab8d9ee39b43110afeaa232328 ./vendor/bin/test-reporter
+  - ./vendor/bin/phpunit --coverage-text
+
+after_script:
+  - ./vendor/bin/coveralls -v
+  - CODECLIMATE_REPO_TOKEN=8c4056b715faa506631045ecbc23b1d92f8a04ab8d9ee39b43110afeaa232328 ./vendor/bin/test-reporter --coverage-report=build/cov/clover.xml
