@@ -11,6 +11,7 @@
 namespace Phergie\Irc\Bot\React;
 
 use Monolog\Logger;
+use Phergie\Irc\Bot\React\PluginProcessor\ClientInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\EventEmitterInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\LoggerInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\LoopInjector;
@@ -383,10 +384,13 @@ class Bot
      * configuration.
      *
      * @param \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface[]
+     *
+     * @return PluginProcessorInterface[]
      */
     protected function getDefaultPluginProcessors()
     {
         return array(
+            new ClientInjector,
             new EventEmitterInjector,
             new LoggerInjector,
             new LoopInjector,
