@@ -10,7 +10,7 @@
 
 namespace Phergie\Irc\Bot\React;
 
-use Phergie\Irc\Client\React\Client;
+use Phergie\Irc\Client\React\ClientInterface;
 
 /**
  * Interface for injection of the client.
@@ -23,7 +23,7 @@ interface ClientAwareInterface
     /**
      * Sets the client for the implementing class to use.
      *
-     * @param Client $client
+     * @param ClientInterface $client
      */
-    public function setClient(Client $client);
+    public function setClient(ClientInterface $client);
 }
