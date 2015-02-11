@@ -10,6 +10,7 @@
 
 namespace Phergie\Irc\Bot\React;
 
+use Phergie\Irc\Client\React\ClientInterface;
 use Evenement\EventEmitterInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -23,8 +24,16 @@ use Psr\Log\LoggerAwareInterface;
 abstract class AbstractPlugin implements
     PluginInterface,
     LoggerAwareInterface,
-    EventEmitterAwareInterface
+    EventEmitterAwareInterface,
+    ClientAwareInterface
 {
+    /**
+     * Client for any adjustments the plugin may want to make
+     *
+     * @var ClientInterface
+     */
+    protected $client;
+
     /**
      * Event emitter used to register callbacks for IRC events of interest to
      * the plugin
@@ -39,6 +48,26 @@ abstract class AbstractPlugin implements
      * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
+
+    /**
+     * Sets the client for the plugin to use.
+     *
+     * @param ClientInterface $client
+     */
+    public function setClient(ClientInterface $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * Returns the client in use by the plugin.
+     *
+     * @return ClientInterface|null
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
 
     /**
      * Sets the event emitter for the plugin to use.
