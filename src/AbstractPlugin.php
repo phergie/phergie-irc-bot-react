@@ -108,4 +108,26 @@ abstract class AbstractPlugin implements
     {
         return $this->logger;
     }
+
+    /**
+     * Replaces bytes in a string that might cause it to be truncated or
+     * otherwise misinterpreted by the server.
+     *
+     * @param string $string
+     * @return string $string
+     */
+    public function escapeParam($string)
+    {
+        foreach (["\r\n", "\r", "\n"] as $badBytes) {
+            if (false !== strpos($string, $badBytes)) {
+                $string = str_replace($badBytes, " ", $string);
+            }
+        }
+
+        if (false !== strpos($string, "\0")) {
+            $string = str_replace("\0", "", $string);
+        }
+
+        return $string;
+    }
 }
