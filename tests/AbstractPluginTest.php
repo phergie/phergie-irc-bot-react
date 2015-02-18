@@ -83,4 +83,21 @@ class AbstractPluginTest extends \PHPUnit_Framework_TestCase
         $class = new \ReflectionClass(get_class($this->plugin));
         $this->assertArrayHasKey('Phergie\Irc\Bot\React\PluginInterface', $class->getInterfaces());
     }
+
+    /**
+     * Tests escaping messages.
+     */
+    public function testEscapeParam()
+    {
+        $toTest = [
+            "one\r\ntwo",
+            "one\rtwo",
+            "one\ntwo",
+            "one two\0"
+        ];
+        $expected = "one two";
+        foreach ($toTest as  $test) {
+            $this->assertSame($expected, $this->plugin->escapeParam($test));
+        }
+    }
 }
