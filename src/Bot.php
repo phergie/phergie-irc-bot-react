@@ -368,7 +368,7 @@ class Bot
                     return !$processor instanceof PluginProcessorInterface;
                 }
             );
-            if ($invalid) {
+            if (!empty($invalid)) {
                 throw new \RuntimeException(
                     'All configuration "pluginProcessors" array values must implement'
                         . ' \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface'
