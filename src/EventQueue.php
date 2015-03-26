@@ -2,7 +2,7 @@
 /**
  * Phergie (http://phergie.org)
  * @copyright Copyright (c) 2008-2014 Phergie Development Team (http://phergie.org)
- * @license http://phergie.org/license New BSD License
+ * @license http://phergie.org/license Simplified BSD License
  * @package Phergie\Irc\Bot\React
  */
 
