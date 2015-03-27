@@ -614,6 +614,16 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
     }
 
     /**
+     * Implements \Phergie\Irc\GeneratorInterface->ircProtoctl().
+     *
+     * @param string $proto
+     */
+    public function ircProtoctl($proto)
+    {
+        $this->queueIrcRequest('PROTOCTL', array($proto));
+    }
+
+    /**
      * Implements \Phergie\Irc\GeneratorInterface->ctcpFinger().
      *
      * @param string $receivers
@@ -852,6 +862,7 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
             'ISON',
             'USERHOST',
             'WALLOPS',
+            'PROTOCTL',
             'USERS',
             'SUMMON',
             'REHASH',
