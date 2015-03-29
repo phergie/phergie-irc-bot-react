@@ -103,6 +103,7 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
             array('ircWallops', 'WALLOPS', array('text')),
             array('ircUserhost', 'USERHOST', array('nickname1', 'nickname2', 'nickname3', 'nickname4', 'nickname5')),
             array('ircIson', 'ISON', array('nicknames')),
+            array('ircProtoctl', 'PROTOCTL', array('proto')),
         );
 
         foreach ($data as $value) {
