@@ -15,6 +15,7 @@ use Phergie\Irc\Event\EventInterface;
 use Phergie\Irc\Bot\React\AbstractPlugin;
 use Phergie\Irc\Bot\React\Bot;
 use Phergie\Irc\Bot\React\EventQueue;
+use Phergie\Irc\Bot\React\EventQueueFactory;
 
 /**
  * Tests for Bot class.
@@ -145,23 +146,23 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests setEventQueue().
+     * Tests setEventQueueFactory().
      */
-    public function testSetEventQueue()
+    public function testSetEventQueueFactory()
     {
-        $queue = $this->getMockEventQueue();
-        $this->bot->setEventQueue($queue);
-        $this->assertSame($queue, $this->bot->getEventQueue());
+        $queue = $this->getMockEventQueueFactory();
+        $this->bot->setEventQueueFactory($queue);
+        $this->assertSame($queue, $this->bot->getEventQueueFactory());
     }
 
     /**
-     * Tests getEventQueue().
+     * Tests getEventQueueFactory().
      */
-    public function testGetEventQueue()
+    public function testGetEventQueueFactory()
     {
         $this->assertInstanceOf(
-            '\Phergie\Irc\Bot\React\EventQueueInterface',
-            $this->bot->getEventQueue()
+            '\Phergie\Irc\Bot\React\EventQueueFactoryInterface',
+            $this->bot->getEventQueueFactory()
         );
     }
 
@@ -442,15 +443,17 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::when($parser)->parse($message)->thenReturn($message);
         $this->bot->setParser($parser);
 
-        $queue = $this->getMockEventQueue();
-        $this->bot->setEventQueue($queue);
-
         $client = new \Phergie\Irc\Client\React\Client;
         $this->bot->setClient($client);
 
         $write = $params[] = $this->getMockWriteStream();
         $connection = $params[] = $this->getMockConnection();
         $logger = $params[] = $this->getMockLogger();
+
+        $queue = $this->getMockEventQueue();
+        $queueFactory = $this->getMockEventQueueFactory();
+        Phake::when($queueFactory)->getEventQueue($connection)->thenReturn($queue);
+        $this->bot->setEventQueueFactory($queueFactory);
 
         $test = $this;
         $allCalled = false;
@@ -485,7 +488,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $queue = $this->getMockEventQueue();
         Phake::when($queue)->extract()->thenReturn($eventObject)->thenReturn(false);
-        $this->bot->setEventQueue($queue);
 
         $client = new \Phergie\Irc\Client\React\Client;
         $this->bot->setClient($client);
@@ -522,6 +524,11 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $write = $params[] = $this->getMockWriteStream();
         $connection = $params[] = $this->getMockConnection();
+
+        $queueFactory = $this->getMockEventQueueFactory();
+        Phake::when($queueFactory)->getEventQueue($connection)->thenReturn($queue);
+        $this->bot->setEventQueueFactory($queueFactory);
+
         $client->emit('irc.tick', $params);
 
         Phake::verify($eventObject)->setConnection($connection);
@@ -565,7 +572,9 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $connections = array($connection);
 
         $queue = new EventQueue;
-        $this->bot->setEventQueue($queue);
+        $queueFactory = $this->getMockEventQueueFactory();
+        Phake::when($queueFactory)->getEventQueue($connection)->thenReturn($queue);
+        $this->bot->setEventQueueFactory($queueFactory);
 
         $eventObject = Phake::mock('\Phergie\Irc\Event\UserEvent');
         $eventParams = array('#channel', 'message');
@@ -622,14 +631,14 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $logger = $this->getMockLogger();
         $parser = $this->getMockParser();
         $converter = $this->getMockConverter();
-        $eventQueue = $this->getMockEventQueue();
+        $eventQueueFactory = $this->getMockEventQueueFactory();
 
         $config = array(
             'client' => $client,
             'logger' => $logger,
             'parser' => $parser,
             'converter' => $converter,
-            'eventQueue' => $eventQueue,
+            'eventQueueFactory' => $eventQueueFactory,
             'plugins' => array(),
             'connections' => array($this->getMockConnection()),
         );
@@ -641,7 +650,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($logger, $this->bot->getLogger());
         $this->assertSame($parser, $this->bot->getParser());
         $this->assertSame($converter, $this->bot->getConverter());
-        $this->assertSame($eventQueue, $this->bot->getEventQueue());
+        $this->assertSame($eventQueueFactory, $this->bot->getEventQueueFactory());
     }
 
     /*** SUPPORTING METHODS ***/
@@ -694,6 +703,16 @@ class BotTest extends \PHPUnit_Framework_TestCase
     protected function getMockEventQueue()
     {
         return Phake::mock('\Phergie\Irc\Bot\React\EventQueueInterface');
+    }
+
+    /**
+     * Returns a mock event queue factory.
+     *
+     * @return \Phergie\Irc\Bot\React\EventQueueFactoryInterface
+     */
+    protected function getMockEventQueueFactory()
+    {
+        return Phake::mock('\Phergie\Irc\Bot\React\EventQueueFactoryInterface');
     }
 
     /**
