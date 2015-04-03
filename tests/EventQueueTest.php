@@ -222,4 +222,25 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->queue->extract());
     }
+
+    /**
+     * Tests that iterating over the event queue does not truncate its contents.
+     */
+    public function testNonDestructiveIteration()
+    {
+        $this->assertNull($this->queue->extract());
+
+        $this->queue->ircQuit();
+        $contents = [];
+        foreach ($this->queue as $value) {
+            $contents[] = $value;
+        }
+
+        $event = $this->queue->extract();
+        $this->assertInstanceOf('\Phergie\Irc\Event\EventInterface', $event);
+        $this->assertEquals('QUIT', $event->getCommand());
+        $this->assertEmpty($event->getParams());
+
+        $this->assertEquals([$event], $contents);
+    }
 }

@@ -20,8 +20,15 @@ use Phergie\Irc\Event\UserEventInterface;
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-class EventQueue extends \SplPriorityQueue implements EventQueueInterface
+class EventQueue implements EventQueueInterface
 {
+    /**
+     * Internal priority queue.
+     *
+     * @var \Phergie\Irc\Bot\React\EventQueueInternal
+     */
+    protected $queue;
+
     /**
      * Prefix for queued messages
      *
@@ -48,16 +55,29 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      */
     public function __construct()
     {
-        // For HHVM compatibility
-        // @see https://github.com/facebook/hhvm/issues/1695
-        // @see http://stackoverflow.com/a/4650617/906821
-        // @codeCoverageIgnoreStart
-        if (method_exists('\SplPriorityQueue', '__construct')) {
-            parent::__construct();
-        }
-        // @codeCoverageIgnoreEnd
+        $this->queue = new EventQueueInternal;
 
         $this->priorities = $this->getPriorities();
+    }
+
+    /**
+     * Allows iteration over the event queue.
+     *
+     * @return \Phergie\Irc\Bot\React\EventQueueInternal
+     */
+    public function getIterator()
+    {
+        return clone $this->queue;
+    }
+
+    /**
+     * Wrapper for the queue's internal count method.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->queue->count();
     }
 
     /**
@@ -68,10 +88,10 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
      */
     public function extract()
     {
-        if ($this->isEmpty()) {
+        if ($this->queue->isEmpty()) {
             return null;
         }
-        return parent::extract();
+        return $this->queue->extract();
     }
 
     /**
@@ -115,7 +135,7 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
         $event->setPrefix($this->prefix);
         $event->setCommand($command);
         $event->setParams(array_filter($params));
-        $this->insert($event, $this->getPriority($command, $params));
+        $this->queue->insert($event, $this->getPriority($command, $params));
     }
 
     /**
@@ -127,23 +147,6 @@ class EventQueue extends \SplPriorityQueue implements EventQueueInterface
     protected function queueIrcRequest($command, array $params = array())
     {
         $this->queueRequest(new UserEvent, $command, $params);
-    }
-
-    /**
-     * Overrides native default comparison logic to assign higher priority to
-     * events inserted earlier.
-     *
-     * @param \Phergie\Irc\Bot\React\EventQueuePriority $priority1
-     * @param \Phergie\Irc\Bot\React\EventQueuePriority $priority2
-     * @return int
-     */
-    public function compare($priority1, $priority2)
-    {
-        $priority = $priority1->value - $priority2->value;
-        if (!$priority) {
-            $priority = $priority2->timestamp - $priority1->timestamp;
-        }
-        return $priority;
     }
 
     /**

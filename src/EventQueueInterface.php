@@ -18,7 +18,7 @@ use Phergie\Irc\GeneratorInterface;
  * @category Phergie
  * @package Phergie\Irc\Bot\React
  */
-interface EventQueueInterface extends GeneratorInterface, \Iterator, \Countable
+interface EventQueueInterface extends GeneratorInterface, \IteratorAggregate, \Countable
 {
     /**
      * Removes and returns an event from the front of the queue.
