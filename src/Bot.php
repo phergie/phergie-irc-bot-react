@@ -342,6 +342,11 @@ class Bot
         foreach ($processors as $processor) {
             foreach ($plugins as $plugin) {
                 $processor->process($plugin, $this);
+                if ($plugin instanceof PluginContainerInterface) {
+                    foreach ($plugin->getPlugins() as $childPlugin) {
+                        $processor->process($childPlugin, $this);
+                    }
+                }
             }
         }
     }
