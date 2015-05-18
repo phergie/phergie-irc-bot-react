@@ -336,12 +336,24 @@ class Bot
      *
      * @param \Phergie\Irc\Bot\React\PluginInterface[]
      * @param \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface[]
+     * @param \SplObjectStorage $processedPlugins
      */
-    protected function processPlugins(array $plugins, array $processors)
+    protected function processPlugins(array $plugins, array $processors, \SplObjectStorage $processedPlugins = null)
     {
-        foreach ($processors as $processor) {
-            foreach ($plugins as $plugin) {
+        // Initialise store of already-processed plugins, to prevent container-based endless recursion
+        if ($processedPlugins === null) {
+            $processedPlugins = new \SplObjectStorage;
+        }
+        foreach ($plugins as $plugin) {
+            if ($processedPlugins->contains($plugin)) {
+                continue;
+            }
+            $processedPlugins->attach($plugin);
+            foreach ($processors as $processor) {
                 $processor->process($plugin, $this);
+            }
+            if ($plugin instanceof PluginContainerInterface) {
+                $this->processPlugins($plugin->getPlugins(), $processors, $processedPlugins);
             }
         }
     }

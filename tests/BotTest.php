@@ -16,6 +16,7 @@ use Phergie\Irc\Bot\React\AbstractPlugin;
 use Phergie\Irc\Bot\React\Bot;
 use Phergie\Irc\Bot\React\EventQueue;
 use Phergie\Irc\Bot\React\EventQueueFactory;
+use Phergie\Irc\Bot\React\PluginContainerInterface;
 
 /**
  * Tests for Bot class.
@@ -317,6 +318,53 @@ class BotTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests plugin processors being passed through plugin containers.
+     */
+    public function testProcessPluginContainers()
+    {
+        $plugin = $this->getMockPlugin();
+        $container = new TestPluginContainer([$plugin]);
+        $processor = Phake::mock('\Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface');
+
+        $config = array(
+            'connections' => array($this->getMockConnection()),
+            'plugins' => array($container),
+            'pluginProcessors' => array($processor),
+        );
+
+        $this->bot->setClient($this->getMockClient());
+        $this->bot->setConfig($config);
+        $this->bot->run();
+
+        Phake::verify($processor)->process($plugin, $this->bot);
+    }
+
+    /**
+     * Tests recursion for nested plugins in plugin containers.
+     */
+    public function testProcessPluginsWithRecursion()
+    {
+        $singlePlugin = $this->getMockPlugin();
+        $repeatedPlugin = $this->getMockPlugin();
+        $container = new TestPluginContainer([$singlePlugin, $repeatedPlugin]);
+        $recursiveContainer = new TestPluginContainer([$container, $repeatedPlugin]);
+        $processor = Phake::mock('\Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface');
+
+        $config = array(
+            'connections' => array($this->getMockConnection()),
+            'plugins' => array($recursiveContainer),
+            'pluginProcessors' => array($processor),
+        );
+
+        $this->bot->setClient($this->getMockClient());
+        $this->bot->setConfig($config);
+        $this->bot->run();
+
+        Phake::verify($processor, Phake::times(1))->process($singlePlugin, $this->bot);
+        Phake::verify($processor, Phake::times(1))->process($repeatedPlugin, $this->bot);
+    }
+
+    /**
      * Tests disabling plugin processors via configuration.
      */
     public function testDisablePluginProcessors()
@@ -389,9 +437,11 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $this->bot->setClient($client);
         $this->bot->setConfig($config);
+        $this->bot->setLogger($logger);
         $this->bot->run();
 
         Phake::verify($plugin)->setEventEmitter($client);
+        Phake::verify($plugin)->setClient($client);
         Phake::verify($plugin)->setLogger($logger);
     }
 
@@ -779,5 +829,27 @@ class TestPlugin extends AbstractPlugin
     public function handleEvent()
     {
         // left empty for stubbing
+    }
+}
+
+/**
+ * Plugin class which implements PluginContainerInterface.
+ */
+class TestPluginContainer extends AbstractPlugin implements PluginContainerInterface
+{
+    protected $plugins = [];
+
+    public function __construct(array $plugins) {
+        $this->plugins = $plugins;
+    }
+
+    public function getPlugins()
+    {
+        return $this->plugins;
+    }
+
+    public function getSubscribedEvents()
+    {
+        return [];
     }
 }
