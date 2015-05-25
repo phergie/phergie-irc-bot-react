@@ -121,7 +121,7 @@ abstract class AbstractPlugin implements
     /**
      * Sets the event queue factory instance.
      *
-     * @param \Phergie\Irc\Bot\React\EventQueueFactoryInterface $factory
+     * @param \Phergie\Irc\Bot\React\EventQueueFactoryInterface $queueFactory
      */
     public function setEventQueueFactory(EventQueueFactoryInterface $queueFactory)
     {
