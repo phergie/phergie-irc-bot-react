@@ -428,6 +428,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $logger = $this->getMockLogger();
         $client = $this->getMockClient();
+        $factory = $this->getMockEventQueueFactory();
         Phake::when($client)->getLogger()->thenReturn($logger);
 
         $config = array(
@@ -438,10 +439,12 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this->bot->setClient($client);
         $this->bot->setConfig($config);
         $this->bot->setLogger($logger);
+        $this->bot->setEventQueueFactory($factory);
         $this->bot->run();
 
         Phake::verify($plugin)->setEventEmitter($client);
         Phake::verify($plugin)->setClient($client);
+        Phake::verify($plugin)->setEventQueueFactory($factory);
         Phake::verify($plugin)->setLogger($logger);
     }
 

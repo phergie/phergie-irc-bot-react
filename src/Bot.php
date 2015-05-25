@@ -13,6 +13,7 @@ namespace Phergie\Irc\Bot\React;
 use Monolog\Logger;
 use Phergie\Irc\Bot\React\PluginProcessor\ClientInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\EventEmitterInjector;
+use Phergie\Irc\Bot\React\PluginProcessor\EventQueueFactoryInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\LoggerInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\LoopInjector;
 use Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface;
@@ -404,6 +405,7 @@ class Bot
         return array(
             new ClientInjector,
             new EventEmitterInjector,
+            new EventQueueFactoryInjector,
             new LoggerInjector,
             new LoopInjector,
         );
