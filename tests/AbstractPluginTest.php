@@ -76,6 +76,44 @@ class AbstractPluginTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests setClient().
+     */
+    public function testSetClient()
+    {
+        $client = Phake::mock('\Phergie\Irc\Client\React\ClientInterface');
+        $this->plugin->setClient($client);
+        $this->assertSame($client, $this->plugin->getClient());
+    }
+
+    /**
+     * Tests getClient().
+     */
+    public function testGetClient()
+    {
+        $client = $this->plugin->getClient();
+        $this->assertNull($client);
+    }
+
+    /**
+     * Tests setEventQueueFactory().
+     */
+    public function testSetEventQueueFactory()
+    {
+        $queueFactory = Phake::mock('\Phergie\Irc\Bot\React\EventQueueFactoryInterface');
+        $this->plugin->setEventQueueFactory($queueFactory);
+        $this->assertSame($queueFactory, $this->plugin->getEventQueueFactory());
+    }
+
+    /**
+     * Tests getEventQueueFactory().
+     */
+    public function testGetEventQueueFactory()
+    {
+        $queueFactory = $this->plugin->getEventQueueFactory();
+        $this->assertNull($queueFactory);
+    }
+
+    /**
      * Tests that the class under test implements PluginInterface.
      */
     public function testImplementsPluginInterface()
