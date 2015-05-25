@@ -25,7 +25,8 @@ abstract class AbstractPlugin implements
     PluginInterface,
     LoggerAwareInterface,
     EventEmitterAwareInterface,
-    ClientAwareInterface
+    ClientAwareInterface,
+    EventQueueFactoryAwareInterface
 {
     /**
      * Client for any adjustments the plugin may want to make
@@ -48,6 +49,14 @@ abstract class AbstractPlugin implements
      * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
+
+    /**
+     * Event queue factory, which gets the event queue instance for a given
+     * connection instance.
+     *
+     * @var \Phergie\Irc\Bot\React\EventQueueFactoryInterface
+     */
+    protected $queueFactory;
 
     /**
      * Sets the client for the plugin to use.
@@ -107,6 +116,26 @@ abstract class AbstractPlugin implements
     public function getLogger()
     {
         return $this->logger;
+    }
+
+    /**
+     * Sets the event queue factory instance.
+     *
+     * @param \Phergie\Irc\Bot\React\EventQueueFactoryInterface $factory
+     */
+    public function setEventQueueFactory(EventQueueFactoryInterface $queueFactory)
+    {
+        $this->queueFactory = $queueFactory;
+    }
+
+    /**
+     * Returns the event queue factory instance.
+     *
+     * @return \Phergie\Irc\Bot\React\EventQueueFactoryInterface
+     */
+    public function getEventQueueFactory()
+    {
+        return $this->queueFactory;
     }
 
     /**
