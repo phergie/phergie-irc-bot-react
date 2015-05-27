@@ -9,12 +9,11 @@
         "issues": "https://github.com/phergie/phergie-irc-bot-react/issues",
         "source": "https://github.com/phergie/phergie-irc-bot-react"
     },
-    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.2",
         "phergie/phergie-irc-client-react": "~2.1",
-        "phergie/phergie-irc-connection": "1.*",
-        "phergie/phergie-irc-event": "1.*",
+        "phergie/phergie-irc-connection": "~1.0",
+        "phergie/phergie-irc-event": "~1.0",
         "evenement/evenement": "~2.0",
         "monolog/monolog": "~1.6"
     },
@@ -33,8 +32,8 @@
         }
     ],
     "require-dev": {
-        "phpunit/phpunit": "4.1.*",
-        "phake/phake": "2.0.0-beta2",
+        "phpunit/phpunit": "~4.6",
+        "phake/phake": "~2.0",
         "codeclimate/php-test-reporter": "~0.1",
         "satooshi/php-coveralls": "0.6.1",
         "symfony/config": "~2.0",

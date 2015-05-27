@@ -647,7 +647,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         };
         Phake::when($plugin)
             ->handleEvent($eventObject, $queue)
-            ->thenGetReturnByLambda($callback);
+            ->thenReturnCallback($callback);
 
         $config = array(
             'plugins' => array($plugin),
