@@ -143,7 +143,7 @@ abstract class AbstractPlugin implements
      * otherwise misinterpreted by the server.
      *
      * @param string $string
-     * @return string $string
+     * @return string
      */
     public function escapeParam($string)
     {
