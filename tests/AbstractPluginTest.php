@@ -114,6 +114,25 @@ class AbstractPluginTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests setLoop().
+     */
+    public function testSetLoop()
+    {
+        $loop = Phake::mock('\React\EventLoop\LoopInterface');
+        $this->plugin->setLoop($loop);
+        $this->assertSame($loop, $this->plugin->getLoop());
+    }
+
+    /**
+     * Tests getLoop().
+     */
+    public function testGetLoop()
+    {
+        $loop = $this->plugin->getLoop();
+        $this->assertNull($loop);
+    }
+
+    /**
      * Tests that the class under test implements PluginInterface.
      */
     public function testImplementsPluginInterface()

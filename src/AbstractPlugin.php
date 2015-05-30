@@ -11,9 +11,11 @@
 namespace Phergie\Irc\Bot\React;
 
 use Phergie\Irc\Client\React\ClientInterface;
+use Phergie\Irc\Client\React\LoopAwareInterface;
 use Evenement\EventEmitterInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
+use React\EventLoop\LoopInterface;
 
 /**
  * Base class for plugins.
@@ -26,7 +28,8 @@ abstract class AbstractPlugin implements
     LoggerAwareInterface,
     EventEmitterAwareInterface,
     ClientAwareInterface,
-    EventQueueFactoryAwareInterface
+    EventQueueFactoryAwareInterface,
+    LoopAwareInterface
 {
     /**
      * Client for any adjustments the plugin may want to make
@@ -57,6 +60,13 @@ abstract class AbstractPlugin implements
      * @var \Phergie\Irc\Bot\React\EventQueueFactoryInterface
      */
     protected $queueFactory;
+
+    /**
+     * Event loop instance
+     *
+     * @var \React\EventLoop\LoopInterface
+     */
+    protected $eventLoop;
 
     /**
      * Sets the client for the plugin to use.
@@ -136,6 +146,26 @@ abstract class AbstractPlugin implements
     public function getEventQueueFactory()
     {
         return $this->queueFactory;
+    }
+
+    /**
+     * Sets the event loop instance.
+     *
+     * @param \React\EventLoop\LoopInterface $loop
+     */
+    public function setLoop(LoopInterface $loop)
+    {
+        $this->eventLoop = $loop;
+    }
+
+    /**
+     * Returns the event loop instance.
+     *
+     * @return \React\EventLoop\LoopInterface
+     */
+    public function getLoop()
+    {
+        return $this->eventLoop;
     }
 
     /**

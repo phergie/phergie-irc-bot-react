@@ -429,7 +429,9 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $logger = $this->getMockLogger();
         $client = $this->getMockClient();
         $factory = $this->getMockEventQueueFactory();
+        $loop = Phake::mock('\React\EventLoop\LoopInterface');
         Phake::when($client)->getLogger()->thenReturn($logger);
+        Phake::when($client)->getLoop()->thenReturn($loop);
 
         $config = array(
             'plugins' => array($plugin),
@@ -446,6 +448,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::verify($plugin)->setClient($client);
         Phake::verify($plugin)->setEventQueueFactory($factory);
         Phake::verify($plugin)->setLogger($logger);
+        Phake::verify($plugin)->setLoop($loop);
     }
 
     /**
