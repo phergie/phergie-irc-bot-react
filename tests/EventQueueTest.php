@@ -89,7 +89,7 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
             array('ircPrivmsg', 'PRIVMSG', array('receivers', 'text')),
             array('ircNotice', 'NOTICE', array('nickname', 'text')),
             array('ircWho', 'WHO', array('name', 'o')),
-            array('ircWhois', 'WHOIS', array('server', 'nickmasks')),
+            array('ircWhois', 'WHOIS', array('nickmasks', 'server')),
             array('ircWhowas', 'WHOWAS', array('nickname', 'count', 'server')),
             array('ircKill', 'KILL', array('nickname', 'comment')),
             array('ircPing', 'PING', array('server1', 'server2')),
