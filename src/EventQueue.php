@@ -472,10 +472,10 @@ class EventQueue implements EventQueueInterface
     /**
      * Implements \Phergie\Irc\GeneratorInterface->ircWhois().
      *
-     * @param string $server
      * @param string $nickmasks
+     * @param string $server Optional
      */
-    public function ircWhois($server, $nickmasks)
+    public function ircWhois($nickmasks, $server = null)
     {
         $this->queueIrcRequest('WHOIS', array($server, $nickmasks));
     }

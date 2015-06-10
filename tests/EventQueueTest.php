@@ -37,21 +37,26 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests the queue with IRC events.
+     * $event_params is the same as $params if set to null.
      *
      * @param string $method
      * @param string $command
      * @param array $params
+     * @param array|null $event_params
      * @param string|null $prefix
      * @dataProvider dataProviderIrcEvents
      */
-    public function testIrcEvents($method, $command, array $params = array(), $prefix = null)
+    public function testIrcEvents($method, $command, array $params = array(), array $event_params = null, $prefix = null)
     {
+        if ($event_params == null) {
+            $event_params = $params;
+        }
         $this->queue->setPrefix($prefix);
         call_user_func_array(array($this->queue, $method), $params);
         $event = $this->queue->extract();
         $this->assertInstanceOf('\Phergie\Irc\Event\UserEvent', $event);
         $this->assertSame($command, $event->getCommand());
-        $this->assertSame($params, $event->getParams());
+        $this->assertSame($event_params, $event->getParams());
         $this->assertSame($prefix, $event->getPrefix());
     }
 
@@ -89,7 +94,7 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
             array('ircPrivmsg', 'PRIVMSG', array('receivers', 'text')),
             array('ircNotice', 'NOTICE', array('nickname', 'text')),
             array('ircWho', 'WHO', array('name', 'o')),
-            array('ircWhois', 'WHOIS', array('server', 'nickmasks')),
+            array('ircWhois', 'WHOIS', array('nickmasks', 'server'), array('server', 'nickmasks')),
             array('ircWhowas', 'WHOWAS', array('nickname', 'count', 'server')),
             array('ircKill', 'KILL', array('nickname', 'comment')),
             array('ircPing', 'PING', array('server1', 'server2')),
@@ -107,8 +112,11 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($data as $value) {
-            if (!is_array(end($value))) {
+            if (count($value) == 2) {
                 $value[] = array();
+                $value[] = null;
+            } elseif (count($value) == 3) {
+                $value[] = null;
             }
             $value[] = 'prefix';
             $data[] = $value;
