@@ -37,11 +37,12 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests the queue with IRC events.
+     * $event_params is the same as $params if set to null.
      *
      * @param string $method
      * @param string $command
      * @param array $params
-     * @param array $event_params
+     * @param array|null $event_params
      * @param string|null $prefix
      * @dataProvider dataProviderIrcEvents
      */
