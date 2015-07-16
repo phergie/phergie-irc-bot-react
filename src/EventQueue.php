@@ -292,7 +292,7 @@ class EventQueue implements EventQueueInterface
      * @param string $mode
      * @param string $param
      */
-    public function ircMode($target, $mode, $param = null)
+    public function ircMode($target, $mode = null, $param = null)
     {
         $this->queueIrcRequest('MODE', array($target, $mode, $param));
     }
