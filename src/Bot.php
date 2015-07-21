@@ -137,6 +137,7 @@ class Bot
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
+        $this->getClient()->setLogger($logger);
     }
 
     /**
