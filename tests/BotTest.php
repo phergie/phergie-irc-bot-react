@@ -66,10 +66,10 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetLogger()
     {
-        $logger = $this->getMockLogger();
+        $client = $this->getMockClient();
+        $this->bot->setClient($client);
         $this->bot->setLogger($logger);
-        $this->assertSame($logger, $this->bot->getLogger());
-        $this->assertSame($logger, $this->bot->getClient()->getLogger());
+        Phake::verify($client)->setLogger($logger);
     }
 
     /**
