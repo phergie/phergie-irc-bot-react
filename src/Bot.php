@@ -137,6 +137,7 @@ class Bot
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
+        $this->getClient()->setLogger($logger);
     }
 
     /**
@@ -491,7 +492,7 @@ class Bot
         $subtype = $this->getEventSubtype($converted);
         $client->emit($event . '.each', $params);
         $client->emit($event . '.' . $subtype, $params);
-        
+
         $this->processOutgoingEvents($connection, $write);
     }
 
