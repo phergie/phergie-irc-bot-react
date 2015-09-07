@@ -1,18 +1,4 @@
 <?php
-$year = date('Y');
-/*      // This must be used with 'header_comment', but then a config file is needed for each repository
-$header = <<<EOF
-Phergie (http://phergie.org)
-
-@link http://github.com/phergie/phergie-irc-bot-react for the canonical source repository
-@copyright Copyright (c) 2008-$year Phergie Development Team (http://phergie.org)
-@license http://phergie.org/license Simplified BSD License
-@package Phergie\Irc\Bot\React
-EOF;
-
-Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
-*/
-
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->in(__DIR__.'/src')
@@ -37,7 +23,6 @@ return Symfony\CS\Config\Config::create()
         'whitespacy_lines',                 // Remove trailing whitespace at the end of blank lines.
 
         //  Non-essential styling
-        //'header_comment',                 // ? Set header comment from this file on php files
         'phpdoc_order',                     // Annotations in phpdocs should be ordered so that param annotations come first, then throws annotations, then return annotations.
     ])
 
