@@ -62,6 +62,43 @@ class ShortArraySpacesFixer extends AbstractFixer
     }
 }
 
+class MultilineOperatorsFixer extends AbstractFixer
+{
+    public function fix(\SplFileInfo $file, $content)
+    {
+        $tokens = Tokens::fromCode($content);
+        for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
+            if (!$tokens->isBinaryOperator($index)) {
+                continue;
+            }
+
+            $nextToken = $tokens[$index + 1];
+            if ($nextToken->isWhitespace() && !$nextToken->isWhitespace([ 'whitespaces' => " \t" ])) {
+                $indent = explode("\n", $nextToken->getContent());
+                $nextToken->setContent(rtrim($nextToken->getContent()).' ');
+
+                $prevToken = $tokens[$index - 1];
+                if (!$prevToken->isWhitespace()) {
+                    $tokens->insertAt($index, new Token([ T_WHITESPACE, "\n" . end($indent) ]));
+                } elseif ($prevToken->isWhitespace([ 'whitespaces' => " \t" ])) {
+                    $prevToken->setContent("\n" . end($indent) . ltrim($prevToken->getContent()));
+                }
+            }
+        }
+        return $tokens->generateCode();
+    }
+
+    public function getDescription()
+    {
+        return 'Multiline operations: The operator should be prepended to the front of the next line.';
+    }
+
+    public function getLevel()
+    {
+        return FixerInterface::CONTRIB_LEVEL;
+    }
+}
+
 $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->in(__DIR__.'/src')
     ->in(__DIR__.'/tests')
@@ -73,6 +110,7 @@ return Symfony\CS\Config\Config::create()
     ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
 
     ->addCustomFixer(new ShortArraySpacesFixer())
+    ->addCustomFixer(new MultilineOperatorsFixer())
     ->fixers([
         //  Accepted styling
         'short_array_syntax',               // Arrays should use the PHP 5.4 short-syntax.
@@ -92,6 +130,7 @@ return Symfony\CS\Config\Config::create()
 
         // Custom styling
         'short_array_spaces',
+        'multiline_operators',
     ])
 
     ->finder($finder);
