@@ -2,6 +2,8 @@
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->in(__DIR__.'/src')
+    ->in(__DIR__.'/tests')
+    ->append([ __DIR__.'/.php_cs' ])
 ;
 
 return Symfony\CS\Config\Config::create()
