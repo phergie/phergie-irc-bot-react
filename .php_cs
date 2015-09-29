@@ -1,11 +1,6 @@
 <?php
 
-use Symfony\CS\AbstractFixer;
-use Symfony\CS\FixerInterface;
-use Symfony\CS\Tokenizer\Token;
-use Symfony\CS\Tokenizer\Tokens;
-
-class ShortArraySpacesFixer extends AbstractFixer
+class ShortArraySpacesFixer extends Symfony\CS\AbstractFixer
 {
     private static $emptySpace = false;
 
@@ -21,25 +16,25 @@ class ShortArraySpacesFixer extends AbstractFixer
 
     public function fix(\SplFileInfo $file, $content)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokens = Symfony\CS\Tokenizer\Tokens::fromCode($content);
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             if (!$tokens->isShortArray($index)) {
                 continue;
             }
 
             if (!$tokens[$index + 1]->isWhiteSpace()) {
-                $tokens->insertAt($index + 1, new Token([ T_WHITESPACE, ' ' ]));
+                $tokens->insertAt($index + 1, new Symfony\CS\Tokenizer\Token([ T_WHITESPACE, ' ' ]));
             }
 
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
+            $closeIndex = $tokens->findBlockEnd(Symfony\CS\Tokenizer\Tokens::BLOCK_TYPE_SQUARE_BRACE, $index);
             if (!$tokens[$closeIndex - 1]->isWhiteSpace()) {
-                $tokens->insertAt($closeIndex, new Token([ T_WHITESPACE, ' ' ]));
+                $tokens->insertAt($closeIndex, new Symfony\CS\Tokenizer\Token([ T_WHITESPACE, ' ' ]));
             }
 
-            if ($tokens->getNextNonWhiteSpace($index) === ($closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_SQUARE_BRACE, $index))) {
+            if ($tokens->getNextNonWhiteSpace($index) === ($closeIndex = $tokens->findBlockEnd(Symfony\CS\Tokenizer\Tokens::BLOCK_TYPE_SQUARE_BRACE, $index))) {
                 $tokens->clearRange($index + 1, $closeIndex - 1);
                 if (self::$emptySpace) {
-                    $tokens->insertAt($index + 1, new Token([ T_WHITESPACE, ' ' ]));
+                    $tokens->insertAt($index + 1, new Symfony\CS\Tokenizer\Token([ T_WHITESPACE, ' ' ]));
                 }
             }
         }
@@ -53,7 +48,7 @@ class ShortArraySpacesFixer extends AbstractFixer
 
     public function getLevel()
     {
-        return FixerInterface::CONTRIB_LEVEL;
+        return Symfony\CS\FixerInterface::CONTRIB_LEVEL;
     }
 
     public function getPriority()
@@ -62,11 +57,11 @@ class ShortArraySpacesFixer extends AbstractFixer
     }
 }
 
-class MultilineOperatorsFixer extends AbstractFixer
+class MultilineOperatorsFixer extends Symfony\CS\AbstractFixer
 {
     public function fix(\SplFileInfo $file, $content)
     {
-        $tokens = Tokens::fromCode($content);
+        $tokens = Symfony\CS\Tokenizer\Tokens::fromCode($content);
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             if (!$tokens->isBinaryOperator($index)) {
                 continue;
@@ -79,7 +74,7 @@ class MultilineOperatorsFixer extends AbstractFixer
 
                 $prevToken = $tokens[$index - 1];
                 if (!$prevToken->isWhitespace()) {
-                    $tokens->insertAt($index, new Token([ T_WHITESPACE, "\n" . end($indent) ]));
+                    $tokens->insertAt($index, new Symfony\CS\Tokenizer\Token([ T_WHITESPACE, "\n" . end($indent) ]));
                 } elseif ($prevToken->isWhitespace([ 'whitespaces' => " \t" ])) {
                     $prevToken->setContent("\n" . end($indent) . ltrim($prevToken->getContent()));
                 }
@@ -95,7 +90,7 @@ class MultilineOperatorsFixer extends AbstractFixer
 
     public function getLevel()
     {
-        return FixerInterface::CONTRIB_LEVEL;
+        return Symfony\CS\FixerInterface::CONTRIB_LEVEL;
     }
 }
 
