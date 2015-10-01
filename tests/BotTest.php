@@ -48,7 +48,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetConfig()
     {
-        $config = array('foo' => 'bar');
+        $config = [ 'foo' => 'bar' ];
         $this->bot->setConfig($config);
         $this->assertSame($config, $this->bot->getConfig());
     }
@@ -58,7 +58,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetConfig()
     {
-        $this->assertSame(array(), $this->bot->getConfig());
+        $this->assertSame([], $this->bot->getConfig());
     }
 
     /**
@@ -177,100 +177,100 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function dataProviderRunWithInvalidConfiguration()
     {
-        $data = array();
+        $data = [];
 
         // No "plugins" key
-        $data[] = array(
-            array(),
+        $data[] = [
+            [],
             'Configuration must contain a "plugins" key',
-        );
+        ];
 
         // Non-array "plugins" value
-        $data[] = array(
-            array('plugins' => 'foo'),
+        $data[] = [
+            [ 'plugins' => 'foo' ],
             'Configuration "plugins" key must reference an array',
-        );
+        ];
 
         // "plugins" value contains an object that doesn't implement PluginInterface
-        $data[] = array(
-            array('plugins' => array(new \stdClass)),
+        $data[] = [
+            [ 'plugins' => [ new \stdClass ] ],
             'All configuration "plugins" array values must implement \Phergie\Irc\Bot\React\PluginInterface',
-        );
+        ];
 
         // "plugins" value contains a plugin with a getSubscribedEvents()
         // implementation that does not return an array
         $nonArrayPlugin = $this->getMockPlugin();
         Phake::when($nonArrayPlugin)->getSubscribedEvents()->thenReturn('foo');
-        $data[] = array(
-            array('plugins' => array($nonArrayPlugin)),
+        $data[] = [
+            [ 'plugins' => [ $nonArrayPlugin ] ],
             'Plugin of class ' . get_class($nonArrayPlugin) .
                 ' has getSubscribedEvents() implementation' .
-                ' that does not return an array'
-        );
+                ' that does not return an array',
+        ];
 
         // "plugins" value contains a plugin with a getSubscribedEvents()
         // implementation that returns an array with a non-string key
         $badKeyPlugin = $this->getMockPlugin();
-        Phake::when($badKeyPlugin)->getSubscribedEvents()->thenReturn(array(0 => function(){}));
-        $data[] = array(
-            array('plugins' => array($badKeyPlugin)),
+        Phake::when($badKeyPlugin)->getSubscribedEvents()->thenReturn([ 0 => function () {} ]);
+        $data[] = [
+            [ 'plugins' => [ $badKeyPlugin ] ],
             'Plugin of class ' . get_class($badKeyPlugin) .
                 ' returns non-string event name or invalid callback' .
-                ' for event "0"'
-        );
+                ' for event "0"',
+        ];
 
         // "plugins" value contains a plugin with a getSubscribedEvents()
         // implementation that returns an array with a non-callable value
         $badValuePlugin = $this->getMockPlugin();
-        Phake::when($badValuePlugin)->getSubscribedEvents()->thenReturn(array('foo' => 'foo'));
-        $data[] = array(
-            array('plugins' => array($badValuePlugin)),
+        Phake::when($badValuePlugin)->getSubscribedEvents()->thenReturn([ 'foo' => 'foo' ]);
+        $data[] = [
+            [ 'plugins' => [ $badValuePlugin ] ],
             'Plugin of class ' . get_class($badValuePlugin) .
                 ' returns non-string event name or invalid callback' .
-                ' for event "foo"'
-        );
+                ' for event "foo"',
+        ];
 
         // No "connections" key
         $plugin = $this->getMockPlugin();
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'getSubscribedEvents'));
-        $data[] = array(
-            array('plugins' => array($plugin)),
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn([ 'foo' => 'getSubscribedEvents' ]);
+        $data[] = [
+            [ 'plugins' => [ $plugin ] ],
             'Configuration must contain a "connections" key',
-        );
+        ];
 
         // Non-array "connections" value
-        $data[] = array(
-            array('plugins' => array($plugin), 'connections' => 'foo'),
+        $data[] = [
+            [ 'plugins' => [ $plugin ], 'connections' => 'foo' ],
             'Configuration "connections" key must reference a non-empty array',
-        );
+        ];
 
         // Empty array "connections" value
-        $data[] = array(
-            array('plugins' => array($plugin), 'connections' => array()),
+        $data[] = [
+            [ 'plugins' => [ $plugin ], 'connections' => [] ],
             'Configuration "connections" key must reference a non-empty array',
-        );
+        ];
 
         // "connections" value contains an object that doesn't implement ConnectionInterface
-        $data[] = array(
-            array('plugins' => array($plugin), 'connections' => array(new \stdClass)),
+        $data[] = [
+            [ 'plugins' => [ $plugin ], 'connections' => [ new \stdClass ] ],
             'All configuration "connections" array values must implement \Phergie\Irc\ConnectionInterface',
-        );
+        ];
 
         // Non-array "pluginProcessors" value
         $connection = $this->getMockConnection();
         $plugin = $this->getMockPlugin();
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => function(){}));
-        $data[] = array(
-            array('plugins' => array($plugin), 'connections' => array($connection), 'pluginProcessors' => 'foo'),
-            'Configuration "pluginProcessors" key must reference an array'
-        );
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn([ 'foo' => function () {} ]);
+        $data[] = [
+            [ 'plugins' => [ $plugin ], 'connections' => [ $connection ], 'pluginProcessors' => 'foo' ],
+            'Configuration "pluginProcessors" key must reference an array',
+        ];
 
         // "pluginProcessors" value contains an object that doesn't implement PluginProcessorInterface
-        $data[] = array(
-            array('plugins' => array($plugin), 'connections' => array($connection), 'pluginProcessors' => array(new \stdClass)),
+        $data[] = [
+            [ 'plugins' => [ $plugin ], 'connections' => [ $connection ], 'pluginProcessors' => [ new \stdClass ] ],
             'All configuration "pluginProcessors" array values must implement'
-                . ' \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface'
-        );
+                . ' \Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface',
+        ];
 
         return $data;
     }
@@ -300,18 +300,18 @@ class BotTest extends \PHPUnit_Framework_TestCase
     public function testOverridePluginProcessors()
     {
         $plugin = $this->getMockPlugin();
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array());
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn([]);
         $connection = $this->getMockConnection();
-        $connections = array($connection);
+        $connections = [ $connection ];
         $client = $this->getMockClient();
         Phake::when($client)->run($connections)->thenReturn(null);
         $processor = Phake::mock('\Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface');
 
-        $config = array(
-            'plugins' => array($plugin),
+        $config = [
+            'plugins' => [ $plugin ],
             'connections' => $connections,
-            'pluginProcessors' => array($processor),
-        );
+            'pluginProcessors' => [ $processor ],
+        ];
 
         $this->bot->setClient($client);
         $this->bot->setConfig($config);
@@ -326,14 +326,14 @@ class BotTest extends \PHPUnit_Framework_TestCase
     public function testProcessPluginContainers()
     {
         $plugin = $this->getMockPlugin();
-        $container = new TestPluginContainer([$plugin]);
+        $container = new TestPluginContainer([ $plugin ]);
         $processor = Phake::mock('\Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface');
 
-        $config = array(
-            'connections' => array($this->getMockConnection()),
-            'plugins' => array($container),
-            'pluginProcessors' => array($processor),
-        );
+        $config = [
+            'connections' => [ $this->getMockConnection() ],
+            'plugins' => [ $container ],
+            'pluginProcessors' => [ $processor ],
+        ];
 
         $this->bot->setClient($this->getMockClient());
         $this->bot->setConfig($config);
@@ -349,15 +349,15 @@ class BotTest extends \PHPUnit_Framework_TestCase
     {
         $singlePlugin = $this->getMockPlugin();
         $repeatedPlugin = $this->getMockPlugin();
-        $container = new TestPluginContainer([$singlePlugin, $repeatedPlugin]);
-        $recursiveContainer = new TestPluginContainer([$container, $repeatedPlugin]);
+        $container = new TestPluginContainer([ $singlePlugin, $repeatedPlugin ]);
+        $recursiveContainer = new TestPluginContainer([ $container, $repeatedPlugin ]);
         $processor = Phake::mock('\Phergie\Irc\Bot\React\PluginProcessor\PluginProcessorInterface');
 
-        $config = array(
-            'connections' => array($this->getMockConnection()),
-            'plugins' => array($recursiveContainer),
-            'pluginProcessors' => array($processor),
-        );
+        $config = [
+            'connections' => [ $this->getMockConnection() ],
+            'plugins' => [ $recursiveContainer ],
+            'pluginProcessors' => [ $processor ],
+        ];
 
         $this->bot->setClient($this->getMockClient());
         $this->bot->setConfig($config);
@@ -373,7 +373,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
     public function testDisablePluginProcessors()
     {
         $plugin = Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin');
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn([ 'foo' => 'setLogger' ]);
 
         $connection = $this->getMockConnection();
 
@@ -381,11 +381,11 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $client = $this->getMockClient();
         Phake::when($client)->getLogger()->thenReturn($logger);
 
-        $config = array(
-            'plugins' => array($plugin),
-            'connections' => array($connection),
-            'pluginProcessors' => array(),
-        );
+        $config = [
+            'plugins' => [ $plugin ],
+            'connections' => [ $connection ],
+            'pluginProcessors' => [],
+        ];
 
         $this->bot->setClient($client);
         $this->bot->setConfig($config);
@@ -403,13 +403,13 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $connection = $this->getMockConnection();
         $plugin = $this->getMockPlugin();
         $called = false;
-        $callback = function() use (&$called) { $called = true; };
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => $callback));
+        $callback = function () use (&$called) { $called = true; };
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn([ 'foo' => $callback ]);
 
-        $config = array(
-            'plugins' => array($plugin),
-            'connections' => array($connection),
-        );
+        $config = [
+            'plugins' => [ $plugin ],
+            'connections' => [ $connection ],
+        ];
 
         $this->bot->setClient($this->getMockClient());
         $this->bot->setConfig($config);
@@ -425,7 +425,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
     public function testRunWithDefaultPluginProcessors()
     {
         $plugin = Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin');
-        Phake::when($plugin)->getSubscribedEvents()->thenReturn(array('foo' => 'setLogger'));
+        Phake::when($plugin)->getSubscribedEvents()->thenReturn([ 'foo' => 'setLogger' ]);
 
         $connection = $this->getMockConnection();
 
@@ -436,10 +436,10 @@ class BotTest extends \PHPUnit_Framework_TestCase
         Phake::when($client)->getLogger()->thenReturn($logger);
         Phake::when($client)->getLoop()->thenReturn($loop);
 
-        $config = array(
-            'plugins' => array($plugin),
-            'connections' => array($connection),
-        );
+        $config = [
+            'plugins' => [ $plugin ],
+            'connections' => [ $connection ],
+        ];
 
         $this->bot->setClient($client);
         $this->bot->setConfig($config);
@@ -461,21 +461,21 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function dataProviderEventCallbacks()
     {
-        $data = array();
+        $data = [];
 
-        foreach (array('received', 'sent') as $eventType) {
+        foreach ([ 'received', 'sent' ] as $eventType) {
             $eventObject = Phake::mock('\Phergie\Irc\Event\CtcpEvent');
             Phake::when($eventObject)->getCtcpCommand()->thenReturn('ACTION');
-            $data[] = array($eventObject, $eventType, 'ctcp.action');
+            $data[] = [ $eventObject, $eventType, 'ctcp.action' ];
 
             $eventObject = Phake::mock('\Phergie\Irc\Event\UserEvent');
             Phake::when($eventObject)->getCommand()->thenReturn('PRIVMSG');
-            $data[] = array($eventObject, $eventType, 'privmsg');
+            $data[] = [ $eventObject, $eventType, 'privmsg' ];
         }
 
         $eventObject = Phake::mock('\Phergie\Irc\Event\ServerEvent');
         Phake::when($eventObject)->getCode()->thenReturn('ERR_NOSUCHNICK');
-        $data[] = array($eventObject, 'received', 'err_nosuchnick');
+        $data[] = [ $eventObject, 'received', 'err_nosuchnick' ];
 
         return $data;
     }
@@ -491,8 +491,8 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function testEventCallbacks(EventInterface $eventObject, $eventType, $eventSubtype)
     {
-        $params = array();
-        $message = $params[] = array('foo' => 'bar');
+        $params = [];
+        $message = $params[] = [ 'foo' => 'bar' ];
 
         $converter = $this->getMockConverter();
         Phake::when($converter)->convert($message)->thenReturn($eventObject);
@@ -517,12 +517,12 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $test = $this;
         $allCalled = false;
         $typeCalled = false;
-        $client->on('irc.' . $eventType . '.each', function($param, $otherQueue) use (&$allCalled, $test, $eventObject, $queue) {
+        $client->on('irc.' . $eventType . '.each', function ($param, $otherQueue) use (&$allCalled, $test, $eventObject, $queue) {
             $allCalled = true;
             $test->assertSame($eventObject, $param);
             $test->assertSame($otherQueue, $queue);
         });
-        $client->on('irc.' . $eventType . '.' . $eventSubtype, function($param, $otherQueue) use (&$typeCalled, $test, $eventObject, $queue) {
+        $client->on('irc.' . $eventType . '.' . $eventSubtype, function ($param, $otherQueue) use (&$typeCalled, $test, $eventObject, $queue) {
             $typeCalled = true;
             $test->assertSame($eventObject, $param);
             $test->assertSame($otherQueue, $queue);
@@ -541,7 +541,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
     public function testTickEvent()
     {
         $eventObject = Phake::mock('\Phergie\Irc\Event\UserEvent');
-        $eventParams = array('receivers' => '#channel', 'text' => 'message');
+        $eventParams = [ 'receivers' => '#channel', 'text' => 'message' ];
         Phake::when($eventObject)->getCommand()->thenReturn('PRIVMSG');
         Phake::when($eventObject)->getParams()->thenReturn($eventParams);
 
@@ -554,7 +554,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $test = $this;
 
         $allCalled = false;
-        $client->on('irc.sending.all', function($otherQueue) use (&$allCalled, $test, $queue) {
+        $client->on('irc.sending.all', function ($otherQueue) use (&$allCalled, $test, $queue) {
             $allCalled = true;
             $test->assertSame($otherQueue, $queue);
         });
@@ -562,8 +562,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $eachCalled = false;
         $client->on(
             'irc.sending.each',
-            function($otherEvent, $otherQueue)
-                use (&$eachCalled, $test, $eventObject, $queue) {
+            function ($otherEvent, $otherQueue) use (&$eachCalled, $test, $eventObject, $queue) {
                 $eachCalled = true;
                 $test->assertSame($otherEvent, $eventObject);
                 $test->assertSame($otherQueue, $queue);
@@ -573,8 +572,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $typeCalled = false;
         $client->on(
             'irc.sending.privmsg',
-            function($otherEvent, $otherQueue)
-                use (&$typeCalled, $test, $eventObject, $queue) {
+            function ($otherEvent, $otherQueue) use (&$typeCalled, $test, $eventObject, $queue) {
                 $typeCalled = true;
                 $test->assertSame($otherEvent, $eventObject);
                 $test->assertSame($otherQueue, $queue);
@@ -591,7 +589,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $client->emit('irc.tick', $params);
 
         Phake::verify($eventObject)->setConnection($connection);
-        call_user_func_array(array(Phake::verify($write), 'ircPrivmsg'), $eventParams);
+        call_user_func_array([ Phake::verify($write), 'ircPrivmsg' ], $eventParams);
         $this->assertTrue($allCalled);
         $this->assertTrue($eachCalled);
         $this->assertTrue($typeCalled);
@@ -604,11 +602,11 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function dataProviderPluginEmittedEvents()
     {
-        return array(
-            array('notice', '\Phergie\Irc\Event\UserEvent', 'ircNotice'),
-            array('ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpAction'),
-            array('ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpActionResponse'),
-        );
+        return [
+            [ 'notice', '\Phergie\Irc\Event\UserEvent', 'ircNotice' ],
+            [ 'ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpAction' ],
+            [ 'ctcp.action', '\Phergie\Irc\Event\CtcpEvent', 'ctcpActionResponse' ],
+        ];
     }
 
     /**
@@ -623,12 +621,12 @@ class BotTest extends \PHPUnit_Framework_TestCase
      */
     public function testPluginEmittedEvents($event, $class, $method)
     {
-        $message = array('foo' => 'bar');
+        $message = [ 'foo' => 'bar' ];
         $write = $this->getMockWriteStream();
         $logger = $this->getMockLogger();
 
         $connection = $this->getMockConnection();
-        $connections = array($connection);
+        $connections = [ $connection ];
 
         $queue = new EventQueue;
         $queueFactory = $this->getMockEventQueueFactory();
@@ -636,7 +634,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this->bot->setEventQueueFactory($queueFactory);
 
         $eventObject = Phake::mock('\Phergie\Irc\Event\UserEvent');
-        $eventParams = array('#channel', 'message');
+        $eventParams = [ '#channel', 'message' ];
         Phake::when($eventObject)->getCommand()->thenReturn('PRIVMSG');
         Phake::when($eventObject)->getParams()->thenReturn($eventParams);
 
@@ -647,18 +645,18 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $plugin = $this->getMockTestPlugin();
         Phake::when($plugin)
             ->getSubscribedEvents()
-            ->thenReturn(array('irc.received.privmsg' => 'handleEvent'));
-        $callback = function($eventObject, $queue) use ($method, $eventParams) {
-            call_user_func_array(array($queue, $method), $eventParams);
+            ->thenReturn([ 'irc.received.privmsg' => 'handleEvent' ]);
+        $callback = function ($eventObject, $queue) use ($method, $eventParams) {
+            call_user_func_array([ $queue, $method ], $eventParams);
         };
         Phake::when($plugin)
             ->handleEvent($eventObject, $queue)
             ->thenReturnCallback($callback);
 
-        $config = array(
-            'plugins' => array($plugin),
+        $config = [
+            'plugins' => [ $plugin ],
             'connections' => $connections,
-        );
+        ];
         $this->bot->setConfig($config);
 
         $client = Phake::partialMock('\Phergie\Irc\Client\React\Client');
@@ -667,7 +665,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         $this->bot->run();
 
-        $client->emit('irc.received', array($message, $write, $connection, $logger));
+        $client->emit('irc.received', [ $message, $write, $connection, $logger ]);
 
         Phake::verify($client)->emit('irc.sending.all', Phake::capture($allParams));
         $this->assertSame($queue, $allParams[0]);
@@ -678,7 +676,7 @@ class BotTest extends \PHPUnit_Framework_TestCase
 
         Phake::verify($client)->emit('irc.sending.' . $event, $eachParams);
 
-        call_user_func_array(array(Phake::verify($write), $method), $eventParams);
+        call_user_func_array([ Phake::verify($write), $method ], $eventParams);
     }
 
     /**
@@ -692,15 +690,15 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $converter = $this->getMockConverter();
         $eventQueueFactory = $this->getMockEventQueueFactory();
 
-        $config = array(
+        $config = [
             'client' => $client,
             'logger' => $logger,
             'parser' => $parser,
             'converter' => $converter,
             'eventQueueFactory' => $eventQueueFactory,
-            'plugins' => array(),
-            'connections' => array($this->getMockConnection()),
-        );
+            'plugins' => [],
+            'connections' => [ $this->getMockConnection() ],
+        ];
 
         $this->bot->setConfig($config);
         $this->bot->run();
@@ -830,9 +828,9 @@ class TestPlugin extends AbstractPlugin
 
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             $this->event => 'handleEvent',
-        );
+        ];
     }
 
     public function handleEvent()
@@ -848,7 +846,8 @@ class TestPluginContainer extends AbstractPlugin implements PluginContainerInter
 {
     protected $plugins = [];
 
-    public function __construct(array $plugins) {
+    public function __construct(array $plugins)
+    {
         $this->plugins = $plugins;
     }
 

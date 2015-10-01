@@ -177,7 +177,7 @@ abstract class AbstractPlugin implements
      */
     public function escapeParam($string)
     {
-        foreach (["\r\n", "\r", "\n"] as $badBytes) {
+        foreach ([ "\r\n", "\r", "\n" ] as $badBytes) {
             if (false !== strpos($string, $badBytes)) {
                 $string = str_replace($badBytes, " ", $string);
             }
