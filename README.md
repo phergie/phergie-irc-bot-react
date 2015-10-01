@@ -2,7 +2,7 @@
 
 A PHP-based IRC bot built on [React](http://reactphp.org).
 
-For installation, configuration, and development details, see [the wiki](https://github.com/phergie/phergie-irc-bot-react/wiki).
+For installation, configuration, and development details, see [phergie.org](http://www.phergie.org/users/).
 
 [![Build Status](https://secure.travis-ci.org/phergie/phergie-irc-bot-react.png?branch=master)](http://travis-ci.org/phergie/phergie-irc-bot-react)
 [![Coverage Status](https://img.shields.io/coveralls/phergie/phergie-irc-bot-react.svg)](https://coveralls.io/r/phergie/phergie-irc-bot-react)
