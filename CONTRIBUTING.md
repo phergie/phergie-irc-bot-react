@@ -2,6 +2,19 @@
 
 We welcome contributions.
 
+## Community
+
+The Phergie team believes heavily in the [PHP Mentoring](http://www.phpmentoring) project.
+We believe open source projects should be welcoming to newcomers and veteran contributors alike.
+We all actively work to provide a positive collaborative environment and to foster learning.
+
+## Project Breakdown
+
+The Phergie project is broken into different repositories for parts of the application.
+The core bot is in this repo. Plugins are in their own repositories.
+
+The Phergie team maintains many plugins under the Phergie organization while other contributors maintain their own plugins.
+
 ## Have Questions?
 
 Feel free to open a issue on the appropriate repository, not sure? open an issue here.
