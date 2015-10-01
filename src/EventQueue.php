@@ -144,7 +144,7 @@ class EventQueue implements EventQueueInterface
      * @param string $command
      * @param array $params
      */
-    protected function queueIrcRequest($command, array $params = array())
+    protected function queueIrcRequest($command, array $params = [])
     {
         $this->queueRequest(new UserEvent, $command, $params);
     }
@@ -156,7 +156,7 @@ class EventQueue implements EventQueueInterface
      * @param string $ctcpCommand CTCP command
      * @param array $params Command parameters
      */
-    protected function queueCtcpEvent($command, $ctcpCommand, array $params = array())
+    protected function queueCtcpEvent($command, $ctcpCommand, array $params = [])
     {
         $event = new CtcpEvent;
         $event->setCtcpCommand($ctcpCommand);
@@ -169,7 +169,7 @@ class EventQueue implements EventQueueInterface
      * @param string $ctcpCommand CTCP command
      * @param array $params Command parameters
      */
-    protected function queueCtcpRequest($ctcpCommand, array $params = array())
+    protected function queueCtcpRequest($ctcpCommand, array $params = [])
     {
         $this->queueCtcpEvent('PRIVMSG', $ctcpCommand, $params);
     }
@@ -180,7 +180,7 @@ class EventQueue implements EventQueueInterface
      * @param string $ctcpCommand CTCP command
      * @param array $params CTCP parameters
      */
-    protected function queueCtcpResponse($ctcpCommand, array $params = array())
+    protected function queueCtcpResponse($ctcpCommand, array $params = [])
     {
         $this->queueCtcpEvent('NOTICE', $ctcpCommand, $params);
     }
@@ -192,7 +192,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircPass($password)
     {
-        $this->queueIrcRequest('PASS', array($password));
+        $this->queueIrcRequest('PASS', [ $password ]);
     }
 
     /**
@@ -203,7 +203,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircNick($nickname, $hopcount = null)
     {
-        $this->queueIrcRequest('NICK', array($nickname, $hopcount));
+        $this->queueIrcRequest('NICK', [ $nickname, $hopcount ]);
     }
 
     /**
@@ -216,7 +216,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircUser($username, $hostname, $servername, $realname)
     {
-        $this->queueIrcRequest('USER', array($username, $hostname, $servername, $realname));
+        $this->queueIrcRequest('USER', [ $username, $hostname, $servername, $realname ]);
     }
 
     /**
@@ -228,7 +228,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircServer($servername, $hopcount, $info)
     {
-        $this->queueIrcRequest('SERVER', array($servername, $hopcount, $info));
+        $this->queueIrcRequest('SERVER', [ $servername, $hopcount, $info ]);
     }
 
     /**
@@ -239,7 +239,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircOper($user, $password)
     {
-        $this->queueIrcRequest('OPER', array($user, $password));
+        $this->queueIrcRequest('OPER', [ $user, $password ]);
     }
 
     /**
@@ -249,7 +249,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircQuit($message = null)
     {
-        $this->queueIrcRequest('QUIT', array($message));
+        $this->queueIrcRequest('QUIT', [ $message ]);
     }
 
     /**
@@ -260,7 +260,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircSquit($server, $comment)
     {
-        $this->queueIrcRequest('SQUIT', array($server, $comment));
+        $this->queueIrcRequest('SQUIT', [ $server, $comment ]);
     }
 
     /**
@@ -271,7 +271,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircJoin($channels, $keys = null)
     {
-        $this->queueIrcRequest('JOIN', array($channels, $keys));
+        $this->queueIrcRequest('JOIN', [ $channels, $keys ]);
     }
 
     /**
@@ -282,7 +282,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircPart($channels, $message = null)
     {
-        $this->queueIrcRequest('PART', array($channels, $message));
+        $this->queueIrcRequest('PART', [ $channels, $message ]);
     }
 
     /**
@@ -294,7 +294,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircMode($target, $mode = null, $param = null)
     {
-        $this->queueIrcRequest('MODE', array($target, $mode, $param));
+        $this->queueIrcRequest('MODE', [ $target, $mode, $param ]);
     }
 
     /**
@@ -305,7 +305,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircTopic($channel, $topic = null)
     {
-        $this->queueIrcRequest('TOPIC', array($channel, $topic));
+        $this->queueIrcRequest('TOPIC', [ $channel, $topic ]);
     }
 
     /**
@@ -315,7 +315,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircNames($channels)
     {
-        $this->queueIrcRequest('NAMES', array($channels));
+        $this->queueIrcRequest('NAMES', [ $channels ]);
     }
 
     /**
@@ -326,7 +326,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircList($channels = null, $server = null)
     {
-        $this->queueIrcRequest('LIST', array($channels, $server));
+        $this->queueIrcRequest('LIST', [ $channels, $server ]);
     }
 
     /**
@@ -337,7 +337,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircInvite($nickname, $channel)
     {
-        $this->queueIrcRequest('INVITE', array($nickname, $channel));
+        $this->queueIrcRequest('INVITE', [ $nickname, $channel ]);
     }
 
     /**
@@ -349,7 +349,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircKick($channel, $user, $comment = null)
     {
-        $this->queueIrcRequest('KICK', array($channel, $user, $comment));
+        $this->queueIrcRequest('KICK', [ $channel, $user, $comment ]);
     }
 
     /**
@@ -359,7 +359,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircVersion($server = null)
     {
-        $this->queueIrcRequest('VERSION', array($server));
+        $this->queueIrcRequest('VERSION', [ $server ]);
     }
 
     /**
@@ -370,7 +370,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircStats($query, $server = null)
     {
-        $this->queueIrcRequest('STATS', array($query, $server));
+        $this->queueIrcRequest('STATS', [ $query, $server ]);
     }
 
     /**
@@ -381,7 +381,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircLinks($servermask = null, $remoteserver = null)
     {
-        $this->queueIrcRequest('LINKS', array($servermask, $remoteserver));
+        $this->queueIrcRequest('LINKS', [ $servermask, $remoteserver ]);
     }
 
     /**
@@ -391,7 +391,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircTime($server = null)
     {
-        $this->queueIrcRequest('TIME', array($server));
+        $this->queueIrcRequest('TIME', [ $server ]);
     }
 
     /**
@@ -403,7 +403,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircConnect($targetserver, $port = null, $remoteserver = null)
     {
-        $this->queueIrcRequest('CONNECT', array($targetserver, $port, $remoteserver));
+        $this->queueIrcRequest('CONNECT', [ $targetserver, $port, $remoteserver ]);
     }
 
     /**
@@ -413,7 +413,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircTrace($server = null)
     {
-        $this->queueIrcRequest('TRACE', array($server));
+        $this->queueIrcRequest('TRACE', [ $server ]);
     }
 
     /**
@@ -423,7 +423,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircAdmin($server = null)
     {
-        $this->queueIrcRequest('ADMIN', array($server));
+        $this->queueIrcRequest('ADMIN', [ $server ]);
     }
 
     /**
@@ -433,7 +433,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircInfo($server = null)
     {
-        $this->queueIrcRequest('INFO', array($server));
+        $this->queueIrcRequest('INFO', [ $server ]);
     }
 
     /**
@@ -444,7 +444,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircPrivmsg($receivers, $text)
     {
-        $this->queueIrcRequest('PRIVMSG', array($receivers, $text));
+        $this->queueIrcRequest('PRIVMSG', [ $receivers, $text ]);
     }
 
     /**
@@ -455,7 +455,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircNotice($nickname, $text)
     {
-        $this->queueIrcRequest('NOTICE', array($nickname, $text));
+        $this->queueIrcRequest('NOTICE', [ $nickname, $text ]);
     }
 
     /**
@@ -466,7 +466,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircWho($name, $o = null)
     {
-        $this->queueIrcRequest('WHO', array($name, $o));
+        $this->queueIrcRequest('WHO', [ $name, $o ]);
     }
 
     /**
@@ -477,7 +477,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircWhois($nickmasks, $server = null)
     {
-        $this->queueIrcRequest('WHOIS', array($server, $nickmasks));
+        $this->queueIrcRequest('WHOIS', [ $server, $nickmasks ]);
     }
 
     /**
@@ -489,7 +489,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircWhowas($nickname, $count = null, $server = null)
     {
-        $this->queueIrcRequest('WHOWAS', array($nickname, $count, $server));
+        $this->queueIrcRequest('WHOWAS', [ $nickname, $count, $server ]);
     }
 
     /**
@@ -500,7 +500,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircKill($nickname, $comment)
     {
-        $this->queueIrcRequest('KILL', array($nickname, $comment));
+        $this->queueIrcRequest('KILL', [ $nickname, $comment ]);
     }
 
     /**
@@ -511,7 +511,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircPing($server1, $server2 = null)
     {
-        $this->queueIrcRequest('PING', array($server1, $server2));
+        $this->queueIrcRequest('PING', [ $server1, $server2 ]);
     }
 
     /**
@@ -522,7 +522,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircPong($daemon, $daemon2 = null)
     {
-        $this->queueIrcRequest('PONG', array($daemon, $daemon2));
+        $this->queueIrcRequest('PONG', [ $daemon, $daemon2 ]);
     }
 
     /**
@@ -532,7 +532,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircError($message)
     {
-        $this->queueIrcRequest('ERROR', array($message));
+        $this->queueIrcRequest('ERROR', [ $message ]);
     }
 
     /**
@@ -542,7 +542,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircAway($message = null)
     {
-        $this->queueIrcRequest('AWAY', array($message));
+        $this->queueIrcRequest('AWAY', [ $message ]);
     }
 
     /**
@@ -569,7 +569,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircSummon($user, $server = null)
     {
-        $this->queueIrcRequest('SUMMON', array($user, $server));
+        $this->queueIrcRequest('SUMMON', [ $user, $server ]);
     }
 
     /**
@@ -579,7 +579,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircUsers($server = null)
     {
-        $this->queueIrcRequest('USERS', array($server));
+        $this->queueIrcRequest('USERS', [ $server ]);
     }
 
     /**
@@ -589,7 +589,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircWallops($text)
     {
-        $this->queueIrcRequest('WALLOPS', array($text));
+        $this->queueIrcRequest('WALLOPS', [ $text ]);
     }
 
     /**
@@ -603,7 +603,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircUserhost($nickname1, $nickname2 = null, $nickname3 = null, $nickname4 = null, $nickname5 = null)
     {
-        $this->queueIrcRequest('USERHOST', array($nickname1, $nickname2, $nickname3, $nickname4, $nickname5));
+        $this->queueIrcRequest('USERHOST', [ $nickname1, $nickname2, $nickname3, $nickname4, $nickname5 ]);
     }
 
     /**
@@ -613,7 +613,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircIson($nicknames)
     {
-        $this->queueIrcRequest('ISON', array($nicknames));
+        $this->queueIrcRequest('ISON', [ $nicknames ]);
     }
 
     /**
@@ -623,7 +623,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ircProtoctl($proto)
     {
-        $this->queueIrcRequest('PROTOCTL', array($proto));
+        $this->queueIrcRequest('PROTOCTL', [ $proto ]);
     }
 
     /**
@@ -633,7 +633,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpFinger($receivers)
     {
-        $this->queueCtcpRequest('FINGER', array($receivers));
+        $this->queueCtcpRequest('FINGER', [ $receivers ]);
     }
 
     /**
@@ -644,7 +644,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpFingerResponse($nickname, $text)
     {
-        $this->queueCtcpResponse('FINGER', array($nickname, $text));
+        $this->queueCtcpResponse('FINGER', [ $nickname, $text ]);
     }
 
     /**
@@ -654,7 +654,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpVersion($receivers)
     {
-        $this->queueCtcpRequest('VERSION', array($receivers));
+        $this->queueCtcpRequest('VERSION', [ $receivers ]);
     }
 
     /**
@@ -667,7 +667,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpVersionResponse($nickname, $name, $version, $environment)
     {
-        $this->queueCtcpResponse('VERSION', array($nickname, $name, $version, $environment));
+        $this->queueCtcpResponse('VERSION', [ $nickname, $name, $version, $environment ]);
     }
 
     /**
@@ -677,7 +677,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpSource($receivers)
     {
-        $this->queueCtcpRequest('SOURCE', array($receivers));
+        $this->queueCtcpRequest('SOURCE', [ $receivers ]);
     }
 
     /**
@@ -690,7 +690,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpSourceResponse($nickname, $host, $directories, $files)
     {
-        $this->queueCtcpResponse('SOURCE', array($nickname, $host, $directories, $files));
+        $this->queueCtcpResponse('SOURCE', [ $nickname, $host, $directories, $files ]);
     }
 
     /**
@@ -700,7 +700,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpUserinfo($receivers)
     {
-        $this->queueCtcpRequest('USERINFO', array($receivers));
+        $this->queueCtcpRequest('USERINFO', [ $receivers ]);
     }
 
     /**
@@ -711,7 +711,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpUserinfoResponse($nickname, $text)
     {
-        $this->queueCtcpResponse('USERINFO', array($nickname, $text));
+        $this->queueCtcpResponse('USERINFO', [ $nickname, $text ]);
     }
 
     /**
@@ -721,7 +721,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpClientinfo($receivers)
     {
-        $this->queueCtcpRequest('CLIENTINFO', array($receivers));
+        $this->queueCtcpRequest('CLIENTINFO', [ $receivers ]);
     }
 
     /**
@@ -732,7 +732,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpClientinfoResponse($nickname, $client)
     {
-        $this->queueCtcpResponse('CLIENTINFO', array($nickname, $client));
+        $this->queueCtcpResponse('CLIENTINFO', [ $nickname, $client ]);
     }
 
     /**
@@ -743,7 +743,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpErrmsg($receivers, $query)
     {
-        $this->queueCtcpRequest('ERRMSG', array($receivers, $query));
+        $this->queueCtcpRequest('ERRMSG', [ $receivers, $query ]);
     }
 
     /**
@@ -755,7 +755,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpErrmsgResponse($nickname, $query, $message)
     {
-        $this->queueCtcpResponse('ERRMSG', array($nickname, $query, $message));
+        $this->queueCtcpResponse('ERRMSG', [ $nickname, $query, $message ]);
     }
 
     /**
@@ -766,7 +766,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpPing($receivers, $timestamp)
     {
-        $this->queueCtcpRequest('PING', array($receivers, $timestamp));
+        $this->queueCtcpRequest('PING', [ $receivers, $timestamp ]);
     }
 
     /**
@@ -777,7 +777,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpPingResponse($nickname, $timestamp)
     {
-        $this->queueCtcpResponse('PING', array($nickname, $timestamp));
+        $this->queueCtcpResponse('PING', [ $nickname, $timestamp ]);
     }
 
     /**
@@ -787,7 +787,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpTime($receivers)
     {
-        $this->queueCtcpRequest('TIME', array($receivers));
+        $this->queueCtcpRequest('TIME', [ $receivers ]);
     }
 
     /**
@@ -798,7 +798,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpTimeResponse($nickname, $time)
     {
-        $this->queueCtcpResponse('TIME', array($nickname, $time));
+        $this->queueCtcpResponse('TIME', [ $nickname, $time ]);
     }
 
     /**
@@ -809,7 +809,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpAction($receivers, $action)
     {
-        $this->queueCtcpRequest('ACTION', array($receivers, $action));
+        $this->queueCtcpRequest('ACTION', [ $receivers, $action ]);
     }
 
     /**
@@ -820,7 +820,7 @@ class EventQueue implements EventQueueInterface
      */
     public function ctcpActionResponse($nickname, $action)
     {
-        $this->queueCtcpResponse('ACTION', array($nickname, $action));
+        $this->queueCtcpResponse('ACTION', [ $nickname, $action ]);
     }
 
     /**
@@ -830,7 +830,7 @@ class EventQueue implements EventQueueInterface
      */
     protected function getPriorities()
     {
-        return array_flip(array(
+        return array_flip([
             'RESTART',
             'SQUIT',
             'QUIT',
@@ -873,6 +873,6 @@ class EventQueue implements EventQueueInterface
             'CONNECT',
             'OPER',
             'SERVER',
-        ));
+        ]);
     }
 }

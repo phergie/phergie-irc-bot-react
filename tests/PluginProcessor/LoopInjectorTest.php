@@ -31,25 +31,25 @@ class LoopInjectorTest extends \PHPUnit_Framework_TestCase
      */
     public function dataProviderProcessWhenPluginDoesNotReceiveLoop()
     {
-        $data = array();
+        $data = [];
 
         // Neither plugin nor client implements interface
-        $data[] = array(
+        $data[] = [
             Phake::mock('\Phergie\Irc\Bot\React\PluginInterface'),
             Phake::mock('\Phergie\Irc\Client\React\ClientInterface'),
-        );
+        ];
 
         // Plugin implements interface, client does not
-        $data[] = array(
+        $data[] = [
             Phake::mock('\Phergie\Irc\Bot\React\PluginInterface'),
             Phake::mock('\Phergie\Irc\Client\React\LoopAccessorInterface'),
-        );
+        ];
 
         // Client implements interface, plugin does not
-        $data[] = array(
+        $data[] = [
             Phake::mock('\Phergie\Irc\Bot\React\AbstractPlugin'),
             Phake::mock('\Phergie\Irc\Client\React\ClientInterface'),
-        );
+        ];
 
         return $data;
     }
@@ -92,6 +92,10 @@ class LoopInjectorTest extends \PHPUnit_Framework_TestCase
  */
 class LoopAwarePlugin implements PluginInterface, LoopAwareInterface
 {
-    public function getSubscribedEvents() { }
-    public function setLoop(LoopInterface $loop) { }
+    public function getSubscribedEvents()
+    {
+    }
+    public function setLoop(LoopInterface $loop)
+    {
+    }
 }

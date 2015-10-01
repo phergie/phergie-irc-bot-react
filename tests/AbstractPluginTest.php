@@ -10,8 +10,6 @@
 
 namespace Phergie\Irc\Tests\Bot\React;
 
-use Evenement\EventEmitterInterface;
-use Psr\Log\LoggerInterface;
 use Phake;
 
 /**
@@ -150,7 +148,7 @@ class AbstractPluginTest extends \PHPUnit_Framework_TestCase
             "one\r\ntwo",
             "one\rtwo",
             "one\ntwo",
-            "one two\0"
+            "one two\0",
         ];
         $expected = "one two";
         foreach ($toTest as  $test) {

@@ -53,7 +53,7 @@ class Bot
      *
      * @var array
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * Logger in use by the bot, defaults to logger in use by the IRC client
@@ -283,7 +283,7 @@ class Bot
 
         $connections = array_filter(
             $config['connections'],
-            function($connection) {
+            function ($connection) {
                 return $connection instanceof ConnectionInterface;
             }
         );
@@ -300,8 +300,8 @@ class Bot
      * Extracts plugins from configuration.
      *
      * @param array $config Associative array keyed by setting name
-     * @return \Phergie\Irc\Bot\React\PluginInterface[]
      * @throws \RuntimeException if any plugin event callback is invalid
+     * @return \Phergie\Irc\Bot\React\PluginInterface[]
      */
     protected function getPlugins(array $config)
     {
@@ -315,7 +315,7 @@ class Bot
 
         $plugins = array_filter(
             $config['plugins'],
-            function($plugin) {
+            function ($plugin) {
                 return $plugin instanceof PluginInterface;
             }
         );
@@ -378,7 +378,7 @@ class Bot
         if (!empty($processors)) {
             $invalid = array_filter(
                 $processors,
-                function($processor) {
+                function ($processor) {
                     return !$processor instanceof PluginProcessorInterface;
                 }
             );
@@ -403,13 +403,13 @@ class Bot
      */
     protected function getDefaultPluginProcessors()
     {
-        return array(
+        return [
             new ClientInjector,
             new EventEmitterInjector,
             new EventQueueFactoryInjector,
             new LoggerInjector,
             new LoopInjector,
-        );
+        ];
     }
 
     /**
@@ -430,7 +430,7 @@ class Bot
         }
         foreach ($events as $event => $callback) {
             if (!is_string($event)
-                || !is_callable(array($plugin, $callback))
+                || !is_callable([ $plugin, $callback ])
                 && !is_callable($callback)) {
                 throw new \RuntimeException(
                     'Plugin of class ' . get_class($plugin) .
@@ -451,12 +451,12 @@ class Bot
     {
         $bot = $this;
 
-        $client->on('irc.received', function($message, $write, $connection) use ($bot) {
+        $client->on('irc.received', function ($message, $write, $connection) use ($bot) {
             $bot->processClientEvent('irc.received', $message, $connection, $write);
         });
 
         $parser = $this->getParser();
-        $client->on('irc.sent', function($message, $write, $connection) use ($bot, $parser) {
+        $client->on('irc.sent', function ($message, $write, $connection) use ($bot, $parser) {
             $parsed = $parser->parse($message);
             if (!$parsed) {
                 return;
@@ -464,7 +464,7 @@ class Bot
             $bot->processClientEvent('irc.sent', $parsed, $connection, $write);
         });
 
-        $client->on('irc.tick', function($write, $connection) use ($bot) {
+        $client->on('irc.tick', function ($write, $connection) use ($bot) {
             $bot->processOutgoingEvents($connection, $write);
         });
     }
@@ -488,7 +488,7 @@ class Bot
 
         $client = $this->getClient();
         $queue = $this->getEventQueueFactory()->getEventQueue($connection);
-        $params = array($converted, $queue);
+        $params = [ $converted, $queue ];
         $subtype = $this->getEventSubtype($converted);
         $client->emit($event . '.each', $params);
         $client->emit($event . '.' . $subtype, $params);
@@ -510,10 +510,10 @@ class Bot
         $client = $this->getClient();
         $queue = $this->getEventQueueFactory()->getEventQueue($connection);
 
-        $client->emit('irc.sending.all', array($queue));
+        $client->emit('irc.sending.all', [ $queue ]);
         while ($extracted = $queue->extract()) {
             $extracted->setConnection($connection);
-            $params = array($extracted, $queue);
+            $params = [ $extracted, $queue ];
             $subtype = $this->getEventSubtype($extracted);
             $client->emit('irc.sending.each', $params);
             $client->emit('irc.sending.' . $subtype, $params);
@@ -527,7 +527,7 @@ class Bot
                 $method = 'irc' . $extracted->getCommand();
             }
             call_user_func_array(
-                array($write, $method),
+                [ $write, $method ],
                 $extracted->getParams()
             );
         }
@@ -566,7 +566,7 @@ class Bot
             $this->validatePluginEvents($plugin);
             $callbacks = $plugin->getSubscribedEvents();
             foreach ($callbacks as $event => $callback) {
-                $pluginCallback = array($plugin, $callback);
+                $pluginCallback = [ $plugin, $callback ];
                 if (is_callable($pluginCallback)) {
                     $callback = $pluginCallback;
                 }
