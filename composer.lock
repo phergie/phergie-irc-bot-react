@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dbffe576d1169609d94317d141d59daf",
+    "hash": "6457cb37dacaa8bf36540a4f0edbaafe",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -961,6 +961,43 @@
                 "testing"
             ],
             "time": "2015-05-09 13:58:15"
+        },
+        {
+            "name": "phergie/phergie-irc-bot-react-development",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phergie/phergie-irc-bot-react-development.git",
+                "reference": "ee56a406c4bedab97621a3113652210f39aa961c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-bot-react-development/zipball/ee56a406c4bedab97621a3113652210f39aa961c",
+                "reference": "ee56a406c4bedab97621a3113652210f39aa961c",
+                "shasum": ""
+            },
+            "require": {
+                "codeclimate/php-test-reporter": "~0.1",
+                "phake/phake": "~2.0",
+                "phpunit/phpunit": "~4.6",
+                "satooshi/php-coveralls": "0.6.1",
+                "symfony/config": "~2.0",
+                "symfony/console": "~2.0",
+                "symfony/filesystem": "~2.0",
+                "symfony/stopwatch": "~2.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "Development Dependencies for phergie-irc-bot-react",
+            "keywords": [
+                "bot",
+                "irc",
+                "react"
+            ],
+            "time": "2015-11-10 00:38:33"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
