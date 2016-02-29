@@ -227,7 +227,7 @@ class Bot
      * and monitor those connections for events to forward to plugins.
      *
      * @param bool $autorun
-     * 
+     *
      * @throws \RuntimeException if configuration is inconsistent with
      *         expected structure
      */
