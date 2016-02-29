@@ -17,20 +17,6 @@
         "evenement/evenement": "~2.0",
         "monolog/monolog": "~1.6"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/phergie/phergie-irc-client-react"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/phergie/phergie-irc-connection"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/phergie/phergie-irc-event"
-        }
-    ],
     "require-dev": {
         "phergie/phergie-irc-bot-react-development": "~1.0"
     },
