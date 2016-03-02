@@ -736,7 +736,6 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this->bot->run(false);
 
         Phake::verify($client)->run($this->isType('array'), false);
-
     }
 
     /*** SUPPORTING METHODS ***/
