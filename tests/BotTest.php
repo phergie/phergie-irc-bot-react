@@ -710,6 +710,35 @@ class BotTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($eventQueueFactory, $this->bot->getEventQueueFactory());
     }
 
+    /**
+     * Tests that autorun flag is passed to the underlying client.
+     */
+    public function testAutorunOff()
+    {
+        $client = $this->getMockClient();
+        $logger = $this->getMockLogger();
+        $parser = $this->getMockParser();
+        $converter = $this->getMockConverter();
+        $eventQueueFactory = $this->getMockEventQueueFactory();
+
+        $config = [
+            'client' => $client,
+            'logger' => $logger,
+            'parser' => $parser,
+            'converter' => $converter,
+            'eventQueueFactory' => $eventQueueFactory,
+            'plugins' => [],
+            'connections' => [ $this->getMockConnection() ],
+        ];
+
+        $this->bot->setConfig($config);
+
+        $this->bot->run(false);
+
+        Phake::verify($client)->run($this->isType('array'), false);
+
+    }
+
     /*** SUPPORTING METHODS ***/
 
     /**
