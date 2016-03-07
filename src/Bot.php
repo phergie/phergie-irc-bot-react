@@ -226,15 +226,17 @@ class Bot
      * Initiates an event loop for the bot in which it will connect to servers
      * and monitor those connections for events to forward to plugins.
      *
+     * @param bool $autorun
+     *
      * @throws \RuntimeException if configuration is inconsistent with
      *         expected structure
      */
-    public function run()
+    public function run($autorun = true)
     {
         $this->setDependencyOverrides($this->config);
         $this->getPlugins($this->config);
         $connections = $this->getConnections($this->config);
-        $this->getClient()->run($connections);
+        $this->getClient()->run($connections, $autorun);
     }
 
     /**

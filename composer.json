@@ -11,26 +11,12 @@
     },
     "require": {
         "php": ">=5.5",
-        "phergie/phergie-irc-client-react": "~3",
+        "phergie/phergie-irc-client-react": "~3.1",
         "phergie/phergie-irc-connection": "~2.0",
         "phergie/phergie-irc-event": "~1.0",
         "evenement/evenement": "~2.0",
         "monolog/monolog": "~1.6"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/phergie/phergie-irc-client-react"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/phergie/phergie-irc-connection"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/phergie/phergie-irc-event"
-        }
-    ],
     "require-dev": {
         "phergie/phergie-irc-bot-react-development": "~1.0"
     },

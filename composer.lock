@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2b8c5754726ab2d111a75612c2604e5d",
-    "content-hash": "00dde7393bf6c22d89deddbbc3fcdb1c",
+    "hash": "9c77ac85c0050a189573aefa9d6f9897",
+    "content-hash": "b938849892b59b62f5c8bb779e61a61d",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -132,16 +132,16 @@
         },
         {
             "name": "phergie/phergie-irc-client-react",
-            "version": "3.0.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phergie/phergie-irc-client-react.git",
-                "reference": "55efba19c7a48764d4b997d5e9d473e0f75db232"
+                "reference": "471b9e10e98ba874e642e5de48d7dab32b96b5a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/55efba19c7a48764d4b997d5e9d473e0f75db232",
-                "reference": "55efba19c7a48764d4b997d5e9d473e0f75db232",
+                "url": "https://api.github.com/repos/phergie/phergie-irc-client-react/zipball/471b9e10e98ba874e642e5de48d7dab32b96b5a4",
+                "reference": "471b9e10e98ba874e642e5de48d7dab32b96b5a4",
                 "shasum": ""
             },
             "require": {
@@ -169,11 +169,7 @@
                     "Phergie\\Irc\\Client\\React\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Phergie\\Irc\\Tests\\Client\\React\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-2-Clause"
             ],
@@ -183,13 +179,7 @@
                 "irc",
                 "react"
             ],
-            "support": {
-                "email": "team@phergie.org",
-                "irc": "irc://irc.freenode.net/phergie",
-                "issues": "https://github.com/phergie/phergie-irc-client-react/issues",
-                "source": "https://github.com/phergie/phergie-irc-client-react"
-            },
-            "time": "2015-12-14 23:56:41"
+            "time": "2016-02-19 15:05:32"
         },
         {
             "name": "phergie/phergie-irc-connection",
