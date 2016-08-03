@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9c77ac85c0050a189573aefa9d6f9897",
-    "content-hash": "b938849892b59b62f5c8bb779e61a61d",
+    "hash": "54401bcf9931ed718c54e582df1204c1",
+    "content-hash": "0e2b92f484cd27ece74740f94a281103",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -207,27 +207,17 @@
                     "Phergie\\Irc\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Phergie\\Irc\\Tests\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-2-Clause"
             ],
             "description": "Data structure for containing information about an IRC client connection",
             "keywords": [
+                "Connection",
                 "client",
-                "connection",
                 "irc",
                 "server"
             ],
-            "support": {
-                "email": "team@phergie.org",
-                "irc": "irc://irc.freenode.net/phergie",
-                "issues": "https://github.com/phergie/phergie-irc-connection/issues",
-                "source": "https://github.com/phergie/phergie-irc-connection"
-            },
             "time": "2015-05-26 15:14:31"
         },
         {
@@ -258,11 +248,7 @@
                     "Phergie\\Irc\\Event\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Phergie\\Irc\\Tests\\Event\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-2-Clause"
             ],
@@ -271,12 +257,6 @@
                 "event",
                 "irc"
             ],
-            "support": {
-                "email": "team@phergie.org",
-                "irc": "irc://irc.freenode.net/phergie",
-                "issues": "https://github.com/phergie/phergie-irc-event/issues",
-                "source": "https://github.com/phergie/phergie-irc-event"
-            },
             "time": "2015-06-09 17:45:15"
         },
         {
@@ -897,6 +877,7 @@
                 "rest",
                 "web service"
             ],
+            "abandoned": "guzzlehttp/guzzle",
             "time": "2015-03-18 18:23:50"
         },
         {
@@ -1993,12 +1974,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "f21c97aec1b5302d2dc0d17047ea8f4e4ff93aae"
+                "reference": "cc75e0cf582c412e49ad4cd5f83bd0d8e6ff2b33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/f21c97aec1b5302d2dc0d17047ea8f4e4ff93aae",
-                "reference": "f21c97aec1b5302d2dc0d17047ea8f4e4ff93aae",
+                "url": "https://api.github.com/repos/symfony/config/zipball/cc75e0cf582c412e49ad4cd5f83bd0d8e6ff2b33",
+                "reference": "cc75e0cf582c412e49ad4cd5f83bd0d8e6ff2b33",
                 "shasum": ""
             },
             "require": {
@@ -2317,12 +2298,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "177a015cb0e19ff4a49e0e2e2c5fc1c1bee07002"
+                "reference": "4113f97104ffdcb734e15c27fbe27a7e1a3ac3b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/177a015cb0e19ff4a49e0e2e2c5fc1c1bee07002",
-                "reference": "177a015cb0e19ff4a49e0e2e2c5fc1c1bee07002",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/4113f97104ffdcb734e15c27fbe27a7e1a3ac3b0",
+                "reference": "4113f97104ffdcb734e15c27fbe27a7e1a3ac3b0",
                 "shasum": ""
             },
             "require": {
@@ -2420,7 +2401,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5"
+        "php": ">=5.6.0"
     },
     "platform-dev": []
 }
