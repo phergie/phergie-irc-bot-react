@@ -15,7 +15,7 @@
         "phergie/phergie-irc-connection": "~2.0",
         "phergie/phergie-irc-event": "~1.0",
         "evenement/evenement": "~2.0",
-        "monolog/monolog": "~1.6"
+        "monolog/monolog": "~1.12"
     },
     "require-dev": {
         "phergie/phergie-irc-bot-react-development": "~1.0"
