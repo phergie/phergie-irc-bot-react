@@ -9,9 +9,6 @@ matrix:
   allow_failures:
     - php: hhvm
 
-before_install:
-  - wget http://get.sensiolabs.org/php-cs-fixer.phar
-
 before_script:
   - composer self-update
   - composer install --dev
@@ -20,7 +17,7 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit --coverage-clover build/cov/clover.xml
-  - php php-cs-fixer.phar fix -v --dry-run
+  - ./vendor/bin/php-cs-fixer fix -v --dry-run
 
 after_script:
   - ./vendor/bin/coveralls -v
