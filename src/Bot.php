@@ -451,23 +451,20 @@ class Bot
      */
     protected function registerClientSubscribers(ClientInterface $client)
     {
-        $bot = $this;
-
-        $client->on('irc.received', function ($message, $write, $connection) use ($bot) {
-            $bot->processClientEvent('irc.received', $message, $connection, $write);
+        $client->on('irc.received', function ($message, $write, $connection) {
+            $this->processClientEvent('irc.received', $message, $connection, $write);
         });
 
-        $parser = $this->getParser();
-        $client->on('irc.sent', function ($message, $write, $connection) use ($bot, $parser) {
-            $parsed = $parser->parse($message);
+        $client->on('irc.sent', function ($message, $write, $connection) {
+            $parsed = $this->getParser()->parse($message);
             if (!$parsed) {
                 return;
             }
-            $bot->processClientEvent('irc.sent', $parsed, $connection, $write);
+            $this->processClientEvent('irc.sent', $parsed, $connection, $write);
         });
 
-        $client->on('irc.tick', function ($write, $connection) use ($bot) {
-            $bot->processOutgoingEvents($connection, $write);
+        $client->on('irc.tick', function ($write, $connection) {
+            $this->processOutgoingEvents($connection, $write);
         });
     }
 
