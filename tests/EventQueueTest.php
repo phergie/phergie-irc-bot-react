@@ -251,4 +251,27 @@ class EventQueueTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([ $event ], $contents);
     }
+
+    /**
+     * Tests that non-empty parameter strings are not truncated.
+     */
+    public function testRequestFilter()
+    {
+        $this->assertNull($this->queue->extract());
+
+        $this->queue->ircMode('#test', '+n', '');
+        $this->queue->ircPrivmsg('TestUser', '0');
+
+        $event = $this->queue->extract();
+        $this->assertInstanceOf('\Phergie\Irc\Event\EventInterface', $event);
+        $this->assertEquals('MODE', $event->getCommand());
+        $this->assertEquals([ '#test', '+n' ], $event->getParams());
+
+        $event = $this->queue->extract();
+        $this->assertInstanceOf('\Phergie\Irc\Event\EventInterface', $event);
+        $this->assertEquals('PRIVMSG', $event->getCommand());
+        $this->assertEquals([ 'TestUser', '0' ], $event->getParams());
+
+        $this->assertNull($this->queue->extract());
+    }
 }

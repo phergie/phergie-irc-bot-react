@@ -134,7 +134,7 @@ class EventQueue implements EventQueueInterface
     {
         $event->setPrefix($this->prefix);
         $event->setCommand($command);
-        $event->setParams(array_filter($params));
+        $event->setParams(array_filter($params, 'strlen'));
         $this->queue->insert($event, $this->getPriority($command, $params));
     }
 
