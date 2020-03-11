@@ -1,4 +1,5 @@
 {
+    "abandoned": true,
     "name": "phergie/phergie-irc-bot-react",
     "description": "IRC bot built on React",
     "keywords": [ "irc", "bot", "react" ],
